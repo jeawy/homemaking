@@ -4,17 +4,11 @@
     {
       "path": "pages/index/index",
       "style": {
-        "enablePullDownRefresh": true,
-        "navigationBarTitleText": "RF微商城",
-        "onReachBottomDistance": 50,
+        "backgroundColor": "#FFFFFF",
         "app-plus": {
-          "bounce": "none",
+          "backgroundColor":"#FFFFFF",
           "titleNView": false,
-          "pullToRefresh": {
-            "support": true,
-            "color": "#fa436a",
-            "style": "default"
-          }
+          "bounce": "none"
         }
       }
     },

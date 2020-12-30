@@ -12,28 +12,22 @@
 			<view class="notice">
 				<image class="notice_img" src="../../static/home/Notification.svg"></image>
 			</view>
-		</view>
-		
+		</view>		
 		<!-- 轮播图 -->
 		<view class="swiper">
-			<view class="swiper-box">
-				<!-- <rf-swipe-dot :info="carouselList.index_top" mode="nav" :current="current" field="title"> -->
-					<swiper @change="handleDotChange" autoplay="true">
-						<!-- <swiper-item
-								v-for="(item, index) in carouselList.index_top"
-								@tap="indexTopToDetailPage(item.jump_type, item.jump_link)"
-								:key="index"> -->
-						<swiper-item>
-							<view class="swiper-item">
-								<!-- <image :src="item.cover" mode="aspectFill"/> -->
-								<image src="../../static/home/Swiper.svg" mode="aspectFit"/>
-							</view>
-						</swiper-item>
-					</swiper>
-				<!-- </rf-swipe-dot> -->
+			<swiper @change="handleDotChange" :Lautoplay="true" :current="swiperCurrent" :circular='true'>
+				<swiper-item v-for="(item,index) in swiperImg" :key="index">
+					<view class="swiper-item">
+						<image :src="item" mode="aspectFit"/>
+					</view>
+				</swiper-item>					
+			</swiper>
+			<!-- 轮播指示点样式修改 -->
+			<view class="dots">
+				<block v-for="(item,index) in swiperImg.length" :key="item">
+				  <view class="dot" :class="index==swiperCurrent ? ' active' : ''"></view>
+				</block>
 			</view>
-		</view>
-		<view class="swiper_dot" style="height: 20px;">
 		</view>
 		<!-- 分类列表 -->
 		<view class="category-list">
@@ -45,48 +39,35 @@
 				<image :src="item.src" mode="aspectFill"></image>
 			</view>
 		</view>
-		<!--广告-->
-		<view class="ads">
-			<image class="ads_img" src="../../static/home/LeftAdsDiscount.svg"></image>
-			<image class="ads_img" src="../../static/home/RightAdsLocal.svg"></image>
-		</view>
-		<!--VIP-->
-		<view class="VIP">
-			<image src="../../static/home/MidAdsVip.svg"></image>
+		
+		<view class="middle">
+			<!--广告-->
+			<view class="ads">
+				<image class="ads_left_img" src="../../static/home/LeftAdsDiscount.svg"></image>
+				<image class="ads_img" src="../../static/home/RightAdsLocal.svg"></image>
+			</view>
+			<!--VIP-->
+			<image class="vip_img" src="../../static/home/MidAdsVip.svg"></image>
 		</view>
 		<!--分享礼品-->
 		<view class="gift_ads">
-			<image class="gift_img" src="../../static/home/LastLeftShare.svg"></image>
-			<image class="gift_img" src="../../static/home/LastRightReturn.svg"></image>
+			<view class="gift">
+				<image class="gift_left_img" src="../../static/home/LastLeftShare.svg"></image>
+				<image class="gift_img" src="../../static/home/LastRightReturn.svg"></image>
+			</view>			
 		</view>
 	</view>
 </template>
 <script>
-    /**
-     * @des 微商城首页
-     *
-     * @author stav stavyan@qq.com
-     * @date 2020-01-08 14:14
-     * @copyright 2019
-     */
-    import {indexList} from '@/api/product';
-    import rfSwipeDot from '@/components/rf-swipe-dot';
-    import rfFloorIndex from '@/components/rf-floor-index';
-    import rfSearchBar from '@/components/rf-search-bar';
-    import rfSwiperSlide from '@/components/rf-swiper-slide';
-    import {notifyAnnounceIndex} from '@/api/basic';
-    import rfCountDown from '@/components/rf-count-down';
-
     export default {
-        components: {rfFloorIndex, rfSwipeDot, rfSearchBar, rfSwiperSlide, rfCountDown},
         data() {
             return {
-                current: 0, // 轮播图index
-                carouselList: {}, // 广告图
-                hotProductList: [], // 热门商品列表
-                recommendProductList: [], // 推荐商品列表
-                guessYouLikeProductList: [], // 猜你喜欢商品列表
-                newProductList: [], // 新品上市商品列表
+				swiperImg: [// 轮播图图片
+					'../../static/home/Swiper.svg',
+					'../../static/home/Swiper.svg',
+					'../../static/home/Swiper.svg',
+				],
+				swiperCurrent: 0, // 轮播图index
                 serveCateList: [// 服务项目列表
 					{src:"../../static/home/maternity.svg"},
 					{src:"../../static/home/babymeal.svg"},
@@ -99,11 +80,11 @@
 					{src:"../../static/home/moveworker.svg"},
 					{src:"../../static/home/lawnmaintainance.svg"},
 					],  
-                config: {}, // 商户配置
-                announceList: [], // 公告列表
-                loading: true,
-                hotSearchDefault: '请输入关键字',
-                newsBg: this.$mAssetsPath.newsBg,
+                // config: {}, // 商户配置
+                // announceList: [], // 公告列表
+                // loading: true,
+                // hotSearchDefault: '请输入关键字',
+                // newsBg: this.$mAssetsPath.newsBg,
                 // errorImage: this.$mAssetsPath.errorImage
             };
         },
@@ -146,7 +127,7 @@
         methods: {
             // 监听轮播图切换
             handleDotChange(e) {
-                this.current = e.detail.current
+				this.swiperCurrent = e.detail.current;
             },
             // 数据初始化
             initData() {
@@ -268,113 +249,145 @@
         }
     }
 </script>
-<style lang="scss" scoped>
-	page{
-		background-color: #FFFFFF;
+<style>
+	page {
+		min-height: 100vh;
 	}
+</style>
+<style lang="scss" scoped>
+	
 	.rf-index {
-		margin-top: 30px;
-		// background-color: #FFFFFF;
+		background-color: #FFFFFF;
+		width: 100%;		
 		.header,.location{
 			display: flex;
 			align-items: center;
 		}
 		.header{
+			padding-top: 30px;
 			justify-content: space-between;
 		}
 		// 定位
 		.location{	
-			// margin-top:56px;
 			.location_text{
-				margin-left: 20px;
+				margin-left: 40rpx;
 				font-family: Tensentype MingSongJ-W2;
 				font-style: Regular;
-				font-size: 12px;
+				font-size: 24rpx;
 			}
 			.location_img{
-				padding-left: 2px;
-				width: 8px;
-				height: 12px;
+				padding-left: 4rpx;
+				width: 16rpx;
+				height: 24rpx;
 			}
 		}
 		.notice{
-			// margin-top:56px;
 			.notice_img{
-				margin-right: 19px;
-				width: 11px;
-				height: 10.77px;
+				margin-right: 38rpx;
+				width: 22rpx;
+				height: 21.54rpx;
 			}
 		}
-		/*轮播图*/
+		/*轮播图*/		
 		.swiper {
-			margin: 10px 20px 0 20px;
-			// height: 224px;
-			.swiper-box {
-				// width: 92%;
-				// height: 40vw;
-				// overflow: hidden;
-				// border-radius: 15upx;
-				// box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);
-				// //兼容ios，微信小程序
-				// position: relative;
-				// z-index: 1;
-		
-				swiper {					
-					width: 100%;
-					height: 200px;
-					swiper-item {
-						border-radius: 9px;
-						image {
-							width: 335px;
-							height: 200px;
-							
-						}
+			padding-top: 20rpx;
+			margin: 0 40rpx 0 40rpx;
+			height: 468rpx;		
+			swiper {					
+				width: 100%;
+				height: 400rpx;
+				swiper-item {
+					border-radius: 18rpx;
+					image {
+						width: 670rpx;
+						height: 400rpx;
+						
 					}
 				}
 			}
 		}
+		.dots {
+			  margin: 20rpx auto;
+			  display: flex;
+			  flex-direction: row;
+			  justify-content: center;
+
+			  .dot {
+				  width: 22rpx;
+				  height: 8rpx;
+				  background: #ffcb98;
+				  border-radius: 10rpx;
+				  margin-right: 4rpx;
+			  }
+			  .active {
+				  width: 50rpx;
+				  height: 8rpx;
+				  background: #FF8000;
+				  border-radius: 10rpx;
+
+			  }
+		  }
 		/*分类列表*/
 		.category-list {
-			height: 150px;
-			margin: 0 20px ;
+			height: 300rpx;
+			margin: 0 40rpx;
 			display: flex;
 			flex-wrap: wrap;
-			background-color: #ffe8cd;
-			border-radius: 9px;
+			background-color: #FFE8CD;
+			border-radius: 16rpx;
+			box-shadow: 0 8rpx 0 #d9d9d9;
 			.category {
+				z-index: 2rpx;
 				display: flex;
 				flex-wrap: wrap;
 					image {
-						margin: 8px 7px;
-						width: 50px;
-						height: 54px;
+						margin: 16rpx 14rpx;
+						width: 100rpx;
+						height: 108rpx;
 					}
 			}
 		}
-		.ads{
-			margin: 10px 20px;
-			display: flex;
-			.ads_img{
-				// width: 162.5px;
-				height: 90px;
-			}
-		}
-		.VIP{	
-			margin: 0px 20px;
-			height: 70px;
-			image{
+		.middle{
+			height: 357.68rpx;
+			margin: 20rpx 34rpx 0 28rpx;
+			.ads{
+				display: flex;
 				position: relative;
-				height: 70px;								
+				top: -70px;
+				left: 6px;
+				margin-right: 6px;
+				.ads_left_img{
+					padding-right: 8px;
+				}
+				.ads_img{
+					// height: 180rpx;
+				}
+			}
+			.vip_img{
+				position: relative;
+				top: -451.28rpx;
+				// width: 682rpx;
+				// left: -6rpx;
+				width: 100%;
+				// right: -200rpx;
 			}
 		}
 		.gift_ads{
-			margin: 10px 20px 13px 20px;
-			display: flex;
-			.gift_img{
-				// width: 162.5px;
-				height: 70px;
+			margin: 0 46rpx 0 28rpx;
+			height: 166rpx;
+			.gift{
+				display: flex;
+				position: relative;
+				top: -80px;
+				left: 6px;
+				
+				.gift_left_img{
+					padding-right: 8px;
+				}
+				.gift_img{
+					// height: 180rpx;
+				}
 			}
-		}
-		
+		}		
 	}
 </style>
