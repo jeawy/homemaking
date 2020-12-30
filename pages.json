@@ -69,16 +69,14 @@
       "path": "pages/cart/cart",
       "style": {
         "enablePullDownRefresh": true,
-        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "我的订单",
         "app-plus": {
-          "titleNView": false,
-          "softinputNavBar": "none",
-          // 禁用原生导航栏
           "pullToRefresh": {
             "support": true,
             "color": "#fa436a",
             "style": "default"
-          }
+          },
+          "bounce": "none"
         }
       }
     },
@@ -573,7 +571,7 @@
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    // "navigationBarTitleText": "RF微商城",
+    "navigationBarTitleText": "RF微商城",
     "navigationBarBackgroundColor": "#FFFFFF",
     "backgroundColor": "#f8f8f8"
   },
@@ -599,7 +597,7 @@
         "pagePath": "pages/cart/cart",
         "iconPath": "static/tab-cart.png",
         "selectedIconPath": "static/tab-cart-current.png",
-        "text": "购物车"
+        "text": "订单"
       },
       {
         "pagePath": "pages/user/user",
