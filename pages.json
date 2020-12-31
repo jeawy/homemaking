@@ -78,10 +78,7 @@
     {
       "path": "pages/user/user",
       "style": {
-        "navigationBarTitleText": "我的",
-        // #ifdef MP
         "navigationStyle": "custom",
-        // #endif
         "app-plus": {
           "bounce": "none",
           "titleNView": {
