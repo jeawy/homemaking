@@ -12,7 +12,7 @@
 			<view class="notice">
 				<image class="notice_img" src="../../static/home/Notification.svg"></image>
 			</view>
-		</view>		
+		</view>	 
 		<!-- 轮播图 -->
 		<view class="swiper">
 			<swiper @change="handleDotChange" :Lautoplay="true" :current="swiperCurrent" :circular='true'>
@@ -31,13 +31,18 @@
 		</view>
 		<!-- 分类列表 -->
 		<view class="category-list">
-			<view
-				class="category"
-				v-for="(item, index) in serveCateList"
-				:key="index"
-			>
-				<image :src="item.src" mode="aspectFill"></image>
-			</view>
+			<view class="cate">
+				<image class="cate_image_one" src="../../static/home/maternity.svg" mode="aspectFill"></image>
+				<image class="cate_image_two" src="../../static/home/babymeal.svg" mode="aspectFill"></image>
+				<image class="cate_image_three" src="../../static/home/kids.svg" mode="aspectFill"></image>
+				<image class="cate_image_four" src="../../static/home/elderly.svg" mode="aspectFill"></image>
+				<image class="cate_image_five" src="../../static/home/housekeeping.svg" mode="aspectFill"></image>
+				<image class="cate_image_six" src="../../static/home/hoursworker.svg" mode="aspectFill"></image>
+				<image class="cate_image_seven" src="../../static/home/repairworker.svg" mode="aspectFill"></image>
+				<image class="cate_image_eight" src="../../static/home/painworker.svg" mode="aspectFill"></image>
+				<image class="cate_image_nine" src="../../static/home/moveworker.svg" mode="aspectFill"></image>
+				<image class="cate_image_ten" src="../../static/home/lawnmaintainance.svg" mode="aspectFill"></image>
+			</view>		
 		</view>
 		
 		<view class="middle">
@@ -67,19 +72,7 @@
 					'../../static/home/Swiper.svg',
 					'../../static/home/Swiper.svg',
 				],
-				swiperCurrent: 0, // 轮播图index
-                serveCateList: [// 服务项目列表
-					{src:"../../static/home/maternity.svg"},
-					{src:"../../static/home/babymeal.svg"},
-					{src:"../../static/home/kids.svg"},
-					{src:"../../static/home/elderly.svg"},
-					{src:"../../static/home/housekeeping.svg"},
-					{src:"../../static/home/hoursworker.svg"},
-					{src:"../../static/home/repairworker.svg"},
-					{src:"../../static/home/painworker.svg"},
-					{src:"../../static/home/moveworker.svg"},
-					{src:"../../static/home/lawnmaintainance.svg"},
-					],  
+				swiperCurrent: 0, // 轮播图index 
                 // config: {}, // 商户配置
                 // announceList: [], // 公告列表
                 // loading: true,
@@ -249,11 +242,7 @@
         }
     }
 </script>
-<style>
-	page {
-		min-height: 100vh;
-	}
-</style>
+
 <style lang="scss" scoped>
 	
 	.rf-index {
@@ -264,7 +253,7 @@
 			align-items: center;
 		}
 		.header{
-			padding-top: 30px;
+			padding-top: 56rpx;
 			justify-content: space-between;
 		}
 		// 定位
@@ -333,59 +322,84 @@
 			margin: 0 40rpx;
 			display: flex;
 			flex-wrap: wrap;
+			justify-content: space-around;
 			background-color: #FFE8CD;
 			border-radius: 16rpx;
 			box-shadow: 0 8rpx 0 #d9d9d9;
-			.category {
-				z-index: 2rpx;
+			.cate{
+				padding: 28rpx 36rpx 30rpx 38rpx;
+				width: 100%;
+				height: 300rpx;
 				display: flex;
 				flex-wrap: wrap;
-					image {
-						margin: 16rpx 14rpx;
+					.cate_image_one{
+						width: 100rpx;
+						height: 102rpx;
+					}
+					.cate_image_two,
+					.cate_image_three,.cate_image_four,
+					.cate_image_five{
+						width: 100rpx;
+						height: 102rpx;
+						margin-left: 24rpx;
+					}
+					.cate_image_seven,
+					.cate_image_eight,.cate_image_nine,
+					.cate_image_ten{
 						width: 100rpx;
 						height: 108rpx;
+						margin-top: 32rpx;
+						margin-left: 24rpx;
+					}
+					.cate_image_six{
+						width: 100rpx;
+						height: 108rpx;
+						margin-top: 32rpx;
+					}
+					.cate_image_nine{
+						height: 110rpx;
 					}
 			}
 		}
 		.middle{
 			height: 357.68rpx;
-			margin: 20rpx 34rpx 0 28rpx;
+			margin-top: 20rpx;
 			.ads{
 				display: flex;
-				position: relative;
-				top: -70px;
-				left: 6px;
-				margin-right: 6px;
+				margin-right: 12rpx;
+				height: 180rpx;
 				.ads_left_img{
-					padding-right: 8px;
+					position: relative;
+					left: 18rpx;
+					height: 190rpx;
 				}
 				.ads_img{
-					// height: 180rpx;
+					height: 190rpx;
+					position: relative;
+					right: 10rpx;
 				}
 			}
 			.vip_img{
 				position: relative;
-				top: -451.28rpx;
-				// width: 682rpx;
-				// left: -6rpx;
+				top: -16rpx;
+				height: 200rpx;
 				width: 100%;
-				// right: -200rpx;
 			}
 		}
 		.gift_ads{
-			margin: 0 46rpx 0 28rpx;
-			height: 166rpx;
+			height: 158rpx;
 			.gift{
 				display: flex;
-				position: relative;
-				top: -80px;
-				left: 6px;
-				
+				height: 140rpx;
 				.gift_left_img{
-					padding-right: 8px;
+					position: relative;
+					left: 18rpx;
+					height: 148rpx;
 				}
 				.gift_img{
-					// height: 180rpx;
+					position: relative;
+					right: 18rpx;
+					height: 148rpx;
 				}
 			}
 		}		
