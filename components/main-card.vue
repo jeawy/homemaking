@@ -9,21 +9,16 @@
 				<view class="card_text">
 					<view class="name">{{info.name}}</view>
 					<view class="text_middle">
-						<text>{{info.age}}岁</text>
-						<span v-if="info.age == 'women'">
-							<image class="sex_img" src="../static/women.svg"></image>
-						</span>
-						<span v-else>
-							<image class="sex_img" src="../static/women.svg"></image>
-						</span>
-						<text>{{info.position}}</text>
+						<text class="middle-text">{{info.age}}岁</text>
+						<image class="sex_img" src="../static/women.svg"></image>
+						<text class="middle-text">{{info.position}}</text>
 						<span class="line">|</span>
-						<text>从业{{info.time}}年</text>
+						<text class="middle-text">从业{{info.time}}年</text>
 					</view>
 					<view class="language">
-						<text>{{info.language[0]}}</text>
-						<span>|</span>
-						<text>{{info.language[1]}}</text>
+						<text class="language-text">{{info.language[0]}}</text>
+						<span class="line">|</span>
+						<text class="language-text">{{info.language[1]}}</text>
 					</view>
 				</view>
 				<view class="card_bottom">
@@ -55,7 +50,7 @@
 </script>
 
 <style lang="scss" scoped>
-	.font_text,.bottom_left,.button_text{
+	.font_text,.bottom_left,.button_text,.middle-text,.language-text{
 		font-family: Tensentype MingSongJ-W4;
 		font-size: 20rpx;
 		font-style: normal;
@@ -98,26 +93,32 @@
 				letter-spacing: 0em;
 			}
 			.text_middle{
+				line-height: 24rpx;
+				margin: 12rpx 0;
 				text-align: center;
 				width: 100%;
 				.sex_img{
 					width: 12rpx;
 					height: 19.58rpx;
+					align-items: center;
 					margin: 0 4rpx;
 				}
-				.line{
-					margin: 0 4rpx;
-				}
+				
+			}
+			.line{
+				margin: 0 8rpx;
+				height: 24rpx;
+				line-height: 20rpx;
 			}
 			.language{
+				line-height: 24rpx;
 				text-align: center;
 			}
-
 		}
 		.card_bottom{
-			width: 100%;
+			// width: 100%;
 			display: flex;
-			padding: 14rpx 40rpx 26rpx 40rpx;
+			margin: 14rpx 40rpx 26rpx 40rpx;
 			justify-content: center;
 			align-items: center;
 			.bottom_left{
