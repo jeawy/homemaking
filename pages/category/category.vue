@@ -1,26 +1,53 @@
 <template>
   <view class="rf-category">
-    <!--顶部搜索导航栏-->
-    <rf-search-bar
-        @link="toIndex"
-        @search="toSearch"
-        icon="iconxiatubiao--copy"
-        title="主页"
-        :placeholder="hotSearchDefault"/>
-    <rf-empty :info="'暂无产品分类~'" v-if="categoryList.length === 0 && !loading"></rf-empty>
-    <view class="category-list" v-else>
-      <!-- 左侧分类导航 -->
-      <scroll-view scroll-y="true" class="left">
-        <view class="row" v-for="(fItem, fIndex) in categoryList" :key="fItem.id"
-              :class="[fIndex===showCategoryIndex?'on':'']" @tap="showCategory(fIndex)">
-          <view class="text">
-            <view class="block"></view>
-            {{fItem.title}}
-          </view>
+	  <!--顶部搜索导航栏-->
+    <view class="nev">      
+	  <view class="search">
+		  <view class="search_position">
+			  <view class="left_text">西安</view>
+			  <image class="location_img" src="/static/home/City.svg"></image>
+		  </view>
+		  <view class="search_box">
+			   <image class="search_img" src="/static/houseKeeping/search.svg"></image>   
+			   <input class="search_input" placeholder="搜索关键字"/>
+			   <image class="search_talk" src="/static/houseKeeping/microphone.svg"></image>  
+		  </view>
+		  <view class="notice">
+		  		<image class="notice_img" src="/static/home/Notification.svg"></image>	  
+		  </view>
+	  </view>
+    </view>
+      <!-- 上侧分类导航 -->
+      <!-- <scroll-view scroll-x="true" class="left"> -->
+        <view class="top" >
+			<view class="top_left">
+				<view class="left_one" >推荐</view>
+				<view class="left_two">最新</view>
+				<view class="left_three">附近</view>
+			</view>
+			<view class="top_right">
+				<view class="right_one">筛选</view>
+				<image class="right_img"  src="/static/triangle.svg"></image>
+				<view class="right_two">分类</view>
+				<image class="right_img" src="/static/triangle.svg"></image>
+			</view>			
         </view>
-      </scroll-view>
+		<!-- <view class="line"></view> -->
+      <!-- </scroll-view> -->
+	  <!-- 推荐页面 -->
+	  <view class="content" v-if="currentIndex == 'recommend'">
+	  	<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+	  </view>
+	  <!-- 最新页面-->
+	  <view class="content" v-if="currentIndex == 'new'">
+	  	<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+	  </view>
+	  <!-- 附近页面-->
+	  <view class="content" v-if="currentIndex == 'nearby'">
+	  	<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+	  </view>
       <!--右侧子导航-->
-      <scroll-view scroll-y="true" class="right" :class="animation">
+      <!-- <scroll-view scroll-y="true" class="right" :class="animation">
         <view class="category" v-for="(fItem, fIndex) in categoryList" :key="fItem.id"
               v-if="fIndex===showCategoryIndex && fItem.child.length > 0">
           <view class="banner" @tap="indexTopToDetailPage(cateTop.jump_type, cateTop.jump_link)">
@@ -41,12 +68,13 @@
           </view>
         </view>
       </scroll-view>
-    </view>
+    </view> -->
 		<!--加载动画-->
-    <rf-loading v-if="loading"></rf-loading>
+    <!-- <rf-loading v-if="loading"></rf-loading> -->
   </view>
 </template>
 <script>
+	import mainCard from '@/components/main-card.vue';
 	/**
 	 * @des 分类
 	 *
@@ -59,19 +87,58 @@
 	import {advList} from '@/api/basic';
 	export default {
 		components: {
-			rfSearchBar
+			rfSearchBar,
+			mainCard
 		},
 		data() {
 			return {
-        hotSearchDefault: '请输入关键字', // 搜索默认关键字
-        showCategoryIndex: 0, // 一级菜单高亮显示序号
-        categoryList: [], // 分类列表
-        search: {},
-        cateTop: {}, // 分类通用广告图
-        animation: 'animation-slide-right',
-        loading: true,
-        errorImage: this.$mAssetsPath.errorImage
-      }
+				// hotSearchDefault: '请输入关键字', // 搜索默认关键字
+				// showCategoryIndex: 0, // 一级菜单高亮显示序号
+				// categoryList: ['推荐','最近','附近'], // 左上角分类列表
+				// search: {},
+				// cateTop: {}, // 分类通用广告图
+				// animation: 'animation-slide-right',
+				// loading: true,
+				// errorImage: this.$mAssetsPath.errorImage,
+				currentIndex:'recommend',
+				infolst:[{
+					name:'张三',
+					imgsrc:"/static/people.svg",
+					age:27,
+					sex:"women",
+					position:'澳大利亚',
+					time:"2",
+					language:['普通话','英语'],
+					type:"包月小时工"
+				},{
+					name:'爱丽丝',
+					imgsrc:"/static/people.svg",
+					age:27,
+					sex:"women",
+					position:'澳大利亚',
+					time:"2",
+					language:['普通话','英语'],
+					type:"包月小时工"
+				},{
+					name:'张三',
+					imgsrc:"/static/people.svg",
+					age:27,
+					sex:"women",
+					position:'澳大利亚',
+					time:"2",
+					language:['普通话','英语'],
+					type:"包月小时工"
+				},{
+					name:'爱丽丝',
+					imgsrc:"/static/people.svg",
+					age:27,
+					sex:"women",
+					position:'澳大利亚',
+					time:"2",
+					language:['普通话','英语'],
+					type:"包月小时工"
+				}],
+			  }
 		},
 		// 每次页面显示 执行该方法
 		onLoad() {
@@ -101,22 +168,22 @@
           uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
         }
       },
-			// 获取商品分类列表
-			async getProductCate() {
-				await this.$http.get(`${productCate}`).then(r => {
-					this.loading = false;
-					// 获取分类广告图 注：广告图不是一级分类图
-          this.getAdvList();
-          // 过滤掉没有二级菜单的一级菜单
-					r.data.forEach(item => {
-            if (item.child.length > 0) {
-            	this.categoryList.push(item)
-            }
-          });
-				}).catch(() => {
-          this.loading = false;
-        });
-			},
+			// // 获取商品分类列表
+			// async getProductCate() {
+			// 	await this.$http.get(`${productCate}`).then(r => {
+			// 		this.loading = false;
+			// 		// 获取分类广告图 注：广告图不是一级分类图
+   //        this.getAdvList();
+   //        // 过滤掉没有二级菜单的一级菜单
+			// 		r.data.forEach(item => {
+   //          if (item.child.length > 0) {
+   //          	this.categoryList.push(item)
+   //          }
+   //        });
+			// 	}).catch(() => {
+   //        this.loading = false;
+   //      });
+			// },
 			// 获取广告列表
 			async getAdvList() {
 				await this.$http.get(`${advList}`, {
@@ -170,9 +237,114 @@
 </script>
 <style scoped lang="scss">
   page {
-	  background-color: $color-white;
+	  background-color: #FFFFFF;
   }
   .rf-category {
+    background-color: #FFFFFF;
+    .search,.search_position,.search_box,.top,.top_left,.top_right{
+		  display: flex;
+		  align-items: center;
+    }
+    .nev{
+       padding-top: 56rpx;
+    }
+    .search{     
+      margin: 0 40rpx 10rpx 40rpx;
+      height: 40rpx;
+      .search_position{
+        .left_text{
+			font-family: Tensentype MingSongJ-W2;
+			font-size: 12px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 14px;
+			letter-spacing: 0em;
+			// text-align: left;
+
+		}
+        .location_img{
+		  margin-left: 4rpx;
+          width: 16rpx;
+          height: 24rpx;
+        }
+      }
+      .search_box{
+		  margin-left: 30rpx;
+        width: 520rpx;
+        background: rgba(118, 118, 128, 0.12);
+        border-radius: 10px;
+        .search_img{
+          width: 22rpx;
+          height: 22rpx;
+          margin: 10rpx 12.2rpx 8rpx 12rpx;
+        }
+		.search_input{
+			width: 446rpx;
+		}
+        .search_talk{
+          width: 14.78rpx;
+          height: 22rpx;
+          margin: 10rpx 12.2rpx 8rpx 0;
+        }
+      }
+      .notice{
+        .notice_img{
+          margin-left:30rpx;
+          width: 22rpx;
+          height: 21.54rpx;
+        }
+      }
+    }
+	  
+	  .left_one,.left_two,.left_three,.right_one,.right_two{
+	    font-family: Tensentype MingSongJ-W4;
+	    font-size: 10px;
+	    font-style: normal;
+	    font-weight: 400;
+	    line-height: 12px;
+	    letter-spacing: 0em;
+	    text-align: left;	  
+	  }
+    .top{
+		 // width: 100%;
+		 height: 32rpx;
+		 margin: 0 40rpx 8rpx 40rpx;
+		 padding-bottom: 8rpx;
+		 justify-content: space-between;
+		 border-bottom: 2rpx solid rgba(255, 141, 14, 0.4);
+		.top_left{
+			// padding-left: 40rpx;
+			.left_two{
+			  padding: 0 20rpx;
+			}
+		}
+		.top_right{
+		  // padding-right: 102rpx;
+			.right_img{
+				margin: 6rpx 20rpx 0 4rpx;
+				width: 10rpx;
+				height: 10rpx;
+			}
+		}
+      
+		  
+    }
+	.content{
+		display: flex;
+		margin: 0 20rpx;
+		flex-wrap: wrap;
+		.main_card{
+			// margin-right: 20rpx;
+			width: 50%;
+			margin-bottom: 20rpx;
+		}
+	}
+	// .line{
+	//   margin: 0 38rpx 0 40rpx;
+	//   height: 2rpx;
+	//   background: rgba(255, 141, 14, 0.4);
+	//   transform: matrix(1, 0, 0, -1, 0, 0);
+	// }
     /*模块分类*/
     .category-list {
       width: 100%;
