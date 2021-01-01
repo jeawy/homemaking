@@ -61,9 +61,48 @@
 				<image class="gift_img" src="../../static/home/LastRightReturn.svg"></image>
 			</view>			
 		</view>
+		<!-- 阿姨推荐 -->
+		<view class="aunt_bottom" >
+			<view class="aunt_top"><text class="bottom_text">阿姨推荐</text></view>
+			<view class="bottom" >
+				<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+			</view>				
+		</view>	
+		<view class="search">
+			<view class="search_more">查看更多</view>
+		</view>
+		
+		<!-- 新人推荐 -->
+		<view class="new_bottom" >
+			<view class="new_top"><text class="bottom_text">新人推荐</text></view>
+			<view class="bottom" >
+				<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+			</view>
+		</view>	
+		<view class="search">
+			<view class="search_more">查看更多</view>
+		</view>
+		<view class="bottom_assure">
+			<view class="assure_one">
+				<view class="assure_text">保证服务质量</view>
+				<image style="width: 28rpx;
+					height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
+			</view>
+			<view class="assure_one">
+				<view class="assure_text">无接触面试</view>
+				<image style="width: 28rpx;
+					height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
+			</view>
+			<view class="assure_one">
+				<view class="assure_text">未服务全额退</view>
+				<image style="width: 28rpx;
+					height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
+			</view>
+		</view>
 	</view>
 </template>
 <script>
+	import mainCard from '@/components/main-card.vue';
     export default {
         data() {
             return {
@@ -73,6 +112,25 @@
 					'../../static/home/Swiper.svg',
 				],
 				swiperCurrent: 0, // 轮播图index 
+				infolst:[{
+					name:'张三',
+					imgsrc:"/static/people.svg",
+					age:27,
+					sex:"women",
+					position:'澳大利亚',
+					time:"2",
+					language:['普通话','英语'],
+					type:"包月小时工"
+				},{
+					name:'爱丽丝',
+					imgsrc:"/static/people.svg",
+					age:27,
+					sex:"women",
+					position:'澳大利亚',
+					time:"2",
+					language:['普通话','英语'],
+					type:"包月小时工"
+				}],
                 // config: {}, // 商户配置
                 // announceList: [], // 公告列表
                 // loading: true,
@@ -81,9 +139,14 @@
                 // errorImage: this.$mAssetsPath.errorImage
             };
         },
-        onShow() {
+        components: {
+        	mainCard
+        },
+		onShow() {
             this.initData();
         },
+		onLoad() {
+		},
         computed: {
             // 计算倒计时时间
             second() {
@@ -244,7 +307,7 @@
 </script>
 
 <style lang="scss" scoped>
-	
+	// @import '/components/fontStyle.css';
 	.rf-index {
 		background-color: #FFFFFF;
 		width: 100%;		
@@ -265,7 +328,7 @@
 				font-size: 24rpx;
 			}
 			.location_img{
-				padding-left: 4rpx;
+				margin-left: 4rpx;
 				width: 16rpx;
 				height: 24rpx;
 			}
@@ -402,6 +465,77 @@
 					height: 148rpx;
 				}
 			}
-		}		
+		}	
+		.aunt_bottom{
+			.aunt_top{
+				margin: 80rpx 0 10rpx 20rpx;
+			}	
+		}
+		.bottom{
+			display: flex;
+			width: 100%;
+			margin-left: 10px;
+			.main_card{
+				margin-right: 11px;
+			}
+		}
+		.bottom_text{
+			color: rgba(255, 141, 14, 1);
+			border-bottom: 4rpx solid #ff8d0e;
+		}
+		.search,.search_more{
+			display: flex;
+			justify-content: center;
+			align-items: center;			
+		}
+		.search{
+			width: 100%;
+		}
+		.search_more{
+			width: 160rpx;			
+			height: 50rpx;
+			margin: 22rpx 0;
+			border: 2rpx solid #FF8D0E;
+			color: #FF8D0E;
+			box-sizing: border-box;
+			border-radius: 8rpx;
+			font-family: Tensentype MingSongJ-W4;
+			font-size: 10px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 12px;
+			letter-spacing: 0em;
+
+		}
+		.new_bottom{
+			.new_top{
+				margin: 0 0 10rpx 20rpx;
+			}	
+		}
+		.assure_one,.bottom_assure{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.bottom_assure{
+			padding-bottom: 10px;
+			margin-top: 86rpx;
+			.assure_one{
+				padding-right: 28rpx;
+				.assure_text{
+					padding-right: 8rpx;
+					font-family: Tensentype MingSongJ-W4;
+					font-size: 12px;
+					font-style: normal;
+					font-weight: 400;
+					line-height: 14px;
+					letter-spacing: 0em;
+				}
+				.bottom_img{
+					width: 28rpx;
+					height: 28rpx;
+				}
+			}
+		}
 	}
 </style>
