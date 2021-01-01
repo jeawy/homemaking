@@ -382,11 +382,11 @@
 	}
 	.content{
 		display: flex;
-		margin-left:20rpx;
+		width: 100%;
+		margin-left: 20rpx;
 		flex-wrap: wrap;
 		.main_card{
-			// margin-right: 20rpx;
-			width: 50%;
+			margin-right: 22rpx;
 			margin-bottom: 20rpx;
 		}
 	}

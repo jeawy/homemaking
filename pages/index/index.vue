@@ -474,9 +474,9 @@
 		.bottom{
 			display: flex;
 			width: 100%;
-			margin-left: 10px;
+			margin-left: 20rpx;
 			.main_card{
-				margin-right: 11px;
+				margin-right: 22rpx;
 			}
 		}
 		.bottom_text{
@@ -500,10 +500,10 @@
 			box-sizing: border-box;
 			border-radius: 8rpx;
 			font-family: Tensentype MingSongJ-W4;
-			font-size: 10px;
+			font-size: 20rpx;
 			font-style: normal;
 			font-weight: 400;
-			line-height: 12px;
+			line-height: 24rpx;
 			letter-spacing: 0em;
 
 		}
@@ -518,17 +518,17 @@
 			justify-content: center;
 		}
 		.bottom_assure{
-			padding-bottom: 10px;
+			padding-bottom: 20rpx;
 			margin-top: 86rpx;
 			.assure_one{
 				padding-right: 28rpx;
 				.assure_text{
 					padding-right: 8rpx;
 					font-family: Tensentype MingSongJ-W4;
-					font-size: 12px;
+					font-size: 24rpx;
 					font-style: normal;
 					font-weight: 400;
-					line-height: 14px;
+					line-height: 28rpx;
 					letter-spacing: 0em;
 				}
 				.bottom_img{
