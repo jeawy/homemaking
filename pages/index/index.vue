@@ -319,6 +319,10 @@
 			align-items: center;
 		}
 		.header{
+			// position: fixed;
+			// width: 100%;
+			z-index: 100;
+			background-color: #ffffff;
 			padding-top: 51.48rpx;
 			justify-content: space-between;
 		}
@@ -350,6 +354,8 @@
 		}
 		/*轮播图*/		
 		.swiper {
+			// position: relative;
+			// padding-top: 100rpx;
 			padding-top: 20rpx;
 			margin: 0 40rpx 0 40rpx;
 			height: 468rpx;		

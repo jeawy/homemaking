@@ -69,7 +69,48 @@
 		   </scroll-view>
 	  </view>
       <!-- 筛选弹框 -->
-	  
+	  <view class="django_search">
+		  <view class="django_header">筛选</view>
+		  <view class="experience">
+			  <view class="django_title">经验要求</view>
+			  <view class="django_button" >
+				  <view class="django_text" 
+				  v-for="(item,index) in experienceLst" 
+				  :key="index">{{item.value}}</view>
+			  </view>
+		  </view>
+		  <view class="language">
+			  <view class="django_title">语言要求</view>
+			  <view class="django_button" >
+				  <view class="django_text"
+				  v-for="(item,index) in languageLst" :key="index"
+				  >{{item.value}}</view>
+			  </view>
+		  </view>
+		  <view class="price">
+			  <view class="django_title">
+				  <text>价格筛选</text>
+				  <text>(单选)</text>
+			  </view>
+			  <view class="django_button">
+				  <view class="django_text"
+				   v-for="(item,index) in priceLst" :key="index"
+				   >{{item.value}}</view>
+			  </view>
+		  </view>
+		  <view class="tool">
+			  <view class="django_title">工具</view>
+			  <view class="django_button">
+				  <view class="django_text"
+				   v-for="(item,index) in toolLst" :key="index"
+				   >{{item.value}}</view>
+			  </view>
+		  </view>
+		  <view class="menu">
+			  <view class="clear_button">清除</view>
+			  <view class="confirm_button">确认</view>
+		  </view>
+	  </view>
   </view>
 </template>
 <script>
@@ -137,6 +178,24 @@
 						time:"2",
 						language:['普通话','英语'],
 						type:"包月小时工"
+					},{
+						name:'爱丽丝',
+						imgsrc:"/static/people.svg",
+						age:27,
+						sex:"women",
+						position:'澳大利亚',
+						time:"2",
+						language:['普通话','英语'],
+						type:"包月小时工"
+					},{
+						name:'张三',
+						imgsrc:"/static/people.svg",
+						age:27,
+						sex:"women",
+						position:'澳大利亚',
+						time:"2",
+						language:['普通话','英语'],
+						type:"包月小时工"
 					}],
 				infolst_new:[{
 					name:'marry',
@@ -175,6 +234,32 @@
 						language:['普通话','英语'],
 						type:"包月小时工"
 					}],
+					experienceLst:[
+						{value:'不限'},
+						{value:'1-3年'},
+						{value:'3-5年'},
+						{value:'5-10年'},
+						{value:'10年以上'},
+					],
+					languageLst:[
+						{value:'不限'},
+						{value:'英文'},
+						{value:'普通话'},
+						{value:'广东话'},
+						{value:'闽南话'},
+					],
+					priceLst:[
+						{value:'不限'},
+						{value:'20/h'},
+						{value:'40/h'},
+						{value:'60/h'},
+						{value:'80/h'},
+					],
+					toolLst:[
+						{value:'不限'},
+						{value:'自带'},
+						{value:'雇主提供'}
+					],
 			  }
 		},
 		// 每次页面显示 执行该方法
@@ -203,20 +288,20 @@
 				this.search = uni.getStorageSync('search') || {};
 				this.hotSearchDefault = '请输入关键字 ' + (this.search.hot_search_default ? ('如: ' + this.search.hot_search_default) : '');
 				this.getProductCate();
-        this.initCartItemCount();
+				this.initCartItemCount();
 			},
-      // 设置购物车数量角标
-      async initCartItemCount() {
-        if (this.$mStore.getters.hasLogin && parseInt(uni.getStorageSync('cartNum'), 10) > 0) {
-          await uni.setTabBarBadge({
-            index: this.$mConstDataConfig.cartIndex,
-            text: uni.getStorageSync('cartNum').toString()
-          });
-        } else {
-          uni.removeStorageSync('cartNum');
-          uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
-        }
-      },
+			  // 设置购物车数量角标
+			  async initCartItemCount() {
+				if (this.$mStore.getters.hasLogin && parseInt(uni.getStorageSync('cartNum'), 10) > 0) {
+				  await uni.setTabBarBadge({
+					index: this.$mConstDataConfig.cartIndex,
+					text: uni.getStorageSync('cartNum').toString()
+				  });
+				} else {
+				  uni.removeStorageSync('cartNum');
+				  uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
+				}
+			  },
 			// // 获取商品分类列表
 			// async getProductCate() {
 			// 	await this.$http.get(`${productCate}`).then(r => {
@@ -255,7 +340,7 @@
 			},
 			// 跳转至分类页
 			toIndex() {
-        this.$mRouter.switchTab({route: '/pages/index/index'});
+				this.$mRouter.switchTab({route: '/pages/index/index'});
 			},
 			// 跳至广告图指定页面
 			indexTopToDetailPage(type, url) {
@@ -296,6 +381,10 @@
     }
     .nev{
        padding-top: 51.48rpx;
+	//    position: fixed;
+	//    width: 100%;
+	   z-index: 100;
+	   background-color: #ffffff;
     }
 	.left_text,.search_input{
 		font-family: Tensentype MingSongJ-W2;
@@ -359,7 +448,7 @@
 		 margin: 10rpx 40rpx 8rpx 40rpx;
 		 padding-bottom: 8rpx;
 		 justify-content: space-between;
-		 border-bottom: 2rpx solid rgba(255, 141, 14, 0.4);
+		 border-bottom: 2rpx solid #ff8d0e;
 		
 		.top_left{
 			.left_two{
@@ -395,12 +484,53 @@
 			margin-bottom: 20rpx;
 		}
 	}
-	// .line{
-	//   margin: 0 38rpx 0 40rpx;
-	//   height: 2rpx;
-	//   background: rgba(255, 141, 14, 0.4);
-	//   transform: matrix(1, 0, 0, -1, 0, 0);
-	// }
+	// 弹框样式
+	.django_search{
+		.django_header{
+			align-items: center;
+			font-family: Tensentype MingSongJ-W8;
+			font-size: 12px;
+			font-style: normal;
+			font-weight: 900;
+			line-height: 14px;
+			letter-spacing: 0em;
+			text-align: left;
+		}
+		.django_title,.django_text,.django_active{
+			font-family: Tensentype MingSongJ-W4;
+			font-style: normal;
+			font-weight: 400;
+			letter-spacing: 0em;
+		}
+		.django_title{
+			font-size: 12px;
+			line-height: 14px;
+		}
+		.django_text{
+			font-size: 9px;
+			line-height: 11px;				
+		}
+		.django_active{
+			color: #FDB667;
+		}
+		.experience{
+			margin: 26rpx 20rpx 30rpx 20rpx;			
+		}
+		.language,.price{
+			margin: 30rpx 20rpx 0 20rpx;
+		}
+		.price{
+			// margin: 30rpx 20rpx 0 20rpx;
+		}
+		.tool{
+			margin: 34rpx 20rpx 22rpx 20rpx;
+		}
+		.django_button,.menu{
+			display: flex;
+			align-items: center;
+		}
+
+	}
     /*模块分类*/
     .category-list {
       width: 100%;
