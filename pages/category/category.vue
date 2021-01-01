@@ -178,8 +178,13 @@
 			  }
 		},
 		// 每次页面显示 执行该方法
-		onLoad() {
+		onLoad(option) {
 			this.initData();
+			if(option.type == 1){
+				this.currentIndex = 'recommend'
+			}else{
+				this.currentIndex = 'new'
+			}
 		},
 		methods: {
 			// 顶部tab点击
@@ -290,22 +295,22 @@
 		  align-items: center;
     }
     .nev{
-       padding-top: 56rpx;
+       padding-top: 51.48rpx;
     }
+	.left_text,.search_input{
+		font-family: Tensentype MingSongJ-W2;
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 14px;
+		letter-spacing: 0em;	
+	}
     .search{     
       margin: 0 40rpx 10rpx 40rpx;
       height: 40rpx;
+	  
       .search_position{
-        .left_text{
-			font-family: Tensentype MingSongJ-W2;
-			font-size: 12px;
-			font-style: normal;
-			font-weight: 400;
-			line-height: 14px;
-			letter-spacing: 0em;
-			// text-align: left;
-
-		}
+        
         .location_img{
 		  margin-left: 4rpx;
           width: 16rpx;
