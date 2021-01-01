@@ -5,9 +5,7 @@
 			<!--位置信息-->
 			<view class="location">
 				<view class="location_text">西安</view>
-				<view>
-					<image class="location_img" src="../../static/home/City.svg"></image>
-				</view>				
+				<image class="location_img" src="../../static/home/City.svg"></image>		
 			</view>
 			<view class="notice">
 				<image class="notice_img" src="../../static/home/Notification.svg"></image>
@@ -68,7 +66,7 @@
 				<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
 			</view>				
 		</view>	
-		<view class="search">
+		<view class="search" @tap="target('/pages/category/category?type=1')">
 			<view class="search_more">查看更多</view>
 		</view>
 		
@@ -79,7 +77,7 @@
 				<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
 			</view>
 		</view>	
-		<view class="search">
+		<view class="search" @tap="target('/pages/category/category?type=2')">
 			<view class="search_more">查看更多</view>
 		</view>
 		<view class="bottom_assure">
@@ -143,7 +141,7 @@
         	mainCard
         },
 		onShow() {
-            this.initData();
+            // this.initData();
         },
 		onLoad() {
 		},
@@ -181,133 +179,138 @@
             this.getIndexList('refresh');
         },
         methods: {
+			// 页面跳转（查看更多）
+			target(url){
+				uni.switchTab({
+					url
+				})				
+			},
             // 监听轮播图切换
             handleDotChange(e) {
 				this.swiperCurrent = e.detail.current;
             },
-            // 数据初始化
-            initData() {
-              // 设置购物车数量角标
-              this.getIndexList();
-              this.initCartItemCount();
-            },
-            // 设置购物车数量角标
-            async initCartItemCount() {
-							if (this.$mStore.getters.hasLogin && parseInt(uni.getStorageSync('cartNum'), 10) > 0) {
-                await uni.setTabBarBadge({
-                  index: this.$mConstDataConfig.cartIndex,
-                  text: uni.getStorageSync('cartNum').toString()
-                });
-							} else {
-                uni.removeStorageSync('cartNum');
-                uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
-							}
-            },
-            // 通用跳转
-            navTo(route) {
-                this.$mRouter.push({route});
-            },
-            // 通用跳转
-            navToSearch() {
-                this.$mRouter.push({route: `/pages/index/search/search?data=${JSON.stringify(this.search)}`});
-            },
-            // 跳至广告图指定页面
-            indexTopToDetailPage(data, link) {
-                if (isNaN(parseInt(data.id, 10))) {
-                    // #ifdef  APP-PLUS
-		                window.location.href = data.id;
-										// #endif
-                }
-                let url;
-                let type;
-                let id;
-                if (!link) {
-                    type = data.type;
-                    id = data.id;
-                } else {
-                    id = link;
-                    type = data;
-                }
-                switch (type) {
-                    case 'product_view':  // 产品详情
-                        url = `/pages/product/product?id=${id}`;
-                        break;
-                    case 'article_view':  // 文章详情
-                        this.$mHelper.toast('article_view');
-                        break;
-                    case 'coupon_view': // 优惠券详情
-                        url = `/pages/user/coupon/detail?id=${id}`;
-                        break;
-                    case 'helper_view': //   站点帮助详情
-                        this.$mHelper.toast('helper_view');
-                        break;
-                    case 'product_list_for_cate': // 某分类下产品列表
-                        url = `/pages/product/list?cate_id=${id}`;
-                        break;
-                    default:
-                        break;
-                }
-                if (url) {
-			              this.$mRouter.push({route: url});
-                }
-            },
-            // 获取主页数据
-            async getIndexList(type) {
-                await this.$http.get(`${indexList}`, {}).then(async r => {
-                    this.loading = false;
-                    if (type === 'refresh') {
-                        uni.stopPullDownRefresh();
-                    }
-                    // 获取公告列表
-                    await this.getNotifyAnnounceIndex();
-                    // 首页参数赋值
-                    this.initIndexData(r.data);
-                }).catch(() => {
-                    this.loading = false;
-                    if (type === 'refresh') {
-                        uni.stopPullDownRefresh();
-                    }
-                })
-            },
-            // 首页参数赋值
-            initIndexData(data) {
-                this.productCateList = data.cate;
-                this.carouselList = data.adv;
-                this.search = data.search;
-                uni.setStorageSync('search', this.search);
-                this.hotSearchDefault = '请输入关键字' + (data.search.hot_search_default ? `如: ${data.search.hot_search_default}` : '');
-                uni.setStorage({
-                    key: 'hotSearchDefault',
-                    data: data.search.hot_search_default
-                });
-                this.hotProductList = data.product_hot;
-                this.recommendProductList = data.product_recommend;
-                this.guessYouLikeProductList = data.guess_you_like;
-                this.newProductList = data.product_new;
-                this.config = data.config;
-            },
-            // 获取通知列表
-            async getNotifyAnnounceIndex() {
-                await this.$http.get(`${notifyAnnounceIndex}`).then(r => {
-                    this.announceList = r.data
-                })
-            },
-            // 跳转至商品详情页
-            navToDetailPage(data) {
-                const {id} = data;
-                if (!id) return;
-                this.$mRouter.push({route: `/pages/product/product?id=${id}`});
-            },
-            // 跳转至分类页
-            toCategory() {
-                this.$mRouter.switchTab({route: '/pages/category/category'});
-            }
+            // // 数据初始化
+            // initData() {
+            //   // 设置购物车数量角标
+            //   this.getIndexList();
+            //   this.initCartItemCount();
+            // },
+       //      // 设置购物车数量角标
+       //      async initCartItemCount() {
+							// if (this.$mStore.getters.hasLogin && parseInt(uni.getStorageSync('cartNum'), 10) > 0) {
+       //          await uni.setTabBarBadge({
+       //            index: this.$mConstDataConfig.cartIndex,
+       //            text: uni.getStorageSync('cartNum').toString()
+       //          });
+							// } else {
+       //          uni.removeStorageSync('cartNum');
+       //          uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
+							// }
+       //      },
+       //      // 通用跳转
+       //      navTo(route) {
+       //          this.$mRouter.push({route});
+       //      },
+       //      // 通用跳转
+       //      navToSearch() {
+       //          this.$mRouter.push({route: `/pages/index/search/search?data=${JSON.stringify(this.search)}`});
+       //      },
+       //      // 跳至广告图指定页面
+       //      indexTopToDetailPage(data, link) {
+       //          if (isNaN(parseInt(data.id, 10))) {
+       //              // #ifdef  APP-PLUS
+		     //            window.location.href = data.id;
+							// 			// #endif
+       //          }
+       //          let url;
+       //          let type;
+       //          let id;
+       //          if (!link) {
+       //              type = data.type;
+       //              id = data.id;
+       //          } else {
+       //              id = link;
+       //              type = data;
+       //          }
+       //          switch (type) {
+       //              case 'product_view':  // 产品详情
+       //                  url = `/pages/product/product?id=${id}`;
+       //                  break;
+       //              case 'article_view':  // 文章详情
+       //                  this.$mHelper.toast('article_view');
+       //                  break;
+       //              case 'coupon_view': // 优惠券详情
+       //                  url = `/pages/user/coupon/detail?id=${id}`;
+       //                  break;
+       //              case 'helper_view': //   站点帮助详情
+       //                  this.$mHelper.toast('helper_view');
+       //                  break;
+       //              case 'product_list_for_cate': // 某分类下产品列表
+       //                  url = `/pages/product/list?cate_id=${id}`;
+       //                  break;
+       //              default:
+       //                  break;
+       //          }
+       //          if (url) {
+			    //           this.$mRouter.push({route: url});
+       //          }
+       //      },
+            // // 获取主页数据
+            // async getIndexList(type) {
+            //     await this.$http.get(`${indexList}`, {}).then(async r => {
+            //         this.loading = false;
+            //         if (type === 'refresh') {
+            //             uni.stopPullDownRefresh();
+            //         }
+            //         // 获取公告列表
+            //         await this.getNotifyAnnounceIndex();
+            //         // 首页参数赋值
+            //         this.initIndexData(r.data);
+            //     }).catch(() => {
+            //         this.loading = false;
+            //         if (type === 'refresh') {
+            //             uni.stopPullDownRefresh();
+            //         }
+            //     })
+            // },
+            // // 首页参数赋值
+            // initIndexData(data) {
+            //     this.productCateList = data.cate;
+            //     this.carouselList = data.adv;
+            //     this.search = data.search;
+            //     uni.setStorageSync('search', this.search);
+            //     this.hotSearchDefault = '请输入关键字' + (data.search.hot_search_default ? `如: ${data.search.hot_search_default}` : '');
+            //     uni.setStorage({
+            //         key: 'hotSearchDefault',
+            //         data: data.search.hot_search_default
+            //     });
+            //     this.hotProductList = data.product_hot;
+            //     this.recommendProductList = data.product_recommend;
+            //     this.guessYouLikeProductList = data.guess_you_like;
+            //     this.newProductList = data.product_new;
+            //     this.config = data.config;
+            // },
+            // // 获取通知列表
+            // async getNotifyAnnounceIndex() {
+            //     await this.$http.get(`${notifyAnnounceIndex}`).then(r => {
+            //         this.announceList = r.data
+            //     })
+            // },
+            // // 跳转至商品详情页
+            // navToDetailPage(data) {
+            //     const {id} = data;
+            //     if (!id) return;
+            //     this.$mRouter.push({route: `/pages/product/product?id=${id}`});
+            // },
+            // // 跳转至分类页
+            // toCategory() {
+            //     this.$mRouter.switchTab({route: '/pages/category/category'});
+            // }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-	// @import '/components/fontStyle.css';
 	.rf-index {
 		background-color: #FFFFFF;
 		width: 100%;		
@@ -316,16 +319,21 @@
 			align-items: center;
 		}
 		.header{
-			padding-top: 56rpx;
+			padding-top: 51.48rpx;
 			justify-content: space-between;
+		}
+		.fonttext,.location_text,.search_more,.assure_text{
+			font-style: normal;
+			font-weight: 400;
+			letter-spacing: 0em;
 		}
 		// 定位
 		.location{	
 			.location_text{
 				margin-left: 40rpx;
 				font-family: Tensentype MingSongJ-W2;
-				font-style: Regular;
 				font-size: 24rpx;
+				line-height: 28rpx;
 			}
 			.location_img{
 				margin-left: 4rpx;
@@ -352,8 +360,7 @@
 					border-radius: 18rpx;
 					image {
 						width: 670rpx;
-						height: 400rpx;
-						
+						height: 400rpx;						
 					}
 				}
 			}
@@ -501,11 +508,7 @@
 			border-radius: 8rpx;
 			font-family: Tensentype MingSongJ-W4;
 			font-size: 20rpx;
-			font-style: normal;
-			font-weight: 400;
 			line-height: 24rpx;
-			letter-spacing: 0em;
-
 		}
 		.new_bottom{
 			.new_top{
@@ -526,10 +529,8 @@
 					padding-right: 8rpx;
 					font-family: Tensentype MingSongJ-W4;
 					font-size: 24rpx;
-					font-style: normal;
-					font-weight: 400;
 					line-height: 28rpx;
-					letter-spacing: 0em;
+					color: #5b5b5b;
 				}
 				.bottom_img{
 					width: 28rpx;
