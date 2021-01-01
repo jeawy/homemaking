@@ -21,9 +21,12 @@
       <!-- <scroll-view scroll-x="true" class="left"> -->
         <view class="top" >
 			<view class="top_left">
-				<view class="left_one" >推荐</view>
-				<view class="left_two">最新</view>
-				<view class="left_three">附近</view>
+				<view class="left_one" @tap="tabClick('recommend')"
+				:class="{tab_active: currentIndex === 'recommend'}">推荐</view>
+				<view class="left_two" @tap="tabClick('new')"
+				:class="{tab_active: currentIndex === 'new'}">最新</view>
+				<view class="left_three" @tap="tabClick('nearby')"
+				:class="{tab_active: currentIndex === 'nearby'}">附近</view>
 			</view>
 			<view class="top_right">
 				<view class="right_one">筛选</view>
@@ -35,42 +38,33 @@
 		<!-- <view class="line"></view> -->
       <!-- </scroll-view> -->
 	  <!-- 推荐页面 -->
-	  <view class="content" v-if="currentIndex == 'recommend'">
-	  	<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+	  <view v-if="currentIndex == 'recommend'">
+		  <scroll-view scroll-y="true">
+			  <view  class="content">
+				  <mainCard  class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
+			  </view>
+			
+		  </scroll-view>
 	  </view>
 	  <!-- 最新页面-->
-	  <view class="content" v-if="currentIndex == 'new'">
-	  	<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+	  <view  v-if="currentIndex == 'new'">
+		 <scroll-view scroll-y="true">
+			 <view class="content">
+				 <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_new" :key="index"/>
+			 </view>			
+		 </scroll-view>
 	  </view>
 	  <!-- 附近页面-->
-	  <view class="content" v-if="currentIndex == 'nearby'">
-	  	<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+	  <view v-if="currentIndex == 'nearby'">
+		  <scroll-view scroll-y="true">
+			  <view  class="content">
+				  <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
+			  </view>
+			
+		   </scroll-view>
 	  </view>
-      <!--右侧子导航-->
-      <!-- <scroll-view scroll-y="true" class="right" :class="animation">
-        <view class="category" v-for="(fItem, fIndex) in categoryList" :key="fItem.id"
-              v-if="fIndex===showCategoryIndex && fItem.child.length > 0">
-          <view class="banner" @tap="indexTopToDetailPage(cateTop.jump_type, cateTop.jump_link)">
-            <image :src="cateTop && cateTop.cover" mode="aspectFill"/>
-          </view>
-          <view class="box" v-for="sItem in fItem.child" :key="sItem.id" @tap="navTo(`/pages/product/list?cate_id=${sItem.id}`)">
-            <view class="text">{{sItem.title}}</view>
-            <view class="list" v-if="sItem.child && sItem.child.length > 0">
-              <view class="box" v-for="tItem in sItem.child" :key="tItem.id" @tap.stop="navTo(`/pages/product/list?cate_id=${tItem.id}`)">
-					      <image :src="tItem.cover || errorImage"></image>
-                <view class="text">{{tItem.title}}</view>
-              </view>
-            </view>
-            <view v-else class="no-data">
-              <i class="iconfont icon404"></i>
-              暂无子分类
-            </view>
-          </view>
-        </view>
-      </scroll-view>
-    </view> -->
-		<!--加载动画-->
-    <!-- <rf-loading v-if="loading"></rf-loading> -->
+      <!-- 筛选弹框 -->
+	  
   </view>
 </template>
 <script>
@@ -101,7 +95,7 @@
 				// loading: true,
 				// errorImage: this.$mAssetsPath.errorImage,
 				currentIndex:'recommend',
-				infolst:[{
+				infolst_recommend:[{
 					name:'张三',
 					imgsrc:"/static/people.svg",
 					age:27,
@@ -110,8 +104,36 @@
 					time:"2",
 					language:['普通话','英语'],
 					type:"包月小时工"
-				},{
-					name:'爱丽丝',
+					},{
+						name:'爱丽丝',
+						imgsrc:"/static/people.svg",
+						age:27,
+						sex:"women",
+						position:'澳大利亚',
+						time:"2",
+						language:['普通话','英语'],
+						type:"包月小时工"
+					},{
+						name:'张三',
+						imgsrc:"/static/people.svg",
+						age:27,
+						sex:"women",
+						position:'澳大利亚',
+						time:"2",
+						language:['普通话','英语'],
+						type:"包月小时工"
+					},{
+						name:'爱丽丝',
+						imgsrc:"/static/people.svg",
+						age:27,
+						sex:"women",
+						position:'澳大利亚',
+						time:"2",
+						language:['普通话','英语'],
+						type:"包月小时工"
+					}],
+				infolst_new:[{
+					name:'marry',
 					imgsrc:"/static/people.svg",
 					age:27,
 					sex:"women",
@@ -119,25 +141,34 @@
 					time:"2",
 					language:['普通话','英语'],
 					type:"包月小时工"
-				},{
-					name:'张三',
-					imgsrc:"/static/people.svg",
-					age:27,
-					sex:"women",
-					position:'澳大利亚',
-					time:"2",
-					language:['普通话','英语'],
-					type:"包月小时工"
-				},{
-					name:'爱丽丝',
-					imgsrc:"/static/people.svg",
-					age:27,
-					sex:"women",
-					position:'澳大利亚',
-					time:"2",
-					language:['普通话','英语'],
-					type:"包月小时工"
-				}],
+					},{
+						name:'汤姆',
+						imgsrc:"/static/people.svg",
+						age:27,
+						sex:"women",
+						position:'澳大利亚',
+						time:"2",
+						language:['普通话','英语'],
+						type:"包月小时工"
+					},{
+						name:'张三',
+						imgsrc:"/static/people.svg",
+						age:27,
+						sex:"women",
+						position:'澳大利亚',
+						time:"2",
+						language:['普通话','英语'],
+						type:"包月小时工"
+					},{
+						name:'爱丽丝',
+						imgsrc:"/static/people.svg",
+						age:27,
+						sex:"women",
+						position:'澳大利亚',
+						time:"2",
+						language:['普通话','英语'],
+						type:"包月小时工"
+					}],
 			  }
 		},
 		// 每次页面显示 执行该方法
@@ -145,6 +176,10 @@
 			this.initData();
 		},
 		methods: {
+			// 顶部tab点击
+			tabClick(index){
+				this.currentIndex = index;
+			},
 			// 跳转至商品列表
 			navTo(route) {
 			  this.$mRouter.push({route});
@@ -317,6 +352,9 @@
 			.left_two{
 			  padding: 0 20rpx;
 			}
+			.tab_active{
+				color: #ff8d0e;
+			}
 		}
 		.top_right{
 		  // padding-right: 102rpx;
@@ -331,7 +369,7 @@
     }
 	.content{
 		display: flex;
-		margin: 0 20rpx;
+		margin-left:20rpx;
 		flex-wrap: wrap;
 		.main_card{
 			// margin-right: 20rpx;
