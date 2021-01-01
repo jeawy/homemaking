@@ -29,10 +29,12 @@
 				:class="{tab_active: currentIndex === 'nearby'}">附近</view>
 			</view>
 			<view class="top_right">
-				<view class="right_one">筛选</view>
-				<image class="right_img"  src="/static/triangle.svg"></image>
-				<view class="right_two">分类</view>
-				<image class="right_img" src="/static/triangle.svg"></image>
+				<view class="right_one" @tap="tabRightClick('screen')"
+				:class="{tab_active: tabIndex === 'screen'}">筛选</view>
+				<image class="right_img"  src="/static/houseKeeping/triangle.svg"></image>
+				<view class="right_two" @tap="tabRightClick('classify')"
+				:class="{tab_active: tabIndex === 'classify'}">分类</view>
+				<image class="right_img" src="/static/houseKeeping/triangle.svg"></image>
 			</view>			
         </view>
 		<!-- <view class="line"></view> -->
@@ -55,8 +57,11 @@
 		 </scroll-view>
 	  </view>
 	  <!-- 附近页面-->
-	  <view v-if="currentIndex == 'nearby'">
+	  <view v-if="currentIndex == 'nearby'">		  
 		  <scroll-view scroll-y="true">
+			  <view class="nearby_map">
+				<map/>
+			  </view>
 			  <view  class="content">
 				  <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
 			  </view>
@@ -95,6 +100,7 @@
 				// loading: true,
 				// errorImage: this.$mAssetsPath.errorImage,
 				currentIndex:'recommend',
+				tabIndex:'',
 				infolst_recommend:[{
 					name:'张三',
 					imgsrc:"/static/people.svg",
@@ -179,6 +185,9 @@
 			// 顶部tab点击
 			tabClick(index){
 				this.currentIndex = index;
+			},
+			tabRightClick(index){
+				this.tabIndex = index;
 			},
 			// 跳转至商品列表
 			navTo(route) {
@@ -341,32 +350,36 @@
 	    text-align: left;	  
 	  }
     .top{
-		 // width: 100%;
 		 height: 32rpx;
-		 margin: 0 40rpx 8rpx 40rpx;
+		 margin: 10rpx 40rpx 8rpx 40rpx;
 		 padding-bottom: 8rpx;
 		 justify-content: space-between;
 		 border-bottom: 2rpx solid rgba(255, 141, 14, 0.4);
+		
 		.top_left{
-			// padding-left: 40rpx;
 			.left_two{
 			  padding: 0 20rpx;
-			}
-			.tab_active{
-				color: #ff8d0e;
-			}
+			}			
+		}
+		.tab_active{
+			color: #ff8d0e;
 		}
 		.top_right{
-		  // padding-right: 102rpx;
 			.right_img{
 				margin: 6rpx 20rpx 0 4rpx;
 				width: 10rpx;
 				height: 10rpx;
 			}
-		}
-      
-		  
+		}     
     }
+	.nearby_map{
+		
+		margin:10rpx 20rpx;
+		map{
+			width: 100%;
+			height: 460rpx;
+		}
+	}
 	.content{
 		display: flex;
 		margin-left:20rpx;
