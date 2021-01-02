@@ -28,7 +28,7 @@
 							:src="account_sign"></image>
 					</view>
 					<text class="account">
-						{{account}}
+						账号：{{ userInfo.mobile  }} 
 					</text>
 				</view>
 				<!--右箭头-->
@@ -130,8 +130,8 @@ import {footPrintList, memberInfo} from '@/api/userInfo';
 				setting:"../../static/my/set.svg",
 				user_portrait_bg:"../../static/my/portrait_bg.svg",
 				user_portrait:"../../static/my/portrait.svg",
-				username:"测试男一号",
-				account:"账号：user274859",
+				username:"---",
+				account:"---",
 				account_sign:"../../static/my/king.svg",
 				focusernum:2,
 				focuservicenum:8,
