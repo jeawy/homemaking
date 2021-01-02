@@ -329,15 +329,20 @@ import {footPrintList, memberInfo} from '@/api/userInfo';
 			padding-top:190rpx;
 			padding-left:30rpx;
 			.portrait_bg{
-				width: 100rpx;
-				height: 100rpx;
-				background: #FFFFFF;
-				border: 1px solid #FFFFFF;
-				border-radius: 50%;
+				// width: 100rpx;
+				// height: 100rpx;
+				// background: #FFFFFF;
+				// border: 1px solid #FFFFFF;
+				// border-radius: 50%;
+				// .portrait{
+				// 	width: 66rpx;
+				// 	height: 66rpx;
+				// 	margin:16rpx;
+				// }
 				.portrait{
-					width: 66rpx;
-					height: 66rpx;
-					margin:16rpx;
+					width: 100rpx;
+					height: 100rpx;
+					border-radius: 50%;
 				}
 			}
 			.account-info{
