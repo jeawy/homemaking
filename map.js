@@ -66,7 +66,8 @@ function initMap() {
         }
         //Get the marker's location.
         markerLocation(); 
-        var url = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCTraGs_B8hMu_2ofpiVAX6CmBkGFt3Rro&latlng=40.714224,-73.961452&sensor=true/false';
+        showInfo(clickedLocation)
+        var url = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBje0jYy8A6YL2vbE9sFs78MA3CjT8JAmk&latlng=40.714224,-73.961452&sensor=true/false';
         httpGet(url)
     });
 }
