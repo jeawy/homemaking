@@ -1,5 +1,14 @@
 <template>
 	<view class="user">
+		<!--顶部导航栏-->
+		<view class="user-navbar">
+			<view class="setting">
+			   <image class="setting_img" src="/static/my/set.svg"></image>  
+			</view>
+			<view class="notice">
+				<image class="notice_img" src="/static/my/white_message.svg"></image>	  
+			</view>
+		</view>
 		<!--头部-->
 		<view class="user-section">
 			<view class="middle" @tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login')">
@@ -28,33 +37,15 @@
 			</view>
 			<!--关注的人-->
 			<view class="bottom">
-				<view class="tj-item-one">
-					<text class="num">
-						{{ focusernum }}
-					</text>
-					<text class="content">关注的人</text>
+				<view v-for="(item,index) in attentList" :key="index">
+					<view class="tj-item">
+						<view class="num">
+							{{ item.num }}
+						</view>
+						<view class="content">{{item.text}}</view>
+					</view>
 				</view>
-				<view class="tj-item-two">
-					<text class="num">
-						{{ focuservicenum }}
-					</text>
-					<text class="content">关注服务</text>
-				</view>
-				<view class="tj-item-two">
-					<text class="num">
-						{{ footnum }}
-					</text>
-					<text class="content">足迹</text>
-				</view>
-				<view class="tj-item-four">
-					<text class="num">
-						{{ couponum }}
-					</text>
-					<text class="content">红包卡券</text>
-				</view>
-			</view>
-			  
-				 
+			</view>		 
 		</view>
 		<!-- 个人中心 内容区-->
 		<view class="user-content">
@@ -66,11 +57,13 @@
 					<image class="order-arrow-img" src="../../static/my/arrow_right_orange.svg"></image>
 				</view>
 				<view class="order-center">
-					<view class="order-center-one">
-						<image class="nopay-img" src="../../static/my/nopay.svg"></image>
-						<view class="order-content">待付款</view>
+					<view v-for="(item,index) in orderList" :key="index">
+						<view class="order-center-item">
+							<image class="nopay-img" :src="item.image"></image>
+							<view class="order-content">{{item.value}}</view>
+						</view>
 					</view>
-					<view class="order-center-two">
+					<!-- <view class="order-center-two">
 						<image class="nopay-img" src="../../static/my/ongoing.svg"></image>
 						<view class="order-content">进行中</view>
 					</view>
@@ -81,7 +74,7 @@
 					<view class="order-center-two">
 						<image class="nopay-img" src="../../static/my/unreviews.svg"></image>
 						<view class="order-content">待评论</view>
-					</view>
+					</view> -->
 				</view>
 			</view>
 			<!--常用功能-->
@@ -141,7 +134,43 @@
 				focusernum:2,
 				focuservicenum:8,
 				footnum:35,
-				couponum:4
+				couponum:4,
+				attentList:[
+					{
+						num:2,
+						text:"关注的人"
+					},
+					{
+						num:8,
+						text:"关注服务"
+					},
+					{
+						num:35,
+						text:"足迹"
+					},
+					{
+						num:4,
+						text:"红包卡券"
+					}
+				],
+				orderList:[
+					{
+						image:"../../static/my/nopay.svg",
+						value:"待付款"
+					},
+					{
+						image:"../../static/my/ongoing.svg",
+						value:"进行中"
+					},
+					{
+						image:"../../static/my/finished.svg",
+						value:"已完成"
+					},
+					{
+						image:"../../static/my/unreviews.svg",
+						value:"待评论"
+					}
+				]
             }
         },
         methods: {
@@ -171,6 +200,27 @@
 	font-family: Tensentype MingSongJ-W2;
 	font-style: normal;
 	font-weight: normal;
+	/*顶部导航栏*/
+	.user-navbar{
+		display: flex;
+		position: absolute;
+		left: 86.67%;
+		top: 6.9%;
+		.setting{
+			.setting_img{
+				width: 20.86rpx;
+				height: 22rpx;
+			}
+		}
+		.notice{
+			.notice_img{
+				width:20.52rpx;
+				height: 20.08rpx;
+				right: 5.26%;
+				left: 92%;
+			}
+		}
+	}
 	/*顶部用户信息*/
 	.user-section {
 		width: 750rpx;
@@ -178,18 +228,13 @@
 		left: 0rpx;
 		top: 0rpx;
 		background: #FFAB4E;
-		.top{
-			left: 86.67%;
-			top: 6.9%;
-		}
 		.middle{
 			display: flex;
 			padding-top:190rpx;
-			padding-left:0px;
+			padding-left:30rpx;
 			.portrait_bg{
 				width: 100rpx;
 				height: 100rpx;
-				margin-left: 30rpx;
 				background: #FFFFFF;
 				border: 1px solid #FFFFFF;
 				border-radius: 50%;
@@ -202,20 +247,20 @@
 			.account-info{
 				.username{
 					display: flex;
-					padding-left: 20rpx;
-					padding-top: 22rpx;
+					margin-left: 20rpx;
+					margin-top: 22rpx;
 					font-size: 24rpx;
 					line-height: 28rpx;
 					color: #FFFFFF;
 					.sign{
-						left: 10rpx;
-						top: 4rpx;
+						margin-left: 10rpx;
+						margin-top: 4rpx;
 						width:18.94rpx;
 						height:18rpx;
 					}
 				}
 				.account{
-					padding-left: 20rpx;
+					margin-left: 20rpx;
 					top:16rpx;
 					font-size:18rpx;
 					line-height: 22rpx;
@@ -227,15 +272,15 @@
 					top: 26rpx;
 					width:9rpx;
 					height: 18rpx;
-					// left:403.16rpx
-					left:390rpx
+					// left:403.16rpx;
+					left:390rpx;
 				}
 			}
 	    }
 		.bottom {
 			display: flex;
+			justify-content: space-around;
 			padding-top:20rpx;
-			padding-left:42rpx;
 			.num {
 				font-size: 28rpx;
 				line-height: 34rpx;
@@ -249,16 +294,16 @@
 				font-size: 24rpx;
 				color: #585858;
 			}
-			.tj-item-one{
-				margin-right:50rpx;
-			}
-			.tj-item-two{
-				margin-left:50rpx;
-				margin-right:50rpx;
-			}
-			.tj-item-four{
-				margin-left:50rpx;
-			}
+			// .tj-item{
+			// 	margin-right:50rpx;
+			// }
+			// .tj-item-two{
+			// 	margin-left:50rpx;
+			// 	margin-right:50rpx;
+			// }
+			// .tj-item-four{
+			// 	margin-left:50rpx;
+			// }
 		}
 	}
 	/*个人中心 内容区*/
@@ -299,6 +344,7 @@
 			}
 			.order-center{
 				display:flex;
+				margin-left:2rpx;
 				.nopay-img{
 					height: 50rpx;
 				}
@@ -308,15 +354,8 @@
 					line-height: 28rpx;
 					color: #515151;
 				}
-				.order-center-one
+				.order-center-item
 				{
-					margin-left:52rpx;
-					margin-right:50rpx;
-					width:72rpx;
-					height:94rpx;
-					margin-top:24rpx;
-				}
-				.order-center-two{
 					margin-left:50rpx;
 					margin-right:50rpx;
 					width:72rpx;

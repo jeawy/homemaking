@@ -11,163 +11,161 @@
 				{{item.value}}
 			</view>
 		</view>
-		<!-- <scroll-view class="view-content" scroll-y> -->
-			<swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
-				<!--全部订单页面-->
-				<swiper-item>
-					<view class="swiper-item">
-						<scroll-view
-							class="list-scroll-content"
-							scroll-y
-						>
-							<view class="order-list">
-								<view
-									class="order-item"
-									v-for="(item, index) in allOrderList"
-									:key="index"
-								>
-									<image class="order-item-img" :src="item.image"></image>
-									<view class="order-item-name">{{item.name}}</view>
-									<view class="order-item-content">{{item.content}}</view>
-									<view class="order-item-ispay" 
-										:class="{activeColor: item.ispay==0}">
-										{{item.ispay==0?"未付款":"已付款"}}
-									</view>
-									<view class="order-item-money">${{item.money}}</view>
-									<view class="order-item-num">x{{item.num}}</view>
-									<view class="order-item-price">
-										总价
-									<span style="color:#FF8D0E;font-size:20rpx">${{item.money * item.num}}</span>
-									</view>
-									<view class="order-item-side">
-										<view class="btn">删除订单</view>
-										<view class="btn">申请单据</view>
-										<view class="btn">发表评论</view>
-									</view>
+		<swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
+			<!--全部订单页面-->
+			<swiper-item>
+				<view class="swiper-item">
+					<scroll-view
+						class="list-scroll-content"
+						scroll-y
+					>
+						<view class="order-list">
+							<view
+								class="order-item"
+								v-for="(item, index) in allOrderList"
+								:key="index"
+							>
+								<image class="order-item-img" :src="item.image"></image>
+								<view class="order-item-name">{{item.name}}</view>
+								<view class="order-item-content">{{item.content}}</view>
+								<view class="order-item-ispay" 
+									:class="{activeColor: item.ispay==0}">
+									{{item.ispay==0?"未付款":"已付款"}}
+								</view>
+								<view class="order-item-money">${{item.money}}</view>
+								<view class="order-item-num">x{{item.num}}</view>
+								<view class="order-item-price">
+									总价
+								<span style="color:#FF8D0E;font-size:20rpx">${{item.money * item.num}}</span>
+								</view>
+								<view class="order-item-side">
+									<view class="btn">删除订单</view>
+									<view class="btn">申请单据</view>
+									<view class="btn">发表评论</view>
 								</view>
 							</view>
-						</scroll-view>
-					</view>
-				</swiper-item>
-				<!--待付款订单页面-->
-				<swiper-item>
-					<view class="swiper-item">
-						<scroll-view
-							class="list-scroll-content"
-							scroll-y
-						>
-							<view class="order-list">
-								<view
-									class="order-item"
-									v-for="(item, index) in unPayList"
-									:key="index"
-								>
-									<image class="order-item-img" :src="item.image"></image>
-									<view class="order-item-name">{{item.name}}</view>
-									<view class="order-item-content">{{item.content}}</view>
-									<view class="order-item-ispay" 
-										:class="{activeColor: item.ispay==0}">
-										{{item.ispay==0?"未付款":"已付款"}}
-									</view>
-									<view class="order-item-money">${{item.money}}</view>
-									<view class="order-item-num">x{{item.num}}</view>
-									<view class="order-item-price">
-										总价
-									<span style="color:#FF8D0E;font-size:20rpx">${{item.money * item.num}}</span>
-									</view>
-									<view class="order-item-side">
-										<view class="btn">删除订单</view>
-										<view class="btn">申请单据</view>
-										<view class="btn">发表评论</view>
-									</view>
+						</view>
+					</scroll-view>
+				</view>
+			</swiper-item>
+			<!--待付款订单页面-->
+			<swiper-item>
+				<view class="swiper-item">
+					<scroll-view
+						class="list-scroll-content"
+						scroll-y
+					>
+						<view class="order-list">
+							<view
+								class="order-item"
+								v-for="(item, index) in unPayList"
+								:key="index"
+							>
+								<image class="order-item-img" :src="item.image"></image>
+								<view class="order-item-name">{{item.name}}</view>
+								<view class="order-item-content">{{item.content}}</view>
+								<view class="order-item-ispay" 
+									:class="{activeColor: item.ispay==0}">
+									{{item.ispay==0?"未付款":"已付款"}}
+								</view>
+								<view class="order-item-money">${{item.money}}</view>
+								<view class="order-item-num">x{{item.num}}</view>
+								<view class="order-item-price">
+									总价
+								<span style="color:#FF8D0E;font-size:20rpx">${{item.money * item.num}}</span>
+								</view>
+								<view class="order-item-side">
+									<view class="btn">删除订单</view>
+									<view class="btn">申请单据</view>
+									<view class="btn">发表评论</view>
 								</view>
 							</view>
-						</scroll-view>
-					</view>
-				</swiper-item>
-				<!--进行中订单页面-->
-				<swiper-item class="process-order">
-					<image class="process-img" src="../../static/order/order.svg"></image>
-					<view class="process-text">您还没有相关的订单哦</view>
-					<view class="process-tip">猜您想找的人和服务</view>
-					<view class="process-bottom" >
-						<mainCard class="main_card" :info="item" v-for="(item,index) in processList" :key="index"/>
-					</view>
-				</swiper-item>
-				<!--已完成订单页面-->
-				<swiper-item>
-					<view class="swiper-item">
-						<scroll-view
-							class="list-scroll-content"
-							scroll-y
-						>
-							<view class="order-list">
-								<view
-									class="order-item"
-									v-for="(item, index) in finishedList"
-									:key="index"
-								>
-									<image class="order-item-img" :src="item.image"></image>
-									<view class="order-item-name">{{item.name}}</view>
-									<view class="order-item-content">{{item.content}}</view>
-									<view class="order-item-ispay" 
-										:class="{activeColor: item.ispay==0}">
-										{{item.ispay==0?"未付款":"已付款"}}
-									</view>
-									<view class="order-item-money">${{item.money}}</view>
-									<view class="order-item-num">x{{item.num}}</view>
-									<view class="order-item-price">
-										总价
-									<span style="color:#FF8D0E;font-size:20rpx">${{item.money * item.num}}</span>
-									</view>
-									<view class="order-item-side">
-										<view class="btn">删除订单</view>
-										<view class="btn">申请单据</view>
-										<view class="btn">发表评论</view>
-									</view>
+						</view>
+					</scroll-view>
+				</view>
+			</swiper-item>
+			<!--进行中订单页面-->
+			<swiper-item class="process-order">
+				<image class="process-img" src="../../static/order/order.svg"></image>
+				<view class="process-text">您还没有相关的订单哦</view>
+				<view class="process-tip">猜您想找的人和服务</view>
+				<view class="process-bottom" >
+					<mainCard class="main_card" :info="item" v-for="(item,index) in processList" :key="index"/>
+				</view>
+			</swiper-item>
+			<!--已完成订单页面-->
+			<swiper-item>
+				<view class="swiper-item">
+					<scroll-view
+						class="list-scroll-content"
+						scroll-y
+					>
+						<view class="order-list">
+							<view
+								class="order-item"
+								v-for="(item, index) in finishedList"
+								:key="index"
+							>
+								<image class="order-item-img" :src="item.image"></image>
+								<view class="order-item-name">{{item.name}}</view>
+								<view class="order-item-content">{{item.content}}</view>
+								<view class="order-item-ispay" 
+									:class="{activeColor: item.ispay==0}">
+									{{item.ispay==0?"未付款":"已付款"}}
+								</view>
+								<view class="order-item-money">${{item.money}}</view>
+								<view class="order-item-num">x{{item.num}}</view>
+								<view class="order-item-price">
+									总价
+								<span style="color:#FF8D0E;font-size:20rpx">${{item.money * item.num}}</span>
+								</view>
+								<view class="order-item-side">
+									<view class="btn">删除订单</view>
+									<view class="btn">申请单据</view>
+									<view class="btn">发表评论</view>
 								</view>
 							</view>
-						</scroll-view>
-					</view>
-				</swiper-item>
-				<!--待评价订单页面-->
-				<swiper-item>
-					<view class="swiper-item">
-						<scroll-view
-							class="list-scroll-content"
-							scroll-y
-						>
-							<view class="order-list">
-								<view
-									class="order-item"
-									v-for="(item, index) in unEvalList"
-									:key="index"
-								>
-									<image class="order-item-img" :src="item.image"></image>
-									<view class="order-item-name">{{item.name}}</view>
-									<view class="order-item-content">{{item.content}}</view>
-									<view class="order-item-ispay" 
-										:class="{activeColor: item.ispay==0}">
-										{{item.ispay==0?"未付款":"已付款"}}
-									</view>
-									<view class="order-item-money">${{item.money}}</view>
-									<view class="order-item-num">x{{item.num}}</view>
-									<view class="order-item-price">
-										总价
-									<span style="color:#FF8D0E;font-size:20rpx">${{item.money * item.num}}</span>
-									</view>
-									<view class="order-item-side">
-										<view class="btn">删除订单</view>
-										<view class="btn">申请单据</view>
-										<view class="btn">发表评论</view>
-									</view>
+						</view>
+					</scroll-view>
+				</view>
+			</swiper-item>
+			<!--待评价订单页面-->
+			<swiper-item>
+				<view class="swiper-item">
+					<scroll-view
+						class="list-scroll-content"
+						scroll-y
+					>
+						<view class="order-list">
+							<view
+								class="order-item"
+								v-for="(item, index) in unEvalList"
+								:key="index"
+							>
+								<image class="order-item-img" :src="item.image"></image>
+								<view class="order-item-name">{{item.name}}</view>
+								<view class="order-item-content">{{item.content}}</view>
+								<view class="order-item-ispay" 
+									:class="{activeColor: item.ispay==0}">
+									{{item.ispay==0?"未付款":"已付款"}}
+								</view>
+								<view class="order-item-money">${{item.money}}</view>
+								<view class="order-item-num">x{{item.num}}</view>
+								<view class="order-item-price">
+									总价
+								<span style="color:#FF8D0E;font-size:20rpx">${{item.money * item.num}}</span>
+								</view>
+								<view class="order-item-side">
+									<view class="btn">删除订单</view>
+									<view class="btn">申请单据</view>
+									<view class="btn">发表评论</view>
 								</view>
 							</view>
-						</scroll-view>
-					</view>
-				</swiper-item>
-			</swiper>
-		<!-- </scroll-view> -->
+						</view>
+					</scroll-view>
+				</view>
+			</swiper-item>
+		</swiper>
 		<!-- <rf-loading v-if="loading"></rf-loading> -->
 	</view>
 </template>
@@ -342,8 +340,12 @@ page, .content{
 }
 /*顶部导航*/
 .navbar{
+	height: 212rpx;
+	width:100%;
+	background: #FFFFFF;
 	font-size:24rpx;
-	padding-top:24rpx;
+	// padding-top:24rpx;
+	padding-top:160rpx;
 	padding-bottom:28rpx;
 	.navitem{
 		margin-left:66rpx;

@@ -62,48 +62,74 @@
     {
       "path": "pages/cart/cart",
       "style": {
-        "enablePullDownRefresh": true,
         "navigationBarTitleText": "我的订单",
+        "onReachBottomDistance": 50,
         "app-plus": {
+          "bounce": "none",
+          "titleNView": false,
           "pullToRefresh": {
             "support": true,
             "color": "#fa436a",
             "style": "default"
-          },
-          "bounce": "none"
+          }
         }
       }
+      // "style": {
+      //   "enablePullDownRefresh": true,
+      //   "navigationBarTitleText": "我的订单",
+      //   "app-plus": {
+      //     "pullToRefresh": {
+      //       "support": true,
+      //       "color": "#fa436a",
+      //       "style": "default"
+      //     },
+      //     "bounce": "none"
+      //   }
+      // }
     },
     // 我的
     {
       "path": "pages/user/user",
       "style": {
-        "navigationStyle": "custom",
+        "navigationBarTitleText": "分类",
+        "onReachBottomDistance": 50,
         "app-plus": {
           "bounce": "none",
-          "titleNView": {
-            "type": "transparent",
-            "buttons": [
-              {
-                "fontSrc": "/static/yticon.ttf",
-                "text": "\ue60f",
-                "fontSize": "24",
-                "color": "#303133",
-                "width": "46px",
-                "background": "rgba(0,0,0,0)"
-              },
-              {
-                "fontSrc": "/static/yticon.ttf",
-                "text": "\ue744",
-                "fontSize": "28",
-                "color": "#303133",
-                "background": "rgba(0,0,0,0)",
-                "redDot": false
-              }
-            ]
+          "titleNView": false,
+          "pullToRefresh": {
+            "support": true,
+            "color": "#fa436a",
+            "style": "default"
           }
         }
       }
+      // "style": {
+      //   "navigationStyle": "custom",
+      //   "app-plus": {
+      //     "bounce": "none",
+      //     "titleNView": {
+      //       "type": "transparent",
+      //       "buttons": [
+      //         {
+      //           "fontSrc": "/static/yticon.ttf",
+      //           "text": "\ue60f",
+      //           "fontSize": "24",
+      //           "color": "#303133",
+      //           "width": "46px",
+      //           "background": "rgba(0,0,0,0)"
+      //         },
+      //         {
+      //           "fontSrc": "/static/yticon.ttf",
+      //           "text": "\ue744",
+      //           "fontSize": "28",
+      //           "color": "#303133",
+      //           "background": "rgba(0,0,0,0)",
+      //           "redDot": false
+      //         }
+      //       ]
+      //     }
+      //   }
+      // }
     },
     // 用户资料
     {
@@ -568,7 +594,7 @@
   },
   "tabBar": {
     "color": "#C0C4CC",
-    "selectedColor": "#fa436a",
+    "selectedColor": "#FF8D0E",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [
