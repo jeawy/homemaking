@@ -2,7 +2,7 @@
 	<view class="user">
 		<!--头部-->
 		<view class="user-section">
-			<view class="middle">
+			<view class="middle" @tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login')">
 				<!--用户头像-->
 				<view class="portrait_bg">
 					<image class="portrait"
@@ -145,6 +145,24 @@
             }
         },
         methods: {
+			// 统一跳转接口,拦截未登录路由
+            navTo(route) {
+                if (!route) {
+                    return;
+                }
+                if (!this.hasLogin) {
+                    uni.showModal({
+                        content: '你暂未登陆，是否跳转登录页面？',
+                        success: (confirmRes) => {
+                            if (confirmRes.confirm) {
+                                this.$mRouter.push({route: '/pages/public/logintype'});
+                            }
+                        }
+                    });
+                } else {
+                    this.$mRouter.push({route});
+                }
+            },
         }
     }
 </script>
