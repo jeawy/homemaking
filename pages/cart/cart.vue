@@ -1,14 +1,24 @@
 <template>
 	<view class="content">
 		<!--导航栏-->
-		<view class="navbar">
-			<view
-				v-for="(item, index) in navList" :key="index"
-				class="navitem"
-				:class="{current: tabCurrentIndex === index}"
-				@tap="tabClick(index)"
-			>
-				{{item.value}}
+		<view class="top">
+			<view class="navbar-top">
+				<view class="navbar-top-text">我的订单</view>
+				<view class="navbar-top-img">
+					<image class="search-img" src="/static/order/search.svg"></image>
+					<image class="erji-img" src="/static/order/erji.svg"></image>
+					<image class="message-img" src="/static/order/orange_messages.svg"></image>
+				</view>
+			</view>
+			<view class="navbar-bottom">
+				<view
+					v-for="(item, index) in navList" :key="index"
+					class="navitem"
+					:class="{current: tabCurrentIndex === index}"
+					@tap="tabClick(index)"
+				>
+					{{item.value}}
+				</view>
 			</view>
 		</view>
 		<swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
@@ -330,7 +340,7 @@ page, .content{
 	height: 100%;
 }
 .swiper-box{
-	height: calc(100% - 40px);
+	height: 100%;
 }
 .uni-swiper-item{
 	height: auto;
@@ -339,28 +349,62 @@ page, .content{
 	height: 100vh;
 }
 /*顶部导航*/
-.navbar{
+.top{
 	height: 212rpx;
 	width:100%;
 	background: #FFFFFF;
-	font-size:24rpx;
-	// padding-top:24rpx;
-	padding-top:160rpx;
-	padding-bottom:28rpx;
-	.navitem{
-		margin-left:66rpx;
-		margin-right: 24rpx;
-		font-size:20rpx;
-		color:#888888;
+    position: fixed;
+	z-index: 10;
+	.navbar-top{
+		display: flex;
+		margin-top: 108rpx;
+		margin-bottom:24rpx;
+		.navbar-top-text{
+			margin-left: 164px;
+			font-size: 24rpx;
+			color: #515151;
+		}
+		.navbar-top-img{
+			margin-left:182rpx;
+			.search-img{
+				width: 21.8rpx;
+				height: 22rpx;
+			}
+			.erji-img{
+				margin-left:20.2rpx;
+				width: 21.1rpx;
+				height: 22rpx;
+			}
+			.message-img{
+				margin-left:20.9rpx;
+				width: 20.52rpx;
+				height: 20.08rpx;
+			}
+		}
 	}
-	.current{
-		color: #ff8d0e;
-		border-bottom:2rpx solid #FF8D0E;
+	.navbar-bottom{
+		display: flex;
+		background: #fff;
+		font-size:24rpx;
+		margin-top:24rpx;
+		margin-bottom:28rpx;
+		line-height: 46rpx;
+		.navitem{
+			margin-left:66rpx;
+			margin-right: 24rpx;
+			font-size:20rpx;
+			color:#888888;
+		}
+		.current{
+			color: #ff8d0e;
+			border-bottom:2rpx solid #FF8D0E;
+		}
 	}
 }
 /*订单列表*/
 .order-list {
-	margin-top:4rpx;
+	// margin-top:4rpx;
+	margin-top:216rpx;
 	margin-left:30rpx;
 	.order-item{
 		margin-bottom:20rpx;
