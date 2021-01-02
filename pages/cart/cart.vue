@@ -502,7 +502,7 @@ page, .content{
 		width:232rpx;
 		height:284rpx;
 		margin-left: 34.67%;
-		margin-top: 74rpx;
+		margin-top: 286rpx;
 	}
 	.process-text{
 		margin-left: 36.8%;
