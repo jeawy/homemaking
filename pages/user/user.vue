@@ -15,13 +15,14 @@
 				<!--用户头像-->
 				<view class="portrait_bg">
 					<image class="portrait"
-						:src="user_portrait"></image>
+						:src="userInfo.head_portrait || headImg"></image>
 				</view>
+				 
 				<!--账户信息-->
 				<view class="account-info">
 					<view class="username">
 						<text>
-							{{username}}
+							{{ userInfo.realname || userInfo.nickname|| userInfo.username ||'请先登录'}}
 						</text>
 						<image class="sign"
 							:src="account_sign"></image>
@@ -121,6 +122,7 @@
 	</view>
 </template>
 <script>
+import {footPrintList, memberInfo} from '@/api/userInfo';
     export default {
         data() {
             return {
@@ -133,8 +135,13 @@
 				account_sign:"../../static/my/king.svg",
 				focusernum:2,
 				focuservicenum:8,
+				settingList: this.$mConstDataConfig.settingList,
+                orderSectionList: this.$mConstDataConfig.orderSectionList,
+                amountList: this.$mConstDataConfig.amountList,
+                promotionList: this.$mConstDataConfig.promotionList,
 				footnum:35,
 				couponum:4,
+				 headImg: this.$mAssetsPath.headImg,
 				attentList:[
 					{
 						num:2,
@@ -170,10 +177,99 @@
 						image:"../../static/my/unreviews.svg",
 						value:"待评论"
 					}
-				]
+				],
+				userInfo: { // 用户信息
+                    promoter: null  // 分销商信息
+                },
             }
+		},
+		onLoad(){
+			console.log(this.userInfo)
+		},
+		async onShow() {
+            // 初始化数据
+            this.initData();
         },
         methods: {
+			async initData() {
+            	this.hasLogin = this.$mStore.getters.hasLogin;
+                if (this.hasLogin) {
+                    await this.getMemberInfo();
+                    await this.initCartItemCount();
+                } else {
+                    this.loading = false;
+                    this.resetSectionData();
+                }
+            },
+			// 给个人中心的各模块赋值
+            setSectionData(data) {
+                const orderSynthesizeNumArr = [];
+                for (let item in data.order_synthesize_num) {
+                    orderSynthesizeNumArr.push(data.order_synthesize_num[item])
+                }
+                for (let i = 0; i < this.orderSectionList.length; i++) {
+                    this.orderSectionList[i].num = orderSynthesizeNumArr[i].toString();
+                }
+                this.amountList[0].value = data.account.user_money || 0;
+                this.amountList[1].value = data.coupon_num || 0;
+                this.amountList[2].value = data.account.user_integral || 0;
+                this.promotionList[0].value = data.promoter && data.promoter.accumulate_brokerage || 0;
+                this.promotionList[1].value = data.promoter && data.promoter.user_brokerage || 0;
+                this.promotionList[2].value = data.promoter && data.promoter.amount_drawn_brokerage || 0;
+                // 更新userInfo缓存
+				console.log(data)
+                
+            },
+			 async getMemberInfo() {
+                await this.$http.get(memberInfo).then(async r => {
+                    this.loading = false;
+					this.userInfo = r.data;
+					uni.setStorageSync('userInfo', r.data);
+					console.log(this.userInfo)
+                    await uni.setStorageSync('cartNum', r.data.cart_num);
+                    // 获取足迹列表
+                    await this.getFootPrintList();
+					await this.setSectionData(r.data);
+					console.log(this.userInfo)
+                }).catch(() => {
+                	  this.hasLogin = false;
+                	  this.userInfo = {};
+                    this.resetSectionData();
+                    this.loading = false;
+                });
+			},
+			            // 设置购物车数量角标
+            async initCartItemCount() {
+							if (this.hasLogin && parseInt(uni.getStorageSync('cartNum'), 10) > 0) {
+                await uni.setTabBarBadge({
+                  index: this.$mConstDataConfig.cartIndex,
+                  text: uni.getStorageSync('cartNum')
+                });
+							} else {
+                uni.removeStorageSync('cartNum');
+                uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
+							}
+            },
+			 // 清空个人中心的各模块状态
+            resetSectionData() {
+                uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
+                this.amountList[0].value = 0;
+                this.amountList[1].value = 0;
+                this.amountList[2].value = 0;
+                this.promotionList[0].value = 0;
+                this.promotionList[1].value = 0;
+                this.promotionList[2].value = 0;
+                this.orderSectionList[0].num = 0;
+                this.orderSectionList[1].num = 0;
+                this.orderSectionList[2].num = 0;
+                this.orderSectionList[3].num = 0;
+                this.orderSectionList[4].num = 0;
+            },// 获取足迹列表
+            async getFootPrintList() {
+                await this.$http.get(`${footPrintList}`).then(r => {
+                    this.footPrintList = r.data
+                });
+            },
 			// 统一跳转接口,拦截未登录路由
             navTo(route) {
                 if (!route) {
