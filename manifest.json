@@ -1,8 +1,8 @@
 {
-    "name" : "XXX商城",
-    "appid" : "__UNI__A4F6452",
+    "name" : "XXX家政",
+    "appid" : "__UNI__6050951",
     // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
-    "description" : "XXX商城",
+    "description" : "XXX家政",
     "versionName" : "1.0.0",
     "versionCode" : 103,
     "transformPx" : false,

@@ -12,7 +12,7 @@
 		</view>
 		<view class="footer">
 			登录表示同意
-			<text class="protocol" @tap="handleRfProtocolPopupShow">本商城 协议</text>
+			<text class="protocol" @tap="handleRfProtocolPopupShow">本家政 协议</text>
 		</view>
 		<!--协议popup-->
 		<rf-protocol-popup ref="mapState" @popupState="popupState" protocolPath='/pages/set/about/detail?field=protocol_register&title=注册协议' policyPath='/pages/set/about/detail?field=protocol_privacy&title=隐私协议' v-if="isRfProtocolPopupShow"></rf-protocol-popup>

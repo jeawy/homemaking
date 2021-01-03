@@ -197,7 +197,7 @@
         // 小程序分享
         onShareAppMessage() {
             return {
-                title: '欢迎来到XXX商城',
+                title: '欢迎来到XXX家政',
                 path: '/pages/index/index'
             }
         },

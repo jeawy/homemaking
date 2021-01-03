@@ -330,14 +330,14 @@
         {
           "path": "about/about",
           "style": {
-            "navigationBarTitleText": "关于RF商城"
+            "navigationBarTitleText": "关于RF家政"
           }
         },
         // 关于详情
         {
           "path": "about/detail",
           "style": {
-            "navigationBarTitleText": "关于RF商城"
+            "navigationBarTitleText": "关于RF家政"
           }
         },
         // 开票历史列表
@@ -588,7 +588,7 @@
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    // "navigationBarTitleText": "RF微商城",
+    // "navigationBarTitleText": "RF微家政",
     "navigationBarBackgroundColor": "#FFFFFF",
     "backgroundColor": "#f8f8f8"
   },

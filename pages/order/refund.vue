@@ -40,7 +40,7 @@
 			<rf-load-more :status="loadingType" v-if="orderList.length > 0"></rf-load-more>
 		</scroll-view>
 
-		<rf-empty :info="'快去商城逛逛吧'" v-if="orderList.length === 0 && !loading"></rf-empty>
+		<rf-empty :info="'快去家政逛逛吧'" v-if="orderList.length === 0 && !loading"></rf-empty>
 		<!--加载动画-->
 		<rf-loading v-if="loading"></rf-loading>
 	</view>

@@ -8,12 +8,12 @@
 		<view class="history-section icon">
 			<view class="sec-header">
 				<i class="iconfont iconshare"></i>
-				<text>分享商城二维码给好友</text>
+				<text>分享家政二维码给好友</text>
 			</view>
 			<view class="qrcode-wrapper">
 				<view class="qrcode-section">
 					<rf-image class="qrcode" :src="aboutInfo.qrcode ||''"></rf-image>
-					<text class="info">商城二维码</text>
+					<text class="info">家政二维码</text>
 				</view>
 			</view>
 		</view>
@@ -21,7 +21,7 @@
 </template>
 
 <script>/**
-* @des 关于商城
+* @des 关于家政
 *
 * @author stav stavyan@qq.com
 * @date 2019-12-09 10:13
@@ -33,7 +33,7 @@ export default {
 		return {
 			aboutInfo: {},
 			navList: [
-				{ title: '商城介绍', url: '' },
+				{ title: '家政介绍', url: '' },
 				// { title: '版权信息', url: 'copyright_companyname,copyright_desc,copyright_url' },
 				// { title: '证照信息', url: '' },
 				{ title: '注册协议', url: 'protocol_register' },
@@ -50,7 +50,7 @@ export default {
 		initData () {
 			this.getConfigList();
 		},
-		// 获取商城信息
+		// 获取家政信息
 		async getConfigList() {
 	    const userInfo = uni.getStorageSync('userInfo');
 			await this.$http.get(`${merchantView}`, {
@@ -72,7 +72,7 @@ export default {
 		position: relative;
 		background-color: #f5f5f5;
 	}
-	/*关于商城*/
+	/*关于家政*/
 	.about {
 		padding: 20upx 0;
 		.history-section{

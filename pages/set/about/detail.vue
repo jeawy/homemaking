@@ -1,8 +1,8 @@
 <template>
 	<view class="about">
-		<view class="shop-info" v-if="title === '商城介绍'">
+		<view class="shop-info" v-if="title === '家政介绍'">
 			<rf-image :src="detail.cover || detail.web_logo || ''"></rf-image>
-			<view v-if="detail.title"><text>商城名称: </text><text>{{ detail.title }}</text></view>
+			<view v-if="detail.title"><text>家政名称: </text><text>{{ detail.title }}</text></view>
 			<view v-if="detail.address_name"><text>联系地址: </text><text>{{ detail.address_name }}</text></view>
 			<view v-if="detail.address_details"><text>详细地址: </text><text>{{ detail.address_details }}</text></view>
 			<view v-if="detail.mobile"><text>手机号码: </text><text>{{ detail.mobile }}</text></view>
@@ -34,7 +34,7 @@
 
 <script>
 /**
-* @des 关于商城详情
+* @des 关于家政详情
 *
 * @author stav stavyan@qq.com
 * @date 2019-12-09 10:13
@@ -88,7 +88,7 @@ export default {
 			});
 			this.getConfigList(options.field);
 		},
-		// 获取商城详情
+		// 获取家政详情
 		async getConfigList(field) {
 	    if (field.indexOf('protocol') !== -1) {
 				await this.$http.get(`${configList}`, {

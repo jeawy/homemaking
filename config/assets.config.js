@@ -21,10 +21,10 @@ export default {
 	// 品牌logo
 	logo: PATH + '/logo.png',
 
-	// 商城新闻
+	// 家政新闻
 	newsBg: PATH + '/news.png',
 
-	// 商城新闻
+	// 家政新闻
 	userBg: PATH + '/user-bg.jpg',
 
 	// vip北京
