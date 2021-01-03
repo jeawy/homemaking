@@ -411,7 +411,7 @@
 			justify-content: space-around;
 			background-color: #FFE8CD;
 			border-radius: 16rpx;
-			box-shadow: 0 8rpx 0 #d9d9d9;
+			filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
 			.cate{
 				padding: 28rpx 36rpx 30rpx 38rpx;
 				width: 100%;
