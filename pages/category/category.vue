@@ -1,73 +1,79 @@
 <template>
   <view class="rf-category">
-	  <!--顶部搜索导航栏-->
-    <view class="nev">      
-	  <view class="search">
-		  <view class="search_position">
-			  <view class="left_text">西安</view>
-			  <image class="location_img" src="/static/home/City.svg"></image>
-		  </view>
-		  <view class="search_box">
-			   <image class="search_img" src="/static/houseKeeping/search.svg"></image>   
-			   <input class="search_input" placeholder="搜索关键字"/>
-			   <image class="search_talk" src="/static/houseKeeping/microphone.svg"></image>  
-		  </view>
-		  <view class="notice">
-		  		<image class="notice_img" src="/static/home/Notification.svg"></image>	  
-		  </view>
-	  </view>
-    </view>
-      <!-- 上侧分类导航 -->
-      <!-- <scroll-view scroll-x="true" class="left"> -->
-        <view class="top" >
-			<view class="top_left">
-				<view class="left_one" @tap="tabClick('recommend')"
-				:class="{tab_active: currentIndex === 'recommend'}">推荐</view>
-				<view class="left_two" @tap="tabClick('new')"
-				:class="{tab_active: currentIndex === 'new'}">最新</view>
-				<view class="left_three" @tap="tabClick('nearby')"
-				:class="{tab_active: currentIndex === 'nearby'}">附近</view>
+	<!-- <view class="top"> -->
+		  <!--顶部搜索导航栏-->
+		<view class="nev">      
+		    <view class="search">
+		  	  <view class="search_position">
+		  		  <view class="left_text">西安</view>
+		  		  <image class="location_img" src="/static/home/City.svg"></image>
+		  	  </view>
+		  	  <view class="search_box">
+		  		   <image class="search_img" src="/static/houseKeeping/search.svg"></image>   
+		  		   <input class="search_input" placeholder="搜索关键字"/>
+		  		   <image class="search_talk" src="/static/houseKeeping/microphone.svg"></image>  
+		  	  </view>
+		  	  <view class="notice">
+		  	  		<image class="notice_img" src="/static/home/Notification.svg"></image>	  
+		  	  </view>
+		    </view>
+		</view>
+			<!-- 上侧分类导航 -->
+		<view class="top_search">
+			<view class="top" >
+				<view class="top_left">
+					<view class="left_one" @tap="tabClick('recommend')"
+					:class="{tab_active: currentIndex === 'recommend'}">推荐</view>
+					<view class="left_two" @tap="tabClick('new')"
+					:class="{tab_active: currentIndex === 'new'}">最新</view>
+					<view class="left_three" @tap="tabClick('nearby')"
+					:class="{tab_active: currentIndex === 'nearby'}">附近</view>
+				</view>
+				<view class="top_right">
+					<view class="right_one" @tap="tabRightClick('screen')"
+					:class="{tab_active: tabIndex === 'screen'}">筛选</view>
+					<image class="right_img"  src="/static/houseKeeping/triangle.svg"></image>
+					<view class="right_two" @tap="tabRightClick('classify')"
+					:class="{tab_active: tabIndex === 'classify'}">分类</view>
+					<image class="right_img" src="/static/houseKeeping/triangle.svg"></image>
+				</view>			
 			</view>
-			<view class="top_right">
-				<view class="right_one" @tap="tabRightClick('screen')"
-				:class="{tab_active: tabIndex === 'screen'}">筛选</view>
-				<image class="right_img"  src="/static/houseKeeping/triangle.svg"></image>
-				<view class="right_two" @tap="tabRightClick('classify')"
-				:class="{tab_active: tabIndex === 'classify'}">分类</view>
-				<image class="right_img" src="/static/houseKeeping/triangle.svg"></image>
-			</view>			
-        </view>
-		<!-- <view class="line"></view> -->
-      <!-- </scroll-view> -->
+		</view>
+		  
+	<!-- </view> -->
+	  
+	<view class="main_content">
 	  <!-- 推荐页面 -->
-	  <view v-if="currentIndex == 'recommend'">
-		  <scroll-view scroll-y="true">
-			  <view  class="content">
-				  <mainCard  class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
-			  </view>
-			
-		  </scroll-view>
-	  </view>
-	  <!-- 最新页面-->
-	  <view  v-if="currentIndex == 'new'">
-		 <scroll-view scroll-y="true">
-			 <view class="content">
-				 <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_new" :key="index"/>
-			 </view>			
-		 </scroll-view>
-	  </view>
-	  <!-- 附近页面-->
-	  <view v-if="currentIndex == 'nearby'">		  
-		  <scroll-view scroll-y="true">
-			  <view class="nearby_map">
-				<map/>
-			  </view>
-			  <view  class="content">
-				  <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
-			  </view>
-			
-		   </scroll-view>
-	  </view>
+		  <view v-if="currentIndex == 'recommend'">
+			  <scroll-view scroll-y="true">
+				  <view  class="content">
+					  <mainCard  class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
+				  </view>
+				
+			  </scroll-view>
+		  </view>
+		  <!-- 最新页面-->
+		  <view  v-if="currentIndex == 'new'">
+			 <scroll-view scroll-y="true">
+				 <view class="content">
+					 <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_new" :key="index"/>
+				 </view>			
+			 </scroll-view>
+		  </view>
+		  <!-- 附近页面-->
+		  <view v-if="currentIndex == 'nearby'">		  
+			  <scroll-view scroll-y="true">
+				  <view class="nearby_map">
+					<map/>
+				  </view>
+				  <view  class="content">
+					  <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
+				  </view>
+				
+			   </scroll-view>
+		  </view>
+	</view>
+	 
       <!-- 筛选弹框 -->
 	  <view class="django_search">
 		  <view class="django_header">筛选</view>
@@ -270,6 +276,11 @@
 			}else{
 				this.currentIndex = 'new'
 			}
+			// uni.getSystemInfo({
+			// 			success: function(res) {
+			// 				console.log(res.statusBarHeight)
+			// 			},
+			// 		});
 		},
 		methods: {
 			// 顶部tab点击
@@ -375,17 +386,32 @@
   }
   .rf-category {
     background-color: #FFFFFF;
+	// .top{}
     .search,.search_position,.search_box,.top,.top_left,.top_right{
 		  display: flex;
 		  align-items: center;
     }
     .nev{
-       padding-top: 51.48rpx;
-	//    position: fixed;
-	//    width: 100%;
+       top: 56rpx;
+	   height: 48rpx;
+	   position: fixed;
+	   width: 100%;
 	   z-index: 100;
 	   background-color: #ffffff;
     }
+	.top_search{
+		padding-top: 100rpx;
+		position: fixed;
+		width: 100%;
+		z-index: 90;
+		background-color: #ffffff;
+	}
+	.main_content{
+		position: relative;
+		padding-top: 150rpx;
+		width: 100%;
+		background-color: #ffffff;
+	}
 	.left_text,.search_input{
 		font-family: Tensentype MingSongJ-W2;
 		font-size: 12px;
@@ -396,7 +422,7 @@
 	}
     .search{     
       margin: 0 40rpx 10rpx 40rpx;
-      height: 40rpx;
+      // height: 40rpx;
 	  
       .search_position{
         
@@ -447,7 +473,7 @@
 		 height: 32rpx;
 		 margin: 10rpx 40rpx 8rpx 40rpx;
 		 padding-bottom: 8rpx;
-		 justify-content: space-between;
+		 // justify-content: space-between;
 		 border-bottom: 2rpx solid #ff8d0e;
 		
 		.top_left{
@@ -459,6 +485,7 @@
 			color: #ff8d0e;
 		}
 		.top_right{
+			padding-left: 320rpx;
 			.right_img{
 				margin: 6rpx 20rpx 0 4rpx;
 				width: 10rpx;
