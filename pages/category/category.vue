@@ -70,77 +70,81 @@
 			   </scroll-view>
 		  </view>
 	</view>
-	 
-	  <!-- 筛选弹框 -->
-	  <view class="django_search">
-		  <view class="django_header">筛选</view>
-		  <view class="experience">
-			  <view class="django_title">经验要求</view>
-			  <view class="django_button">
-				  <view class="django_text" 
-				   @tap="selectOne(index)"
-				  :class="{django_active: selectone === index}"
-				  v-for="(item,index) in experienceLst" 
-				  :key="index">{{item.value}}
-				  </view>
-			  </view>
-		  </view>
-		  <view class="language">
-			  <view class="django_title">语言要求</view>
-			  <view class="django_button">
-				  <view class="django_text"
-				   @tap="selectTwo(index)"
-				  :class="{django_active: selecttwo === index}"
-				  v-for="(item,index) in languageLst" :key="index"
-				  >{{item.value}}
-				  </view>
-			  </view>
-		  </view>
-		  <view class="price">
-			  <view class="django_title">
-				  <text>价格筛选</text>
-				  <text>(单选)</text>
-			  </view>
-			  <view class="django_button" >
-				  <view class="django_text"
-				  @tap="selectThree(index)"
-				  :class="{django_active: selectthree === index}"
-				   v-for="(item,index) in priceLst" :key="index"
-				   >{{item.value}}
-				   </view>
-			  </view>
-		  </view>
-		  <view class="tool">
-			  <view class="django_title">
-				  <text>价格筛选</text>
-				  <text>(单选)</text>
-			  </view>
-			  <view class="django_button">
-				  <view class="django_text"
-				   @tap="selectFour(index)"
-				  :class="{django_active: selectfour === index}"
-				   v-for="(item,index) in toolLst" :key="index"
-				   >{{item.value}}
-				   </view>
-			  </view>
-		  </view>
-		  <view class="menu">
-			  <view class="clear_button" 
-			  :class="{click_button:clearButton == 'clear'}"
-			  @tap="clear" >
-				  <text class="menu_text">清除</text>
-			  </view>
-			  <view class="confirm_button" 
-			  :class="{click_button:confirmButton == 'confirm'}"
-			  @tap="confirm">
-				  <text class="menu_text">确认</text>
-			  </view>
-		  </view>
-	  </view>
+	 <s-popup custom-class="demo-popup" position="center" v-model="visible">
+	   <!-- 内容 -->
+	   <!-- 筛选弹框 -->
+	   <view class="django_search">
+	   		  <view class="django_header">筛选</view>
+	   		  <view class="experience">
+	   			  <view class="django_title">经验要求</view>
+	   			  <view class="django_button">
+	   				  <view class="django_text" 
+	   				   @tap="selectOne(index)"
+	   				  :class="{django_active: selectone === index}"
+	   				  v-for="(item,index) in experienceLst" 
+	   				  :key="index">{{item.value}}
+	   				  </view>
+	   			  </view>
+	   		  </view>
+	   		  <view class="language">
+	   			  <view class="django_title">语言要求</view>
+	   			  <view class="django_button">
+	   				  <view class="django_text"
+	   				   @tap="selectTwo(index)"
+	   				  :class="{django_active: selecttwo === index}"
+	   				  v-for="(item,index) in languageLst" :key="index"
+	   				  >{{item.value}}
+	   				  </view>
+	   			  </view>
+	   		  </view>
+	   		  <view class="price">
+	   			  <view class="django_title">
+	   				  <text>价格筛选</text>
+	   				  <text>(单选)</text>
+	   			  </view>
+	   			  <view class="django_button" >
+	   				  <view class="django_text"
+	   				  @tap="selectThree(index)"
+	   				  :class="{django_active: selectthree === index}"
+	   				   v-for="(item,index) in priceLst" :key="index"
+	   				   >{{item.value}}
+	   				   </view>
+	   			  </view>
+	   		  </view>
+	   		  <view class="tool">
+	   			  <view class="django_title">
+	   				  <text>价格筛选</text>
+	   				  <text>(单选)</text>
+	   			  </view>
+	   			  <view class="django_button">
+	   				  <view class="django_text"
+	   				   @tap="selectFour(index)"
+	   				  :class="{django_active: selectfour === index}"
+	   				   v-for="(item,index) in toolLst" :key="index"
+	   				   >{{item.value}}
+	   				   </view>
+	   			  </view>
+	   		  </view>
+	   		  <view class="menu">
+	   			  <view class="clear_button" 
+	   			  :class="{click_button:clearButton == 'clear'}"
+	   			  @tap="clear" >
+	   				  <text class="menu_text">清除</text>
+	   			  </view>
+	   			  <view class="confirm_button" 
+	   			  :class="{click_button:confirmButton == 'confirm'}"
+	   			  @tap="confirm">
+	   				  <text class="menu_text">确认</text>
+	   			  </view>
+	   		  </view>
+		</view>
+	 </s-popup>		
+	  
   </view>
 </template>
 <script>
 	import mainCard from '@/components/main-card.vue';
+	import sPopup from '@/components/s-popup/index.vue';
 	/**
 	 * @des 分类
 	 *
@@ -154,7 +158,8 @@
 	export default {
 		components: {
 			rfSearchBar,
-			mainCard
+			mainCard,
+			sPopup
 		},
 		data() {
 			return {
@@ -168,6 +173,7 @@
 				// errorImage: this.$mAssetsPath.errorImage,
 				currentIndex:'recommend',
 				tabIndex:'',
+				visible: false,
 				infolst_recommend:[{
 					name:'张三',
 					imgsrc:"/static/people.svg",
@@ -330,6 +336,9 @@
 			},
 			tabRightClick(index){
 				this.tabIndex = index;
+				if(index == 'screen'){
+					this.visible = !this.visible
+				}
 			},
 			// 跳转至商品列表
 			navTo(route) {
@@ -577,10 +586,14 @@
 			margin-bottom: 20rpx;
 		}
 	}
+	.demo-popup{
+		.s-popup-wrap{
+			height: 546rpx;
+		}
+	}
 	// 弹框样式
-	.django_search{
+	.django_search{		
 		width: 620rpx;
-		height: 546rpx;
 		.django_header{
 			align-items: center;
 			font-family: Tensentype MingSongJ-W8;
