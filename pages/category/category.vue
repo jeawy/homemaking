@@ -3,7 +3,7 @@
 	  <!--顶部搜索导航栏-->
 	<view class="nev">      
 		<view class="search">
-		  <view class="search_position">
+		  <view class="search_position" @tap="positionSearch">
 			  <view class="left_text">西安</view>
 			  <image class="location_img" src="/static/home/City.svg"></image>
 		  </view>
@@ -138,13 +138,18 @@
 	   			  </view>
 	   		  </view>
 		</view>
-	 </s-popup>		
+	 </s-popup>	
+	 <!-- 城市定位 -->
+	 <s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
+		<citySearch />
+	 </s-popup>
 	  
   </view>
 </template>
 <script>
 	import mainCard from '@/components/main-card.vue';
 	import sPopup from '@/components/s-popup/index.vue';
+	import citySearch from '@/components/city-search.vue';
 	/**
 	 * @des 分类
 	 *
@@ -159,7 +164,8 @@
 		components: {
 			rfSearchBar,
 			mainCard,
-			sPopup
+			sPopup,
+			citySearch
 		},
 		data() {
 			return {
@@ -174,6 +180,7 @@
 				currentIndex:'recommend',
 				tabIndex:'',
 				visible: false,
+				cityVisiable:false,
 				infolst_recommend:[{
 					name:'张三',
 					imgsrc:"/static/people.svg",
@@ -330,6 +337,10 @@
 			}
 		},
 		methods: {
+			// 定位搜索
+			positionSearch(){
+				this.cityVisiable = !this.cityVisiable
+			},
 			// 顶部tab点击
 			tabClick(index){
 				this.currentIndex = index;
