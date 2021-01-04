@@ -10,93 +10,98 @@
 			<view class="notice">
 				<image class="notice_img" src="../../static/home/Notification.svg"></image>
 			</view>
-		</view>	 
-		<!-- 轮播图 -->
-		<view class="swiper">
-			<swiper @change="handleDotChange" :Lautoplay="true" :current="swiperCurrent" :circular='true'>
-				<swiper-item v-for="(item,index) in swiperImg" :key="index">
-					<view class="swiper-item">
-						<image :src="item" mode="aspectFit"/>
-					</view>
-				</swiper-item>					
-			</swiper>
-			<!-- 轮播指示点样式修改 -->
-			<view class="dots">
-				<block v-for="(item,index) in swiperImg.length" :key="item">
-				  <view class="dot" :class="index==swiperCurrent ? ' active' : ''"></view>
-				</block>
-			</view>
-		</view>
-		<!-- 分类列表 -->
-		<view class="category-list">
-			<view class="cate">
-				<image class="cate_image_one" src="../../static/home/maternity.svg" mode="aspectFill"></image>
-				<image class="cate_image_two" src="../../static/home/babymeal.svg" mode="aspectFill"></image>
-				<image class="cate_image_three" src="../../static/home/kids.svg" mode="aspectFill"></image>
-				<image class="cate_image_four" src="../../static/home/elderly.svg" mode="aspectFill"></image>
-				<image class="cate_image_five" src="../../static/home/housekeeping.svg" mode="aspectFill"></image>
-				<image class="cate_image_six" src="../../static/home/hoursworker.svg" mode="aspectFill"></image>
-				<image class="cate_image_seven" src="../../static/home/repairworker.svg" mode="aspectFill"></image>
-				<image class="cate_image_eight" src="../../static/home/painworker.svg" mode="aspectFill"></image>
-				<image class="cate_image_nine" src="../../static/home/moveworker.svg" mode="aspectFill"></image>
-				<image class="cate_image_ten" src="../../static/home/lawnmaintainance.svg" mode="aspectFill"></image>
-			</view>		
-		</view>
-		
-		<view class="middle">
-			<!--广告-->
-			<view class="ads">
-				<image class="ads_left_img" src="../../static/home/LeftAdsDiscount.svg"></image>
-				<image class="ads_img" src="../../static/home/RightAdsLocal.svg"></image>
-			</view>
-			<!--VIP-->
-			<image class="vip_img" src="../../static/home/MidAdsVip.svg"></image>
-		</view>
-		<!--分享礼品-->
-		<view class="gift_ads">
-			<view class="gift">
-				<image class="gift_left_img" src="../../static/home/LastLeftShare.svg"></image>
-				<image class="gift_img" src="../../static/home/LastRightReturn.svg"></image>
-			</view>			
-		</view>
-		<!-- 阿姨推荐 -->
-		<view class="aunt_bottom" >
-			<view class="aunt_top"><text class="bottom_text">阿姨推荐</text></view>
-			<view class="bottom" >
-				<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
-			</view>				
 		</view>	
-		<view class="search" @tap="target('/pages/category/category?type=1')">
-			<view class="search_more">查看更多</view>
-		</view>
-		
-		<!-- 新人推荐 -->
-		<view class="new_bottom" >
-			<view class="new_top"><text class="bottom_text">新人推荐</text></view>
-			<view class="bottom" >
-				<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+		 <scroll-view
+		 	class="main_content"
+		 	scroll-y
+		 >
+			<!-- 轮播图 -->
+			<view class="swiper">
+				<swiper @change="handleDotChange" :Lautoplay="true" :current="swiperCurrent" :circular='true'>
+					<swiper-item v-for="(item,index) in swiperImg" :key="index">
+						<view class="swiper-item">
+							<image :src="item" mode="aspectFit"/>
+						</view>
+					</swiper-item>					
+				</swiper>
+				<!-- 轮播指示点样式修改 -->
+				<view class="dots">
+					<block v-for="(item,index) in swiperImg.length" :key="item">
+					  <view class="dot" :class="index==swiperCurrent ? ' active' : ''"></view>
+					</block>
+				</view>
 			</view>
-		</view>	
-		<view class="search" @tap="target('/pages/category/category?type=2')">
-			<view class="search_more">查看更多</view>
-		</view>
-		<view class="bottom_assure">
-			<view class="assure_one">
-				<view class="assure_text">保证服务质量</view>
-				<image style="width: 28rpx;
-					height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
+			<!-- 分类列表 -->
+			<view class="category-list">
+				<view class="cate">
+					<image class="cate_image_one" src="../../static/home/maternity.svg" mode="aspectFill"></image>
+					<image class="cate_image_two" src="../../static/home/babymeal.svg" mode="aspectFill"></image>
+					<image class="cate_image_three" src="../../static/home/kids.svg" mode="aspectFill"></image>
+					<image class="cate_image_four" src="../../static/home/elderly.svg" mode="aspectFill"></image>
+					<image class="cate_image_five" src="../../static/home/housekeeping.svg" mode="aspectFill"></image>
+					<image class="cate_image_six" src="../../static/home/hoursworker.svg" mode="aspectFill"></image>
+					<image class="cate_image_seven" src="../../static/home/repairworker.svg" mode="aspectFill"></image>
+					<image class="cate_image_eight" src="../../static/home/painworker.svg" mode="aspectFill"></image>
+					<image class="cate_image_nine" src="../../static/home/moveworker.svg" mode="aspectFill"></image>
+					<image class="cate_image_ten" src="../../static/home/lawnmaintainance.svg" mode="aspectFill"></image>
+				</view>		
 			</view>
-			<view class="assure_one">
-				<view class="assure_text">无接触面试</view>
-				<image style="width: 28rpx;
-					height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
+			
+			<view class="middle">
+				<!--广告-->
+				<view class="ads">
+					<image class="ads_left_img" src="../../static/home/LeftAdsDiscount.svg"></image>
+					<image class="ads_img" src="../../static/home/RightAdsLocal.svg"></image>
+				</view>
+				<!--VIP-->
+				<image class="vip_img" src="../../static/home/MidAdsVip.svg"></image>
 			</view>
-			<view class="assure_one">
-				<view class="assure_text">未服务全额退</view>
-				<image style="width: 28rpx;
-					height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
+			<!--分享礼品-->
+			<view class="gift_ads">
+				<view class="gift">
+					<image class="gift_left_img" src="../../static/home/LastLeftShare.svg"></image>
+					<image class="gift_img" src="../../static/home/LastRightReturn.svg"></image>
+				</view>			
 			</view>
-		</view>
+			<!-- 阿姨推荐 -->
+			<view class="aunt_bottom" >
+				<view class="aunt_top"><text class="bottom_text">阿姨推荐</text></view>
+				<view class="bottom" >
+					<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+				</view>				
+			</view>	
+			<view class="search" @tap="target('/pages/category/category?type=1')">
+				<view class="search_more">查看更多</view>
+			</view>
+			
+			<!-- 新人推荐 -->
+			<view class="new_bottom" >
+				<view class="new_top"><text class="bottom_text">新人推荐</text></view>
+				<view class="bottom" >
+					<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+				</view>
+			</view>	
+			<view class="search" @tap="target('/pages/category/category?type=2')">
+				<view class="search_more">查看更多</view>
+			</view>
+			<view class="bottom_assure">
+				<view class="assure_one">
+					<view class="assure_text">保证服务质量</view>
+					<image style="width: 28rpx;
+						height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
+				</view>
+				<view class="assure_one">
+					<view class="assure_text">无接触面试</view>
+					<image style="width: 28rpx;
+						height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
+				</view>
+				<view class="assure_one">
+					<view class="assure_text">未服务全额退</view>
+					<image style="width: 28rpx;
+						height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
+				</view>
+			</view>
+		</scroll-view>		
 	</view>
 </template>
 <script>
@@ -313,17 +318,18 @@
 <style lang="scss" scoped>
 	.rf-index {
 		background-color: #FFFFFF;
-		width: 100%;		
+		// width: 100%;		
 		.header,.location{
 			display: flex;
 			align-items: center;
 		}
 		.header{
-			// position: fixed;
-			// width: 100%;
+			// height: 169rpx;
+			position: fixed;
+			width: 100%;
 			z-index: 100;
 			background-color: #ffffff;
-			padding-top: 51.48rpx;
+			padding-top: 56rpx;
 			justify-content: space-between;
 		}
 		.fonttext,.location_text,.search_more,.assure_text{
@@ -352,10 +358,14 @@
 				height: 21.54rpx;
 			}
 		}
+		.main_content{
+			position: relative;
+			top: 100rpx;
+			background-color: #ffffff;
+		}
 		/*轮播图*/		
 		.swiper {
-			// position: relative;
-			// padding-top: 100rpx;
+			
 			padding-top: 20rpx;
 			margin: 0 40rpx 0 40rpx;
 			height: 468rpx;		
@@ -401,7 +411,7 @@
 			justify-content: space-around;
 			background-color: #FFE8CD;
 			border-radius: 16rpx;
-			box-shadow: 0 8rpx 0 #d9d9d9;
+			filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
 			.cate{
 				padding: 28rpx 36rpx 30rpx 38rpx;
 				width: 100%;

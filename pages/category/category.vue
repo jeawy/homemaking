@@ -1,8 +1,8 @@
 <template>
   <view class="rf-category">
 	  <!--顶部搜索导航栏-->
-    <view class="nev">      
-	  <view class="search">
+	<view class="nev">      
+		<view class="search">
 		  <view class="search_position">
 			  <view class="left_text">西安</view>
 			  <image class="location_img" src="/static/home/City.svg"></image>
@@ -13,13 +13,13 @@
 			   <image class="search_talk" src="/static/houseKeeping/microphone.svg"></image>  
 		  </view>
 		  <view class="notice">
-		  		<image class="notice_img" src="/static/home/Notification.svg"></image>	  
+				<image class="notice_img" src="/static/home/Notification.svg"></image>	  
 		  </view>
-	  </view>
-    </view>
-      <!-- 上侧分类导航 -->
-      <!-- <scroll-view scroll-x="true" class="left"> -->
-        <view class="top" >
+		</view>
+	</view>
+		<!-- 上侧分类导航 -->
+	<view class="top_search">
+		<view class="top" >
 			<view class="top_left">
 				<view class="left_one" @tap="tabClick('recommend')"
 				:class="{tab_active: currentIndex === 'recommend'}">推荐</view>
@@ -36,55 +36,64 @@
 				:class="{tab_active: tabIndex === 'classify'}">分类</view>
 				<image class="right_img" src="/static/houseKeeping/triangle.svg"></image>
 			</view>			
-        </view>
-		<!-- <view class="line"></view> -->
-      <!-- </scroll-view> -->
+		</view>
+	</view>
+		  
+	<view class="main_content">
 	  <!-- 推荐页面 -->
-	  <view v-if="currentIndex == 'recommend'">
-		  <scroll-view scroll-y="true">
-			  <view  class="content">
-				  <mainCard  class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
-			  </view>
-			
-		  </scroll-view>
-	  </view>
-	  <!-- 最新页面-->
-	  <view  v-if="currentIndex == 'new'">
-		 <scroll-view scroll-y="true">
-			 <view class="content">
-				 <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_new" :key="index"/>
-			 </view>			
-		 </scroll-view>
-	  </view>
-	  <!-- 附近页面-->
-	  <view v-if="currentIndex == 'nearby'">		  
-		  <scroll-view scroll-y="true">
-			  <view class="nearby_map">
-				<map/>
-			  </view>
-			  <view  class="content">
-				  <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
-			  </view>
-			
-		   </scroll-view>
-	  </view>
-      <!-- 筛选弹框 -->
+		  <view v-if="currentIndex == 'recommend'">
+			  <scroll-view scroll-y="true">
+				  <view  class="content">
+					  <mainCard  class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
+				  </view>
+				
+			  </scroll-view>
+		  </view>
+		  <!-- 最新页面-->
+		  <view  v-if="currentIndex == 'new'">
+			 <scroll-view scroll-y="true">
+				 <view class="content">
+					 <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_new" :key="index"/>
+				 </view>			
+			 </scroll-view>
+		  </view>
+		  <!-- 附近页面-->
+		  <view v-if="currentIndex == 'nearby'">		  
+			  <scroll-view scroll-y="true">
+				  <view class="nearby_map">
+					<map/>
+				  </view>
+				  <view  class="content">
+					  <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
+				  </view>
+				
+			   </scroll-view>
+		  </view>
+	</view>
+	 
+	  <!-- 筛选弹框 -->
 	  <view class="django_search">
 		  <view class="django_header">筛选</view>
 		  <view class="experience">
 			  <view class="django_title">经验要求</view>
-			  <view class="django_button" >
+			  <view class="django_button">
 				  <view class="django_text" 
+				   @tap="selectOne(index)"
+				  :class="{django_active: selectone === index}"
 				  v-for="(item,index) in experienceLst" 
-				  :key="index">{{item.value}}</view>
+				  :key="index">{{item.value}}
+				  </view>
 			  </view>
 		  </view>
 		  <view class="language">
 			  <view class="django_title">语言要求</view>
-			  <view class="django_button" >
+			  <view class="django_button">
 				  <view class="django_text"
+				   @tap="selectTwo(index)"
+				  :class="{django_active: selecttwo === index}"
 				  v-for="(item,index) in languageLst" :key="index"
-				  >{{item.value}}</view>
+				  >{{item.value}}
+				  </view>
 			  </view>
 		  </view>
 		  <view class="price">
@@ -92,23 +101,40 @@
 				  <text>价格筛选</text>
 				  <text>(单选)</text>
 			  </view>
-			  <view class="django_button">
+			  <view class="django_button" >
 				  <view class="django_text"
+				  @tap="selectThree(index)"
+				  :class="{django_active: selectthree === index}"
 				   v-for="(item,index) in priceLst" :key="index"
-				   >{{item.value}}</view>
+				   >{{item.value}}
+				   </view>
 			  </view>
 		  </view>
 		  <view class="tool">
-			  <view class="django_title">工具</view>
+			  <view class="django_title">
+				  <text>价格筛选</text>
+				  <text>(单选)</text>
+			  </view>
 			  <view class="django_button">
 				  <view class="django_text"
+				   @tap="selectFour(index)"
+				  :class="{django_active: selectfour === index}"
 				   v-for="(item,index) in toolLst" :key="index"
-				   >{{item.value}}</view>
+				   >{{item.value}}
+				   </view>
 			  </view>
 		  </view>
 		  <view class="menu">
-			  <view class="clear_button">清除</view>
-			  <view class="confirm_button">确认</view>
+			  <view class="clear_button" 
+			  :class="{click_button:clearButton == 'clear'}"
+			  @tap="clear" >
+				  <text class="menu_text">清除</text>
+			  </view>
+			  <view class="confirm_button" 
+			  :class="{click_button:confirmButton == 'confirm'}"
+			  @tap="confirm">
+				  <text class="menu_text">确认</text>
+			  </view>
 		  </view>
 	  </view>
   </view>
@@ -234,32 +260,58 @@
 						language:['普通话','英语'],
 						type:"包月小时工"
 					}],
-					experienceLst:[
-						{value:'不限'},
-						{value:'1-3年'},
-						{value:'3-5年'},
-						{value:'5-10年'},
-						{value:'10年以上'},
-					],
-					languageLst:[
-						{value:'不限'},
-						{value:'英文'},
-						{value:'普通话'},
-						{value:'广东话'},
-						{value:'闽南话'},
-					],
-					priceLst:[
-						{value:'不限'},
-						{value:'20/h'},
-						{value:'40/h'},
-						{value:'60/h'},
-						{value:'80/h'},
-					],
-					toolLst:[
-						{value:'不限'},
-						{value:'自带'},
-						{value:'雇主提供'}
-					],
+				experienceLst:[{
+						value:'不限',
+						checked:true,
+					},{
+						value:'1-3年',
+						checked:false,
+					},{
+						value:'3-5年',
+						checked:false,
+					},{
+						value:'5-10年',
+						checked:false,
+					},{
+						value:'10年以上',
+						checked:false,
+					},
+				],
+				languageLst:[{
+						value:'不限',
+						checked:true,
+					},{
+						value:'英文',
+						checked:false,
+					},{
+						value:'普通话',
+						checked:false,
+					},{
+						value:'广东话',
+						checked:false,
+					},{
+						value:'闽南话',
+						checked:false,
+					},
+				],
+				priceLst:[
+					{value:'不限'},
+					{value:'20/h'},
+					{value:'40/h'},
+					{value:'60/h'},
+					{value:'80/h'},
+				],
+				toolLst:[
+					{value:'不限'},
+					{value:'自带'},
+					{value:'雇主提供'}
+				],
+				selectone:0,
+				selecttwo:0,
+				selectthree:0,
+				selectfour:0,
+				clearButton:"",
+				confirmButton:"",
 			  }
 		},
 		// 每次页面显示 执行该方法
@@ -282,6 +334,32 @@
 			// 跳转至商品列表
 			navTo(route) {
 			  this.$mRouter.push({route});
+			},
+			// 点击筛选框中的取消按钮
+			clear(){
+				this.clearButton = 'clear'
+				this.confirmButton = ''
+			},
+			// 点击筛选框中的确定按钮
+			confirm(){
+				this.confirmButton = 'confirm'
+				this.clearButton = ''
+			},
+			// 选择经验要求
+			selectOne(index){
+				this.selectone = index
+			},
+			// 选择语言要求
+			selectTwo(index){
+				this.selecttwo = index
+			},
+			// 选择价格要求
+			selectThree(index){
+				this.selectthree = index
+			},
+			// 选择工具要求
+			selectFour(index){
+				this.selectfour = index
 			},
 			// 数据初始化
 			async initData() {
@@ -375,28 +453,43 @@
   }
   .rf-category {
     background-color: #FFFFFF;
+	// .top{}
     .search,.search_position,.search_box,.top,.top_left,.top_right{
 		  display: flex;
 		  align-items: center;
     }
     .nev{
-       padding-top: 51.48rpx;
-	//    position: fixed;
-	//    width: 100%;
+       top: 56rpx;
+	   height: 48rpx;
+	   position: fixed;
+	   width: 100%;
 	   z-index: 100;
 	   background-color: #ffffff;
     }
+	.top_search{
+		padding-top: 100rpx;
+		position: fixed;
+		width: 100%;
+		z-index: 90;
+		background-color: #ffffff;
+	}
+	.main_content{
+		position: relative;
+		padding-top: 150rpx;
+		width: 100%;
+		background-color: #ffffff;
+	}
 	.left_text,.search_input{
 		font-family: Tensentype MingSongJ-W2;
-		font-size: 12px;
+		font-size: 24rpx;
 		font-style: normal;
 		font-weight: 400;
-		line-height: 14px;
+		line-height: 28rpx;
 		letter-spacing: 0em;	
 	}
     .search{     
       margin: 0 40rpx 10rpx 40rpx;
-      height: 40rpx;
+      // height: 40rpx;
 	  
       .search_position{
         
@@ -436,10 +529,10 @@
 	  
 	  .left_one,.left_two,.left_three,.right_one,.right_two{
 	    font-family: Tensentype MingSongJ-W4;
-	    font-size: 10px;
+	    font-size: 20rpx;
 	    font-style: normal;
 	    font-weight: 400;
-	    line-height: 12px;
+	    line-height: 24rpx;
 	    letter-spacing: 0em;
 	    text-align: left;	  
 	  }
@@ -447,7 +540,6 @@
 		 height: 32rpx;
 		 margin: 10rpx 40rpx 8rpx 40rpx;
 		 padding-bottom: 8rpx;
-		 justify-content: space-between;
 		 border-bottom: 2rpx solid #ff8d0e;
 		
 		.top_left{
@@ -459,6 +551,7 @@
 			color: #ff8d0e;
 		}
 		.top_right{
+			padding-left: 320rpx;
 			.right_img{
 				margin: 6rpx 20rpx 0 4rpx;
 				width: 10rpx;
@@ -486,6 +579,8 @@
 	}
 	// 弹框样式
 	.django_search{
+		width: 620rpx;
+		height: 546rpx;
 		.django_header{
 			align-items: center;
 			font-family: Tensentype MingSongJ-W8;
@@ -494,7 +589,10 @@
 			font-weight: 900;
 			line-height: 14px;
 			letter-spacing: 0em;
-			text-align: left;
+			text-align: center;
+			text-align: center;
+			margin-top: 20rpx;
+
 		}
 		.django_title,.django_text,.django_active{
 			font-family: Tensentype MingSongJ-W4;
@@ -503,33 +601,94 @@
 			letter-spacing: 0em;
 		}
 		.django_title{
-			font-size: 12px;
-			line-height: 14px;
+			margin-bottom: 10rpx;
+			margin-left: 20rpx;
+			
+			line-height: 28rpx;
+			&>text:nth-child(1){
+				font-size: 24rpx;
+			}
+			&>text:nth-child(2){
+				font-size: 20rpx;
+				margin-left: 14rpx;
+			}
 		}
 		.django_text{
 			font-size: 9px;
-			line-height: 11px;				
+			line-height: 11px;
+			margin: 0 10rpx;	
+			width: 100rpx;
+			height: 32rpx;
+			align-items: center;
+			color: #FFFFFF;
+			background: #767680;
+			border-radius: 4rpx;
+			box-sizing: border-box;
+			display: flex;
+			justify-content: center;
 		}
 		.django_active{
 			color: #FDB667;
+			border: 2rpx solid #fdb667;
+			background: #FFFFFF;
+		}
+		.experience,.language,.price,.tool{
+			height: 70rpx;
+
 		}
 		.experience{
-			margin: 26rpx 20rpx 30rpx 20rpx;			
+			margin: 26rpx 0 30rpx 0;			
 		}
 		.language,.price{
-			margin: 30rpx 20rpx 0 20rpx;
+			margin: 30rpx 0 0 0;
 		}
 		.price{
 			// margin: 30rpx 20rpx 0 20rpx;
 		}
 		.tool{
-			margin: 34rpx 20rpx 22rpx 20rpx;
+			margin: 34rpx 0 22rpx 0;
 		}
-		.django_button,.menu{
+		.django_button,.menu,.clear_button,.confirm_button{
 			display: flex;
 			align-items: center;
 		}
+		.django_button{
+			margin-left: 10rpx;
+		}
+		.menu{
+			justify-content: space-between;
+			height: 80rpx;
+			box-shadow:inset 0 2px 2px rgba(0, 0, 0, 0.25);
+			background: #FFFFFF;
+			.clear_button,.confirm_button{				
+				width: 140rpx;
+				height: 60rpx;
+				background: #767680;
+				border-radius: 4rpx;
+				color: #FFFFFF;
+				justify-content: center;
 
+			}
+			.click_button{
+				background: #FFA23A;
+			}
+			.clear_button{
+				margin: 10rpx 0 10rpx 18rpx;
+			}
+			.confirm_button{
+				margin: 10rpx 18rpx 10rpx 0;
+			}
+		}
+		.menu_text{
+			font-family: Tensentype MingSongJ-W4;
+			font-size: 28rpx;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 34rpx;
+			letter-spacing: 0em;
+			text-align: center;
+
+		}
 	}
     /*模块分类*/
     .category-list {

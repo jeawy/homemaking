@@ -347,17 +347,21 @@ page, .content{
 }
 .list-scroll-content{
 	height: 100vh;
+	padding-top: 164rpx;
 }
 /*顶部导航*/
 .top{
-	height: 212rpx;
+	// height: 212rpx;
 	width:100%;
 	background: #FFFFFF;
     position: fixed;
 	z-index: 10;
+	padding-top: 56rpx;
+	padding-bottom: 20rpx;
 	.navbar-top{
 		display: flex;
-		margin-top: 108rpx;
+		// margin-top: 108rpx;
+		height: 28rpx;
 		margin-bottom:24rpx;
 		.navbar-top-text{
 			margin-left: 164px;
@@ -385,9 +389,10 @@ page, .content{
 	.navbar-bottom{
 		display: flex;
 		background: #fff;
+		height: 32rpx;
 		font-size:24rpx;
-		margin-top:24rpx;
-		margin-bottom:28rpx;
+		// margin-top:24rpx;
+		// margin-bottom:28rpx;
 		line-height: 46rpx;
 		.navitem{
 			margin-left:66rpx;
@@ -404,7 +409,7 @@ page, .content{
 /*订单列表*/
 .order-list {
 	// margin-top:4rpx;
-	margin-top:216rpx;
+	// margin-top:216rpx;
 	margin-left:30rpx;
 	.order-item{
 		margin-bottom:20rpx;
