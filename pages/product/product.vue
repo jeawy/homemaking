@@ -3,36 +3,21 @@
 		<view class="detail" v-if="productDetail.name">
 			<!--顶部商品轮播图-->
 			<view class="carousel">
-				<swiper indicator-dots circular=true duration="400">
+				<!-- <swiper indicator-dots circular=true duration="400"> -->
 				<swiper-item class="swiper-item" v-for="(item,index) in productDetail.covers" :key="index">
 					<view class="image-wrapper">
-						<image
-							:src="item"
-							class="loaded"
-							mode="aspectFill"
-						></image>
+						<image :src="item" class="loaded" mode="aspectFill"></image>
 					</view>
 				</swiper-item>
-			</swiper>
+				<!-- </swiper> -->
 			</view>
 			<!--商品信息-->
 			<view class="introduce-section">
 				<view class="title">
 					{{ productDetail.name || (' 暂无商品详情' + (!!errorInfo ? '[' + errorInfo + ']' : '')) }}
-					<uni-tag
-							v-if="productDetail.sales"
-							class="tag"
-							:inverted="true"
-							type="base"
-							:text="`${productDetail.sales}件已售`"
-							size="small" />
-					<uni-tag
-							v-if="productDetail.is_virtual == 1"
-							class="tag"
-							:inverted="true"
-							type="base"
-							text="虚拟物品"
-							size="small" />
+					<uni-tag v-if="productDetail.sales" class="tag" :inverted="true" type="base" :text="`${productDetail.sales}件已售`"
+					 size="small" />
+					<uni-tag v-if="productDetail.is_virtual == 1" class="tag" :inverted="true" type="base" text="虚拟物品" size="small" />
 				</view>
 				<text class="sketch">{{ productDetail.sketch }}</text>
 				<view class="price-box point-box" v-if="productDetail.point_exchange_type == 4">
@@ -52,7 +37,7 @@
 			<view class="share-section" v-if="productDetail.name">
 				<view class="share-icon">
 					<text class="iconfont iconxingxing"></text>
-					 返
+					返
 				</view>
 				<text open-type="contact" class="tit">分享该商品给你的朋友们</text>
 				<!--#ifndef H5-->
@@ -65,7 +50,8 @@
 			<!--商品参数-->
 			<view class="c-list">
 				<!--商品库存-->
-				<rf-item-popup title="商品库存" v-if="parseInt(productDetail.is_stock_visible, 10) == 1" :isEmpty="parseInt(currentStock || productDetail.stock, 10) === 0" empty="库存不足">
+				<rf-item-popup title="商品库存" v-if="parseInt(productDetail.is_stock_visible, 10) == 1" :isEmpty="parseInt(currentStock || productDetail.stock, 10) === 0"
+				 empty="库存不足">
 					<view slot="content">{{ currentStock || productDetail.stock || 0 }} 个</view>
 				</rf-item-popup>
 				<!--发货地址-->
@@ -73,12 +59,13 @@
 					<view slot="content">{{ productDetail.address_name }}</view>
 				</rf-item-popup>
 				<!--购买类型-->
-				<rf-item-popup title="购买类型" @hide="hideService" :specClass="specClass" @show="toggleSpec" :isEmpty="specSelected.length === 0" :empty="`基础款 * ${cartCount}`">
+				<rf-item-popup title="购买类型" @hide="hideService" :specClass="specClass" @show="toggleSpec" :isEmpty="specSelected.length === 0"
+				 :empty="`基础款 * ${cartCount}`">
 					<view slot="content">
 						<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
 							{{sItem.title}}
 						</text>
-					  <text> * {{ cartCount }}</text>
+						<text> * {{ cartCount }}</text>
 					</view>
 					<view slot="right"><text class="iconfont iconyou"></text></view>
 					<view slot="popup" class="attr-content">
@@ -94,7 +81,7 @@
 										{{sItem.title}}
 									</text>
 									<text v-if="specSelected.length > 0">
-										 * {{ cartCount }}
+										* {{ cartCount }}
 									</text>
 								</view>
 							</view>
@@ -102,14 +89,9 @@
 						<view v-for="(item,index) in specList" :key="index" class="attr-list">
 							<text>{{item.title}}</text>
 							<view class="item-list">
-								<view class="tit"
-									v-for="(childItem, childIndex) in specChildList"
-									v-if="childItem.base_spec_id === item.base_spec_id"
-									:key="childIndex"
-									:class="{selected: childItem.selected}"
-									:style="childItem.selected && parseInt(item.show_type) === 2 ? styleObject: ''"
-									@tap="selectSpec(childIndex, childItem.base_spec_id, item.show_type)"
-								>
+								<view class="tit" v-for="(childItem, childIndex) in specChildList" v-if="childItem.base_spec_id === item.base_spec_id"
+								 :key="childIndex" :class="{selected: childItem.selected}" :style="childItem.selected && parseInt(item.show_type) === 2 ? styleObject: ''"
+								 @tap="selectSpec(childIndex, childItem.base_spec_id, item.show_type)">
 									<text v-if="parseInt(item.show_type) === 1">
 										{{childItem.title }}
 									</text>
@@ -117,11 +99,7 @@
 										{{childItem.title }}
 									</text>
 									<view v-if="parseInt(item.show_type) === 3">
-										<image
-											class="img"
-											:src="childItem.data || productDetail.picture"
-											mode="aspectFill"
-										></image>
+										<image class="img" :src="childItem.data || productDetail.picture" mode="aspectFill"></image>
 										{{childItem.title }}
 									</view>
 								</view>
@@ -129,13 +107,8 @@
 						</view>
 						<view class="select-count">
 							<text>购买数量</text>
-							<rf-number-box
-								class="step"
-								:min="1"
-								:max="parseInt(currentStock || productDetail.stock, 10)"
-								:value="cartCount"
-								@eventChange="numberChange"
-							></rf-number-box>
+							<rf-number-box class="step" :min="1" :max="parseInt(currentStock || productDetail.stock, 10)" :value="cartCount"
+							 @eventChange="numberChange"></rf-number-box>
 						</view>
 						<button class="btn" @tap="toggleSpec">完成</button>
 					</view>
@@ -147,37 +120,37 @@
 					</view>
 					<view slot="right"><text class="iconfont iconyou"></text></view>
 					<view slot="popup" class="service">
-			      <!-- 优惠券列表 -->
-			      <view class="sub-list valid">
-			        <view class="row" v-for="(item,index) in productDetail.canReceiveCoupon" :key="index" @tap.stop="getCoupon(item)">
-			          <view class="carrier">
-			            <view class="title">
-				            <view>
-				              <text class="cell-icon">{{ parseInt(item.range_type, 10) === 2 ? '限' : '全' }}</text>
-				              <text class="cell-title">{{item.title}}</text>
-				            </view>
-				            <view>
+						<!-- 优惠券列表 -->
+						<view class="sub-list valid">
+							<view class="row" v-for="(item,index) in productDetail.canReceiveCoupon" :key="index" @tap.stop="getCoupon(item)">
+								<view class="carrier">
+									<view class="title">
+										<view>
+											<text class="cell-icon">{{ parseInt(item.range_type, 10) === 2 ? '限' : '全' }}</text>
+											<text class="cell-title">{{item.title}}</text>
+										</view>
+										<view>
 											<text class="price" v-if="item.money">{{item.money }}</text>
 											<text class="price-discount" v-else>{{ `${item.discount}折` }}</text>
-				            </view>
-			            </view>
-			            <view class="term">
-			              <text>{{ item.start_time | time }} ~ {{ item.end_time | time }}</text>
+										</view>
+									</view>
+									<view class="term">
+										<text>{{ item.start_time | time }} ~ {{ item.end_time | time }}</text>
 										<text class="at_least">满{{ item.at_least }}可用</text>
-			            </view>
-			            <view class="usage">
-											<text>
-												{{ parseInt(item.range_type, 10) === 2 ? '部分产品使用' : '全场产品使用' }}
-											</text>
-			              <view>
-			                {{parseInt(item.max_fetch, 10) === 0 ? '不限' : `每人限领${item.max_fetch}` }}
-			                已领{{ item.get_count }}
-			                <text class="last" v-if="item.percentage">剩余{{ item.percentage }}%</text>
-			              </view>
-			            </view>
-			          </view>
-			        </view>
-			      </view>
+									</view>
+									<view class="usage">
+										<text>
+											{{ parseInt(item.range_type, 10) === 2 ? '部分产品使用' : '全场产品使用' }}
+										</text>
+										<view>
+											{{parseInt(item.max_fetch, 10) === 0 ? '不限' : `每人限领${item.max_fetch}` }}
+											已领{{ item.get_count }}
+											<text class="last" v-if="item.percentage">剩余{{ item.percentage }}%</text>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
 					</view>
 				</rf-item-popup>
 				<!--限购说明-->
@@ -189,16 +162,19 @@
 				<!--积分活动-->
 				<rf-item-popup title="积分活动">
 					<view slot="content" class="con-list">
-						<text v-if="productDetail.point_exchange_type">兑换类型: {{ productDetail.point_exchange_type | pointExchangeTypeFilter }} </text>
-						<text v-if="parseInt(productDetail.give_point, 10) > 0">赠送类型: {{ productDetail.integral_give_type | integralGiveTypeFilter }} </text>
+						<text v-if="productDetail.point_exchange_type">兑换类型: {{ productDetail.point_exchange_type | pointExchangeTypeFilter }}
+						</text>
+						<text v-if="parseInt(productDetail.give_point, 10) > 0">赠送类型: {{ productDetail.integral_give_type | integralGiveTypeFilter }}
+						</text>
 						<text v-if="parseInt(productDetail.give_point, 10) > 0">下单可获得: {{ productDetail | givePointFilter }}</text>
 						<text v-if="productDetail.point_exchange != 0">兑换所需积分: {{ productDetail.point_exchange }} </text>
 						<text v-if="productDetail.max_use_point != 0">可使用抵扣积分: {{ productDetail.max_use_point }}</text>
-						<text class="buy-now" @tap="addCart('buy', true)" v-if="productDetail.point_exchange_type == 3">积分兑换 >>  </text>
+						<text class="buy-now" @tap="addCart('buy', true)" v-if="productDetail.point_exchange_type == 3">积分兑换 >> </text>
 					</view>
 				</rf-item-popup>
 				<!--服务-->
-        <rf-item-popup title="服务" @hide="hideService" @show="showPopupService('serviceClass', productDetail.tags)" :specClass="serviceClass" :isEmpty="productDetail.tags.length === 0" empty="暂无相关服务">
+				<rf-item-popup title="服务" @hide="hideService" @show="showPopupService('serviceClass', productDetail.tags)"
+				 :specClass="serviceClass" :isEmpty="productDetail.tags.length === 0" empty="暂无相关服务">
 					<view slot="content">
 						<text>{{ productDetail.tags[0] }}</text>
 					</view>
@@ -214,14 +190,15 @@
 					</view>
 				</rf-item-popup>
 				<!--阶梯优惠-->
-				<rf-item-popup title="阶梯优惠" @hide="hideService" @show="showPopupService('ladderPreferentialClass', productDetail.ladderPreferential)" :specClass="ladderPreferentialClass" :isEmpty="productDetail.ladderPreferential.length === 0" empty="暂无阶梯优惠">
+				<rf-item-popup title="阶梯优惠" @hide="hideService" @show="showPopupService('ladderPreferentialClass', productDetail.ladderPreferential)"
+				 :specClass="ladderPreferentialClass" :isEmpty="productDetail.ladderPreferential.length === 0" empty="暂无阶梯优惠">
 					<view slot="content" class="con-list">
 						<text>
 							满{{ productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].quantity }}件
-								<text v-if="parseInt(productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].type, 10) === 1">
-									每件减{{ productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].price }}元</text>
-								<text v-if="parseInt(productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].type, 10) === 2">
-									每件{{ parseInt(productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].price, 10) }}折</text>
+							<text v-if="parseInt(productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].type, 10) === 1">
+								每件减{{ productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].price }}元</text>
+							<text v-if="parseInt(productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].type, 10) === 2">
+								每件{{ parseInt(productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].price, 10) }}折</text>
 						</text>
 					</view>
 					<view slot="right" v-if="productDetail.ladderPreferential.length > 0"><text class="iconfont iconyou"></text></view>
@@ -237,7 +214,8 @@
 					</view>
 				</rf-item-popup>
 				<!--商品参数-->
-				<rf-item-popup title="商品参数" @hide="hideService" @show="showPopupService('attributeValueClass', productDetail.attributeValue)" :specClass="attributeValueClass" :isEmpty="productDetail.attributeValue.length === 0" empty="暂无商品参数">
+				<rf-item-popup title="商品参数" @hide="hideService" @show="showPopupService('attributeValueClass', productDetail.attributeValue)"
+				 :specClass="attributeValueClass" :isEmpty="productDetail.attributeValue.length === 0" empty="暂无商品参数">
 					<view slot="content">
 						<text>
 							{{ `${productDetail.attributeValue && productDetail.attributeValue[0] && productDetail.attributeValue[0].title}: ${productDetail.attributeValue && productDetail.attributeValue[0] && productDetail.attributeValue[0].value}` }}</text>
@@ -265,19 +243,14 @@
 					<i class="iconfont iconyou"></i>
 				</view>
 				<view class="eva-box" v-if="productDetail.evaluate && productDetail.evaluate.length > 0">
-					<image class="portrait"
-								 :src="productDetail.evaluate && productDetail.evaluate[0] && productDetail.evaluate[0].member_head_portrait || headImg" mode="aspectFill"></image>
+					<image class="portrait" :src="productDetail.evaluate && productDetail.evaluate[0] && productDetail.evaluate[0].member_head_portrait || headImg"
+					 mode="aspectFill"></image>
 					<view class="right">
 						<view class="name">
 							<text>
 								{{ productDetail.evaluate && productDetail.evaluate[0] && productDetail.evaluate[0].member_nickname || '匿名用户' }}
 							</text>
-							<rf-rate
-								v-if="evaluateList.length > 0"
-								size="16"
-							  disabled="true"
-								:value="evaluateList[0].scores"
-								active-color="#fa436a" />
+							<rf-rate v-if="evaluateList.length > 0" size="16" disabled="true" :value="evaluateList[0].scores" active-color="#fa436a" />
 						</view>
 						<text class="con in2line">{{ productDetail.evaluate && productDetail.evaluate[0] && productDetail.evaluate[0].content || '这个人很懒，什么都没留下~' }}</text>
 						<view class="bot">
@@ -310,28 +283,16 @@
 					<text>收藏</text>
 				</view>
 				<!--<view @tap="navTo(`/pages/product/service/index`)" class="p-b-btn">-->
-					<!--<i class="iconfont icondanseshixintubiao-"></i>-->
-					<!--<text>客服</text>-->
+				<!--<i class="iconfont icondanseshixintubiao-"></i>-->
+				<!--<text>客服</text>-->
 				<!--</view>-->
 				<view class="action-btn-group" v-if="parseInt((this.currentStock || this.productDetail.stock), 10) > 0">
-					<button type="primary"
-					        class="action-btn no-border buy-now-btn"
-					        :disabled="buyBtnDisabled"
-					        @tap="addCart('buy')">立即购买</button>
-					<button type="primary"
-									:disabled="addCartBtnDisabled"
-									class=" action-btn no-border add-cart-btn"
-									@tap="addCart('cart')">加入购物车</button>
+					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">立即购买</button>
+					<button type="primary" :disabled="addCartBtnDisabled" class=" action-btn no-border add-cart-btn" @tap="addCart('cart')">加入购物车</button>
 				</view>
 				<view class="action-btn-group" v-else>
-					<button type="primary"
-					        class="action-btn no-border buy-now-btn"
-					        :disabled="buyBtnDisabled"
-					        @tap="addCart('buy')">立即购买</button>
-					<button type="primary"
-					        class="action-btn "
-					        :disabled="buyBtnDisabled"
-					        @tap="addCart('buy')">库存不足</button>
+					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">立即购买</button>
+					<button type="primary" class="action-btn " :disabled="buyBtnDisabled" @tap="addCart('buy')">库存不足</button>
 				</view>
 			</view>
 		</view>
@@ -345,7 +306,7 @@
 			</rf-no-data>
 		</view>
 		<!--页面加载动画-->
-    <rf-loading v-if="loading"></rf-loading>
+		<rf-loading v-if="loading"></rf-loading>
 	</view>
 </template>
 
@@ -357,17 +318,27 @@
 	 * @date 2020-03-23 15:04
 	 * @copyright 2019
 	 */
-	import {cartItemCount, cartItemCreate, productDetail} from '@/api/product';
+	import {
+		cartItemCount,
+		cartItemCreate,
+		productDetail
+	} from '@/api/product';
 	import rfNumberBox from '@/components/rf-number-box';
-  import {collectCreate, collectDel, transmitCreate} from '@/api/basic';
-  import moment from '@/common/moment';
-	import {couponReceive} from '@/api/userInfo';
+	import {
+		collectCreate,
+		collectDel,
+		transmitCreate
+	} from '@/api/basic';
+	import moment from '@/common/moment';
+	import {
+		couponReceive
+	} from '@/api/userInfo';
 	import rfRate from '@/components/rf-rate/rf-rate';
 	import rfBadge from '@/components/rf-badge/rf-badge'
 	import uniTag from '@/components/uni-tag/uni-tag'
 	import rfNoData from '@/components/rf-no-data'
 	import rfItemPopup from '@/components/rf-item-popup'
-	export default{
+	export default {
 		components: {
 			rfItemPopup,
 			rfBadge,
@@ -377,7 +348,7 @@
 			rfNoData
 		},
 		filters: {
-		    /**
+			/**
 			 * 处理富文本里的图片宽度自适应
 			 * 1.去掉img标签里的style、width、height属性
 			 * 2.img标签添加style属性：max-width:100%;height:auto
@@ -386,26 +357,26 @@
 			 * @param html
 			 * @returns {void|string|*}
 			 */
-			formatRichText (html) { //控制小程序中图片大小
-        if (html) {
-            let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
-						if(match.search(/style=/gi) == -1){
-							match = match.replace(/\<img/gi,'<img style=""');
+			formatRichText(html) { //控制小程序中图片大小
+				if (html) {
+					let newContent = html.replace(/<img[^>]*>/gi, function(match, capture) {
+						if (match.search(/style=/gi) == -1) {
+							match = match.replace(/\<img/gi, '<img style=""');
 						}
 						return match;
 					});
 					newContent = newContent.replace(/style="/gi, '$& max-width:100% !important; ');
 					newContent = newContent.replace(/<br[^>]*\/>/gi, '');
 					return newContent;
-        } else {
-            return '暂无商品详情'
-        }
+				} else {
+					return '暂无商品详情'
+				}
 			},
 			time(val) {
 				return moment(val * 1000).format('YYYY-MM-DD HH:mm')
 			},
-			discountFilter (val) {
-		    return (val * 10).toFixed(1);
+			discountFilter(val) {
+				return (val * 10).toFixed(1);
 			},
 			pointExchangeTypeFilter(val) {
 				const type = ['', '非积分兑换', '积分加现金', '积分兑换或直接购买', '只支持积分兑换'];
@@ -417,15 +388,15 @@
 			},
 			givePointFilter(val) {
 				return parseInt(val.integral_give_type, 10) === 1 ?
-						Math.round(parseInt(val.give_point, 10) / 100 * parseInt(val.minSkuPrice, 10)) :
-						parseInt(val.give_point, 10);
+					Math.round(parseInt(val.give_point, 10) / 100 * parseInt(val.minSkuPrice, 10)) :
+					parseInt(val.give_point, 10);
 			}
 		},
 		data() {
 			return {
-				serviceClass: 'none',//服务弹窗css类，控制开关动画
-				ladderPreferentialClass: 'none',//服务弹窗css类，控制开关动画
-				attributeValueClass: 'none',//scss类，控制开关动画
+				serviceClass: 'none', //服务弹窗css类，控制开关动画
+				ladderPreferentialClass: 'none', //服务弹窗css类，控制开关动画
+				attributeValueClass: 'none', //scss类，控制开关动画
 				specClass: 'none',
 				couponClass: 'none',
 				cartType: null,
@@ -434,7 +405,7 @@
 				productDetail: {},
 				styleObject: {},
 				showTypeImage: null,
-				specSelected:[],
+				specSelected: [],
 				favorite: false,
 				shareList: [],
 				currentStock: null,
@@ -447,28 +418,28 @@
 				hasLogin: null,
 				cartNum: null,
 				loading: true,
-        errorInfo: '',
+				errorInfo: '',
 				headImg: this.$mAssetsPath.headImg,
 				isPointExchange: false
 			};
 		},
 		computed: {
-			buyBtnDisabled () {
-			    return parseInt(this.currentStock || this.productDetail.stock, 10) === 0;
+			buyBtnDisabled() {
+				return parseInt(this.currentStock || this.productDetail.stock, 10) === 0;
 			},
-			addCartBtnDisabled () {
-		    return this.productDetail.point_exchange_type == 2 ||
-			    this.productDetail.point_exchange_type == 4 ||
-			    (this.currentStock || this.productDetail.stock) == 0 ||
-			    this.productDetail.is_virtual == 1;
+			addCartBtnDisabled() {
+				return this.productDetail.point_exchange_type == 2 ||
+					this.productDetail.point_exchange_type == 4 ||
+					(this.currentStock || this.productDetail.stock) == 0 ||
+					this.productDetail.is_virtual == 1;
 			}
 		},
-		async onLoad(options){
+		async onLoad(options) {
 			this.initData(options.id);
 			//规格 默认选中第一条
-			this.specList.forEach(item=>{
-				for(let cItem of this.specChildList){
-					if(cItem.pid === item.id){
+			this.specList.forEach(item => {
+				for (let cItem of this.specChildList) {
+					if (cItem.pid === item.id) {
 						this.$set(cItem, 'selected', true);
 						this.specSelected.push(cItem);
 						break; //forEach不能使用break
@@ -478,35 +449,37 @@
 			this.product_id = options.id;
 		},
 		onShareAppMessage() {
-		  // #ifdef MP-WEIXIN
-      this.$http.post(`${transmitCreate}`, {
-        topic_type: 'product',
-        topic_id: this.product_id
-      }).then(()=>{
-        return {
-          title: this.productDetail.name,
-          path: '/pages/product/product?id=' + this.product_id
-        }
-      })
-		  // #endif
-		  // #ifdef MP-QQ
-      return {
-        title: this.productDetail.name,
-        path: '/pages/product/product?id=' + this.product_id
-      }
-		  // #endif
+			// #ifdef MP-WEIXIN
+			this.$http.post(`${transmitCreate}`, {
+				topic_type: 'product',
+				topic_id: this.product_id
+			}).then(() => {
+				return {
+					title: this.productDetail.name,
+					path: '/pages/product/product?id=' + this.product_id
+				}
+			})
+			// #endif
+			// #ifdef MP-QQ
+			return {
+				title: this.productDetail.name,
+				path: '/pages/product/product?id=' + this.product_id
+			}
+			// #endif
 		},
-		methods:{
-			navTo (route) {
+		methods: {
+			navTo(route) {
 				if (!this.hasLogin) {
 					this.$mHelper.backToLogin();
 				} else {
-					this.$mRouter.push({route});
+					this.$mRouter.push({
+						route
+					});
 				}
 			},
 			// 弹窗
 			showPopupService(type, list) {
-				if(list.length === 0) return;
+				if (list.length === 0) return;
 				this[type] = 'show';
 			},
 			shareToH5() {
@@ -530,18 +503,20 @@
 				await this.$http.post(`${couponReceive}`, {
 					id: item.id
 				}).then(() => {
-			    this.$mHelper.toast('领取成功');
+					this.$mHelper.toast('领取成功');
 					this.maskState = 0;
 				}).catch(() => {
 					this.maskState = 0;
 				})
 			},
 			// 跳转至评价列表
-			toEvaluateList () {
+			toEvaluateList() {
 				if (!this.productDetail.evaluateStat || parseInt(this.productDetail.comment_num, 10) === 0) return;
-				this.$mRouter.push({route: `/pages/order/evaluation/list?comment_num=${this.productDetail.comment_num}&evaluateStat=${JSON.stringify(this.productDetail.evaluateStat)}`});
+				this.$mRouter.push({
+					route: `/pages/order/evaluation/list?comment_num=${this.productDetail.comment_num}&evaluateStat=${JSON.stringify(this.productDetail.evaluateStat)}`
+				});
 			},
-			numberChange(data){
+			numberChange(data) {
 				this.cartCount = data.number;
 			},
 			// 数据初始化
@@ -552,40 +527,40 @@
 				await this.getProductDetail(id);
 			},
 			// 获取产品详情
-			async getProductDetail (id) {
+			async getProductDetail(id) {
 				await this.$http.get(`${productDetail}`, {
 					id
 				}).then(async r => {
 					this.loading = false;
-          this.productDetail = r.data;
-          this.evaluateList = await r.data.evaluate;
-          this.favorite = this.productDetail.myCollect ? true : false;
-          this.specList = this.productDetail.base_attribute_format
-          this.specList.forEach(item => {
-              this.specChildList = [...this.specChildList, ...item.value]
-          });
-          /**
-           * 修复选择规格存储错误
-           * 将这几行代码替换即可
-           * 选择的规格存放在specSelected中
-           */
-          this.specSelected = [];
-          r.data.base_attribute_format.forEach(item => {
-              item.value[0].selected = true
-              this.specSelected.push(item.value[0]);
-          });
-          let skuStr = [];
-          this.specSelected.forEach(item => {
-              skuStr.push(item.base_spec_value_id)
-          })
-          this.productDetail.sku.forEach(item => {
-              if (item.data === skuStr.join('-')) {
-                  this.currentStock = item.stock;
-                  this.currentSkuPrice = item.price;
-                  return;
-              }
-          })
-        }).catch(err => {
+					this.productDetail = r.data;
+					this.evaluateList = await r.data.evaluate;
+					this.favorite = this.productDetail.myCollect ? true : false;
+					this.specList = this.productDetail.base_attribute_format
+					this.specList.forEach(item => {
+						this.specChildList = [...this.specChildList, ...item.value]
+					});
+					/**
+					 * 修复选择规格存储错误
+					 * 将这几行代码替换即可
+					 * 选择的规格存放在specSelected中
+					 */
+					this.specSelected = [];
+					r.data.base_attribute_format.forEach(item => {
+						item.value[0].selected = true
+						this.specSelected.push(item.value[0]);
+					});
+					let skuStr = [];
+					this.specSelected.forEach(item => {
+						skuStr.push(item.base_spec_value_id)
+					})
+					this.productDetail.sku.forEach(item => {
+						if (item.data === skuStr.join('-')) {
+							this.currentStock = item.stock;
+							this.currentSkuPrice = item.price;
+							return;
+						}
+					})
+				}).catch(err => {
 					this.loading = false;
 					this.errorInfo = err;
 				})
@@ -593,31 +568,31 @@
 			//规格弹窗开关
 			toggleSpec() {
 				if (!this.productDetail.id) return;
-				if(this.specClass === 'show'){
+				if (this.specClass === 'show') {
 					if (!this.hasLogin) {
 						this.specClass = 'none';
 						this.$mHelper.backToLogin();
 						return;
 					}
-          if (this.specSelected.length < this.productDetail.base_attribute_format.length){
-				    this.$mHelper.toast('请先选择规格');
-            return;
-          }
-          const skuStr = [];
-          let sku_id = '';
-          this.specSelected.forEach(item => {
-              skuStr.push(item.base_spec_value_id)
-          })
-          this.productDetail.sku.forEach(item => {
-            if (item.data === skuStr.join('-')) {
-              sku_id = item.id;
-              this.currentStock = item.stock;
-              this.currentSkuPrice = item.price;
-            }
-          });
+					if (this.specSelected.length < this.productDetail.base_attribute_format.length) {
+						this.$mHelper.toast('请先选择规格');
+						return;
+					}
+					const skuStr = [];
+					let sku_id = '';
+					this.specSelected.forEach(item => {
+						skuStr.push(item.base_spec_value_id)
+					})
+					this.productDetail.sku.forEach(item => {
+						if (item.data === skuStr.join('-')) {
+							sku_id = item.id;
+							this.currentStock = item.stock;
+							this.currentSkuPrice = item.price;
+						}
+					});
 					if (parseInt(this.currentStock, 10) === 0) {
-				    this.$mHelper.toast('库存不足');
-				    return;
+						this.$mHelper.toast('库存不足');
+						return;
 					}
 					if (this.cartType === 'cart') {
 						this.handleCartItemCreate(sku_id);
@@ -629,7 +604,7 @@
 					setTimeout(() => {
 						this.specClass = 'none';
 					}, 250);
-				} else if(this.specClass === 'none'){
+				} else if (this.specClass === 'none') {
 					this.specClass = 'show';
 				}
 			},
@@ -640,7 +615,7 @@
 				}, 250);
 			},
 			// 添加商品至购物车
-			async handleCartItemCreate (sku_id) {
+			async handleCartItemCreate(sku_id) {
 				await this.$http.post(`${cartItemCreate}`, {
 					sku_id,
 					num: this.cartCount
@@ -657,10 +632,10 @@
 				})
 			},
 			//选择规格
-			selectSpec(index, pid, type){
+			selectSpec(index, pid, type) {
 				let list = this.specChildList;
-				list.forEach(item=>{
-					if(item.base_spec_id === pid){
+				list.forEach(item => {
+					if (item.base_spec_id === pid) {
 						this.$set(item, 'selected', false);
 					}
 				})
@@ -681,8 +656,8 @@
 				 * 选择的规格存放在specSelected中
 				 */
 				this.specSelected = [];
-				list.forEach(item=>{
-					if(item.selected === true){
+				list.forEach(item => {
+					if (item.selected === true) {
 						this.specSelected.push(item);
 					}
 				})
@@ -691,12 +666,12 @@
 					skuStr.push(item.base_spec_value_id)
 				})
 				this.productDetail.sku.forEach(item => {
-						if (item.data === skuStr.join('-')) {
-							this.currentStock = item.stock;
-              this.currentSkuPrice = item.price;
-							return;
-						}
-					});
+					if (item.data === skuStr.join('-')) {
+						this.currentStock = item.stock;
+						this.currentSkuPrice = item.price;
+						return;
+					}
+				});
 			},
 			// 收藏
 			async toFavorite() {
@@ -705,8 +680,8 @@
 					this.specClass = 'none';
 					this.$mHelper.backToLogin();
 				} else {
-          this.favorite ? this.handleCollectDel() : this.handleCollectCreate();
-        }
+					this.favorite ? this.handleCollectDel() : this.handleCollectCreate();
+				}
 			},
 			// 收藏商品
 			async handleCollectCreate() {
@@ -730,111 +705,132 @@
 				const data = {};
 				data.sku_id = sku_id;
 				data.num = this.cartCount;
-				if (this.productDetail.point_exchange_type == 2 || this.productDetail.point_exchange_type == 4 || (this.productDetail.point_exchange_type == 3 && this.isPointExchange)) {
+				if (this.productDetail.point_exchange_type == 2 || this.productDetail.point_exchange_type == 4 || (this.productDetail
+						.point_exchange_type == 3 && this.isPointExchange)) {
 					list.type = 'point_exchange';
 				} else {
 					list.type = 'buy_now';
 				}
 				list.data = JSON.stringify(data);
-				this.$mRouter.push({route: `/pages/order/create/order?data=${JSON.stringify(list)}`});
+				this.$mRouter.push({
+					route: `/pages/order/create/order?data=${JSON.stringify(list)}`
+				});
 			},
-			addCart(type, isPointExchange){
+			addCart(type, isPointExchange) {
 				if (!this.productDetail.id) return;
 				this.specClass = 'show';
 				this.cartType = type;
 				this.isPointExchange = isPointExchange;
 			},
-			stopPrevent(){
-			}
+			stopPrevent() {}
 		}
 	}
 </script>
 
 <style scoped lang='scss'>
-	page{
+	page {
 		background: $page-color-base;
 	}
+
 	.detail {
 		padding-bottom: 160upx;
 	}
+
 	.carousel {
 		height: 722upx;
-		position:relative;
-		swiper{
+		position: relative;
+
+		swiper {
 			height: 100%;
 		}
-		.image-wrapper{
+
+		.image-wrapper {
 			width: 100%;
 			height: 100%;
 		}
+
 		.swiper-item {
 			display: flex;
 			justify-content: center;
 			align-content: center;
 			height: 750upx;
 			overflow: hidden;
+
 			image {
 				width: 100%;
 				height: 100%;
 			}
 		}
 	}
+
 	/* 标题简介 */
-	.introduce-section{
+	.introduce-section {
 		background: #fff;
 		padding: 20upx 30upx;
-		.title{
+
+		.title {
 			font-size: $font-lg;
 			color: $font-color-dark;
+
 			.tag {
 				margin-left: 20upx;
 			}
 		}
+
 		.data {
 			display: flex;
 			justify-content: space-between;
 			margin: 5upx 15% 0;
 			font-size: $font-base;
 			color: $font-color-base;
+
 			.item {
 				height: 50upx;
 				line-height: 50upx;
 			}
+
 			.iconfont {
 				color: $font-color-light;
 				margin-right: 10upx;
 			}
 		}
+
 		.sketch {
 			margin-top: 10upx;
 			display: block;
 			color: $font-color-light;
 			font-size: $font-base;
 		}
-		.price-box{
-			display:flex;
-			align-items:baseline;
+
+		.price-box {
+			display: flex;
+			align-items: baseline;
 			height: 64upx;
 			padding: 10upx 0;
 			font-size: 26upx;
-			color:$base-color;
+			color: $base-color;
 		}
+
 		.point-box {
 			color: $font-color-base;
+
 			.price {
-				color:$base-color;
+				color: $base-color;
 				margin-left: 10upx;
 			}
 		}
-		.price{
+
+		.price {
 			font-size: $font-lg + 2upx;
 		}
-		.m-price{
-			margin:0 12upx;
+
+		.m-price {
+			margin: 0 12upx;
 			color: $font-color-light;
 			text-decoration: line-through;
 		}
-		.coupon-tip{
+
+		.coupon-tip {
 			align-items: center;
 			padding: 4upx 10upx;
 			background: $uni-color-primary;
@@ -845,38 +841,42 @@
 			transform: translateY(-4upx);
 		}
 	}
+
 	/* 分享 */
-	.share-section{
-		display:flex;
-		align-items:center;
+	.share-section {
+		display: flex;
+		align-items: center;
 		color: $font-color-base;
 		background: linear-gradient(to left, #fdf5f6, #fbebf6);
 		padding: 12upx 30upx;
-		.share-icon{
-			display:flex;
-			align-items:center;
+
+		.share-icon {
+			display: flex;
+			align-items: center;
 			width: 70upx;
 			height: 30upx;
 			line-height: 1;
 			border: 1px solid $uni-color-primary;
 			border-radius: 4upx;
-			position:relative;
+			position: relative;
 			overflow: hidden;
 			font-size: 22upx;
 			color: $uni-color-primary;
-			&:after{
+
+			&:after {
 				content: '';
 				width: 50upx;
 				height: 50upx;
 				border-radius: 50%;
 				left: -20upx;
 				top: -12upx;
-				position:absolute;
+				position: absolute;
 				background: $uni-color-primary;
 			}
 		}
-		.iconxingxing{
-			position:relative;
+
+		.iconxingxing {
+			position: relative;
 			z-index: 1;
 			font-size: 24upx;
 			margin-left: 2upx;
@@ -884,129 +884,156 @@
 			color: #fff;
 			line-height: 1;
 		}
-		.tit{
+
+		.tit {
 			font-size: $font-base;
-			margin-left:10upx;
+			margin-left: 10upx;
 		}
-		.icon-bangzhu1{
+
+		.icon-bangzhu1 {
 			padding: 10upx;
 			font-size: 30upx;
 			line-height: 1;
 		}
-		.share-btn{
+
+		.share-btn {
 			flex: 1;
-			text-align:right;
+			text-align: right;
 			font-size: $font-sm;
 			color: $uni-color-primary;
 			background: none;
 		}
-    .share-btn:after {
-      border: none;
-    }
-		.iconyou{
+
+		.share-btn:after {
+			border: none;
+		}
+
+		.iconyou {
 			font-size: $font-sm;
 			margin-left: 4upx;
 			color: $uni-color-primary;
 		}
 	}
-	.c-list{
+
+	.c-list {
 		font-size: $font-sm + 2upx;
 		color: $font-color-base;
 		background: #fff;
-		.c-row{
-			display:flex;
-			align-items:center;
+
+		.c-row {
+			display: flex;
+			align-items: center;
 			padding: 20upx 30upx;
-			position:relative;
+			position: relative;
 		}
-		.tit{
+
+		.tit {
 			width: 140upx;
 		}
-		.con{
+
+		.con {
 			flex: 1;
 			color: $font-color-dark;
-			.selected-text{
+
+			.selected-text {
 				margin-right: 10upx;
 			}
 		}
-		.bz-list{
+
+		.bz-list {
 			height: 40upx;
 			font-size: $font-sm+2upx;
 			color: $font-color-dark;
-			text{
+
+			text {
 				display: inline-block;
 				margin-right: 30upx;
 			}
 		}
-		.con-list{
+
+		.con-list {
 			flex: 1;
-			display:flex;
+			display: flex;
 			flex-direction: column;
 			color: $font-color-dark;
 			line-height: 40upx;
+
 			.buy-now {
 				color: $uni-color-primary;
 			}
 		}
-		.red{
+
+		.red {
 			color: $uni-color-primary;
 		}
 	}
+
 	/* 评价 */
-	.eva-section{
+	.eva-section {
 		display: flex;
 		flex-direction: column;
 		padding: 20upx 30upx;
 		background: #fff;
 		margin-top: 16upx;
-		.e-header{
+
+		.e-header {
 			display: flex;
 			align-items: center;
 			height: 70upx;
 			font-size: $font-sm + 2upx;
 			color: $font-color-light;
-			.tit{
+
+			.tit {
 				font-size: $font-base + 2upx;
 				color: $font-color-dark;
 				margin-right: 4upx;
 			}
+
 			.con {
 				padding: 0;
 			}
-			.tip{
+
+			.tip {
 				flex: 1;
 				text-align: right;
 			}
-			.iconyou{
+
+			.iconyou {
 				margin-left: 10upx;
 			}
 		}
-		.eva-box{
+
+		.eva-box {
 			display: flex;
 			padding: 20upx 0;
-			.portrait{
+
+			.portrait {
 				flex-shrink: 0;
 				width: 80upx;
 				height: 80upx;
 				border-radius: 100px;
 			}
-			.right{
+
+			.right {
 				flex: 1;
 				display: flex;
 				flex-direction: column;
 				font-size: $font-base;
 				color: $font-color-base;
 				padding-left: 26upx;
-				.con{
+
+				.con {
 					font-size: $font-base;
 					color: $font-color-dark;
 				}
-				.bot{
+
+				.bot {
 					display: flex;
 					justify-content: space-between;
 					font-size: $font-sm;
-					color:$font-color-light;
+					color: $font-color-light;
 				}
+
 				.name {
 					align-items: center;
 					display: flex;
@@ -1015,12 +1042,14 @@
 			}
 		}
 	}
+
 	/*  详情 */
-	.detail-desc{
+	.detail-desc {
 		background: #fff;
 		margin-top: 16upx;
 		padding: 0 10upx;
-		.d-header{
+
+		.d-header {
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -1028,13 +1057,15 @@
 			font-size: $font-base + 2upx;
 			color: $font-color-dark;
 			position: relative;
-			text{
+
+			text {
 				padding: 0 20upx;
 				background: #fff;
 				position: relative;
 				z-index: 1;
 			}
-			&:after{
+
+			&:after {
 				position: absolute;
 				left: 50%;
 				top: 50%;
@@ -1046,53 +1077,63 @@
 			}
 		}
 	}
+
 	/* 规格选择弹窗 */
-	.attr-content{
+	.attr-content {
 		padding: 10upx 30upx;
+
 		.select-count {
 			padding: 30upx 0 10upx;
 			margin: 20upx 0;
 			border-top: 1px solid #ccc;
 			display: flex;
-			justify-content:space-between;
+			justify-content: space-between;
 			overflow: hidden;
 			position: relative;
 			font-size: $font-base + 6upx;
 			color: $font-color-base;
 			line-height: 60upx;
+
 			.step {
 				position: absolute;
 				left: 60vw;
 				bottom: 10upx;
 			}
 		}
-		.a-t{
+
+		.a-t {
 			display: flex;
-			image{
+
+			image {
 				width: 170upx;
 				height: 170upx;
 				flex-shrink: 0;
 				margin-top: -40upx;
-				border-radius: 8upx;;
+				border-radius: 8upx;
+				;
 			}
-			.right{
+
+			.right {
 				display: flex;
 				flex-direction: column;
 				padding-left: 24upx;
 				font-size: $font-sm + 2upx;
 				color: $font-color-base;
 				line-height: 42upx;
-				.price{
+
+				.price {
 					font-size: $font-lg;
 					color: $uni-color-primary;
 					margin-bottom: 10upx;
 				}
-				.selected-text{
+
+				.selected-text {
 					margin-right: 10upx;
 				}
 			}
 		}
-		.attr-list{
+
+		.attr-list {
 			display: flex;
 			flex-direction: column;
 			font-size: $font-base + 2upx;
@@ -1100,11 +1141,13 @@
 			padding-top: 15upx;
 			padding-left: 10upx;
 		}
-		.item-list{
+
+		.item-list {
 			padding: 10upx 0 0;
 			display: flex;
 			flex-wrap: wrap;
-			.tit{
+
+			.tit {
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -1117,42 +1160,48 @@
 				padding: 0 20upx;
 				font-size: $font-base;
 				color: $font-color-dark;
+
 				.img {
 					width: 36upx;
 					height: 24upx;
 					margin: 0 4upx;
 				}
 			}
-			.selected{
+
+			.selected {
 				background: #fbebee;
 				color: $uni-color-primary;
 			}
 		}
 	}
+
 	/* 底部操作菜单 */
-	.page-bottom{
-		position:fixed;
+	.page-bottom {
+		position: fixed;
 		left: 30upx;
-		bottom:30upx;
+		bottom: 30upx;
 		z-index: 95;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		width: 690upx;
 		height: 100upx;
-		background: rgba(255,255,255,.9);
-		box-shadow: 0 0 20upx 0 rgba(0,0,0,.5);
+		background: rgba(255, 255, 255, .9);
+		box-shadow: 0 0 20upx 0 rgba(0, 0, 0, .5);
 		border-radius: 16upx;
+
 		.cart {
 			position: relative;
+
 			.badge {
 				position: absolute;
 				top: -8upx;
 				right: 0upx;
 			}
 		}
-		.p-b-btn{
-			display:flex;
+
+		.p-b-btn {
+			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
@@ -1160,61 +1209,72 @@
 			color: $font-color-base;
 			width: 96upx;
 			height: 80upx;
-			.iconfont{
+
+			.iconfont {
 				font-size: 36upx;
 				line-height: 48upx;
 				color: $font-color-light;
 			}
-			&.active, &.active .iconfont{
+
+			&.active,
+			&.active .iconfont {
 				color: $uni-color-primary;
 			}
+
 			.icon-fenxiang2 {
 				font-size: 42upx;
 				transform: translateY(-2upx);
 			}
+
 			.iconshoucang {
 				font-size: 40upx;
 			}
+
 			.icondanseshixintubiao- {
 				font-size: 46upx;
 			}
+
 			.red {
 				color: $base-color;
 			}
 		}
-		.action-btn-group{
+
+		.action-btn-group {
 			display: flex;
 			height: 76upx;
 			border-radius: 100px;
 			overflow: hidden;
 			box-shadow: 0 20upx 40upx -16upx #fa436a;
 			box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
-			background: linear-gradient(to right, #ffac30,#fa436a,#F56C6C);
+			background: linear-gradient(to right, #ffac30, #fa436a, #F56C6C);
 			margin: 0 20upx;
-			position:relative;
-			&:after{
+			position: relative;
+
+			&:after {
 				content: '';
-				position:absolute;
+				position: absolute;
 				top: 50%;
 				right: 50%;
 				transform: translateY(-50%);
 				height: 28upx;
 				width: 0;
-				border-right: 1px solid rgba(255,255,255,.5);
+				border-right: 1px solid rgba(255, 255, 255, .5);
 			}
-			.action-btn{
-				display:flex;
+
+			.action-btn {
+				display: flex;
 				align-items: center;
 				justify-content: center;
 				width: 180upx;
 				height: 100%;
-				font-size: $font-base ;
+				font-size: $font-base;
 				padding: 0;
 				border-radius: 0;
 				background: transparent;
 			}
 		}
 	}
+
 	.layer {
 		position: fixed;
 		z-index: 99;
@@ -1222,11 +1282,13 @@
 		width: 100%;
 		border-radius: 10upx 10upx 0 0;
 		background-color: #fff;
+
 		.content {
 			width: 100%;
 			padding: 20upx 0;
 		}
-		.btn{
+
+		.btn {
 			height: 66upx;
 			line-height: 66upx;
 			border-radius: 100upx;
@@ -1236,23 +1298,30 @@
 			margin: 30upx 30upx 20upx;
 		}
 	}
+
 	.service {
 		padding: $spacing-base $spacing-lg 0;
+
 		.row {
 			margin-bottom: $spacing-base;
+
 			.title {
 				font-size: $font-lg;
 			}
+
 			.description {
 				font-size: $font-base;
 			}
 		}
 	}
+
 	.selected-text {
 		margin-right: 4upx;
 	}
+
 	.sub-list {
 		margin: 40upx 0 80upx;
+
 		.row {
 			width: 100%;
 			margin-bottom: $spacing-lg;
