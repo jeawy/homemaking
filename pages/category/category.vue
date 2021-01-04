@@ -71,7 +71,11 @@
 					<map/>
 				  </view>
 				  <view  class="content">
-					  <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
+					  <mainCard 
+					  class="main_card" 
+					  :info="item" 
+					  v-for="(item,index) in infolst_recommend" 
+					  :key="index"/>
 				  </view>
 				
 			   </scroll-view>

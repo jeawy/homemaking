@@ -2,7 +2,7 @@
 	<!-- 卡片 -->	
 	<!-- <view> -->
 		<!-- <view class="card_contant" > -->
-			<view class="card">
+			<view class="card" @tap="navTo(`/pages/product/product?id=${info.id}`)">
 				<view class="card_top">
 					<image class="card_img" :src="info.imgsrc"></image>
 				</view>				
@@ -42,7 +42,10 @@
 			}
 		},
 		methods:{
-			
+			//跳转详情
+			navTo(route) {
+				this.$mRouter.push({ route });
+			},
 		},
 		onLoad() {
 		}
