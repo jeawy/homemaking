@@ -269,7 +269,7 @@
 			</view>
 			<!-- 底部操作菜单 -->
 			<view class="page-bottom">
-				<navigator url="/pages/index/index" open-type="switchTab" class="p-b-btn">
+				<!-- <navigator url="/pages/index/index" open-type="switchTab" class="p-b-btn">
 					<i class="iconfont iconxiatubiao--copy"></i>
 					<text>首页</text>
 				</navigator>
@@ -277,23 +277,27 @@
 					<i class="iconfont icongouwuche"></i>
 					<text>购物车</text>
 					<rf-badge v-if="hasLogin && cartNum && cartNum > 0" type="error" size="small" class="badge" :text="cartNum"></rf-badge>
-				</navigator>
-				<view class="p-b-btn" :class="{active: favorite}" @tap="toFavorite">
-					<i class="iconfont iconshoucang"></i>
-					<text>收藏</text>
+				</navigator> -->
+				<view class="bottom_btn" :class="{active: favorite}" @tap="toFavorite">
+					<view><i class="iconfont iconshoucang"></i></view>
+					<view>收藏</view>
+					<view>({{loveTimes}})</view>
 				</view>
-				<!--<view @tap="navTo(`/pages/product/service/index`)" class="p-b-btn">-->
-				<!--<i class="iconfont icondanseshixintubiao-"></i>-->
-				<!--<text>客服</text>-->
-				<!--</view>-->
-				<view class="action-btn-group" v-if="parseInt((this.currentStock || this.productDetail.stock), 10) > 0">
+				<view class="action-btn">
+					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">面试TA</button>
+				</view>
+				<!-- <view @tap="navTo(`/pages/product/service/index`)" class="p-b-btn">
+				<i class="iconfont icondanseshixintubiao-"></i>
+				<text>客服</text>
+				</view> -->
+				<!-- <view class="action-btn-group" v-if="parseInt((this.currentStock || this.productDetail.stock), 10) > 0">
 					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">立即购买</button>
 					<button type="primary" :disabled="addCartBtnDisabled" class=" action-btn no-border add-cart-btn" @tap="addCart('cart')">加入购物车</button>
 				</view>
 				<view class="action-btn-group" v-else>
 					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">立即购买</button>
 					<button type="primary" class="action-btn " :disabled="buyBtnDisabled" @tap="addCart('buy')">库存不足</button>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<!-- 404页面 -->
@@ -420,7 +424,8 @@
 				loading: true,
 				errorInfo: '',
 				headImg: this.$mAssetsPath.headImg,
-				isPointExchange: false
+				isPointExchange: false,
+				loveTimes:0,//收藏次数
 			};
 		},
 		computed: {
@@ -675,6 +680,7 @@
 			},
 			// 收藏
 			async toFavorite() {
+				this.loveTimes ++
 				if (!this.productDetail.id) return;
 				if (!this.$mStore.getters.hasLogin) {
 					this.specClass = 'none';
@@ -1199,17 +1205,26 @@
 				right: 0upx;
 			}
 		}
-
-		.p-b-btn {
+		.bottom_btn{
+			widows: 35%;
+			padding-left: 20rpx;
+			display: flex;
+			align-items: center;
+			&>view:nth-child(2){
+				margin-left: 20rpx;
+				margin-right: 20rpx;
+			}
+		}
+		.p-b-btn,.bottom_btn{
+			align-items: center;
+			font-size: $font-sm;
+			color: $font-color-base;			
+			height: 80upx;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			font-size: $font-sm;
-			color: $font-color-base;
 			width: 96upx;
-			height: 80upx;
-
 			.iconfont {
 				font-size: 36upx;
 				line-height: 48upx;
@@ -1238,7 +1253,20 @@
 				color: $base-color;
 			}
 		}
-
+		.action-btn{
+			height:100%;
+			width: 65%;
+			display: flex;			
+			overflow: hidden;
+			align-items: center;
+			justify-content: center;
+			background: #F56C6C;
+			// box-shadow: 0 20upx 40upx -16upx #fa436a;
+			// box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
+			// background: linear-gradient(to right, #ffac30, #fa436a, #F56C6C);
+			// margin: 0 20upx;
+			// position: relative;
+		}
 		.action-btn-group {
 			display: flex;
 			height: 76upx;

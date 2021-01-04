@@ -44,7 +44,10 @@
 		  <view v-if="currentIndex == 'recommend'">
 			  <scroll-view scroll-y="true">
 				  <view  class="content">
-					  <mainCard  class="main_card" :info="item" v-for="(item,index) in infolst_recommend" :key="index"/>
+					  <mainCard  class="main_card" 
+					  :info="item" 
+					  v-for="(item,index) in infolst_recommend" 
+					  :key="index"/>
 				  </view>
 				
 			  </scroll-view>
@@ -53,7 +56,11 @@
 		  <view  v-if="currentIndex == 'new'">
 			 <scroll-view scroll-y="true">
 				 <view class="content">
-					 <mainCard class="main_card" :info="item" v-for="(item,index) in infolst_new" :key="index"/>
+					 <mainCard 
+					 class="main_card" 
+					 :info="item" 
+					 v-for="(item,index) in infolst_new" 
+					 :key="index"/>
 				 </view>			
 			 </scroll-view>
 		  </view>
@@ -182,6 +189,7 @@
 				visible: false,
 				cityVisiable:false,
 				infolst_recommend:[{
+					id:1,
 					name:'张三',
 					imgsrc:"/static/people.svg",
 					age:27,
@@ -191,6 +199,7 @@
 					language:['普通话','英语'],
 					type:"包月小时工"
 					},{
+						id:2,
 						name:'爱丽丝',
 						imgsrc:"/static/people.svg",
 						age:27,
@@ -200,6 +209,7 @@
 						language:['普通话','英语'],
 						type:"包月小时工"
 					},{
+						id:3,
 						name:'张三',
 						imgsrc:"/static/people.svg",
 						age:27,
@@ -209,6 +219,7 @@
 						language:['普通话','英语'],
 						type:"包月小时工"
 					},{
+						id:4,
 						name:'爱丽丝',
 						imgsrc:"/static/people.svg",
 						age:27,
@@ -218,6 +229,7 @@
 						language:['普通话','英语'],
 						type:"包月小时工"
 					},{
+						id:5,
 						name:'爱丽丝',
 						imgsrc:"/static/people.svg",
 						age:27,
@@ -227,6 +239,7 @@
 						language:['普通话','英语'],
 						type:"包月小时工"
 					},{
+						id:6,
 						name:'张三',
 						imgsrc:"/static/people.svg",
 						age:27,
@@ -237,6 +250,7 @@
 						type:"包月小时工"
 					}],
 				infolst_new:[{
+					id:1,
 					name:'marry',
 					imgsrc:"/static/people.svg",
 					age:27,
@@ -246,6 +260,7 @@
 					language:['普通话','英语'],
 					type:"包月小时工"
 					},{
+						id:2,
 						name:'汤姆',
 						imgsrc:"/static/people.svg",
 						age:27,
@@ -255,6 +270,7 @@
 						language:['普通话','英语'],
 						type:"包月小时工"
 					},{
+						id:3,
 						name:'张三',
 						imgsrc:"/static/people.svg",
 						age:27,
@@ -264,6 +280,7 @@
 						language:['普通话','英语'],
 						type:"包月小时工"
 					},{
+						id:4,
 						name:'爱丽丝',
 						imgsrc:"/static/people.svg",
 						age:27,
