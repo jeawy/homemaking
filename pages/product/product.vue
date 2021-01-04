@@ -4,15 +4,15 @@
 			<!--顶部商品轮播图-->
 			<view class="carousel">
 				<!-- <swiper indicator-dots circular=true duration="400"> -->
-				<swiper-item class="swiper-item" v-for="(item,index) in productDetail.covers" :key="index">
+				<swiper-item class="swiper-item" v-for="(item,index) in productDetail" :key="index">
 					<view class="image-wrapper">
-						<image :src="item" class="loaded" mode="aspectFill"></image>
+						<image :src="item.imgsrc" class="loaded" mode="aspectFill"></image>
 					</view>
 				</swiper-item>
 				<!-- </swiper> -->
 			</view>
 			<!--商品信息-->
-			<view class="introduce-section">
+			<!-- <view class="introduce-section">
 				<view class="title">
 					{{ productDetail.name || (' 暂无商品详情' + (!!errorInfo ? '[' + errorInfo + ']' : '')) }}
 					<uni-tag v-if="productDetail.sales" class="tag" :inverted="true" type="base" :text="`${productDetail.sales}件已售`"
@@ -32,34 +32,34 @@
 					<view class="item"><text class="iconfont icontuandui"></text>推荐 {{ productDetail.collect_num || 0 }}</view>
 					<view class="item"><text class="iconfont iconkechakan"></text>浏览 {{ productDetail.view || 0 }}</view>
 				</view>
-			</view>
+			</view> -->
 			<!--  分享 -->
-			<view class="share-section" v-if="productDetail.name">
+			<!-- <view class="share-section" v-if="productDetail.name">
 				<view class="share-icon">
 					<text class="iconfont iconxingxing"></text>
 					返
 				</view>
-				<text open-type="contact" class="tit">分享该商品给你的朋友们</text>
+				<text open-type="contact" class="tit">分享该商品给你的朋友们</text> -->
 				<!--#ifndef H5-->
-				<button :disabled="!!productDetail" class="share-btn" open-type="share">
+				<!-- <button :disabled="!!productDetail" class="share-btn" open-type="share">
 					立即分享
 					<i class="iconfont iconyou"></i>
-				</button>
+				</button> -->
 				<!--#endif-->
-			</view>
+			<!-- </view> -->
 			<!--商品参数-->
-			<view class="c-list">
+			<!-- <view class="c-list"> -->
 				<!--商品库存-->
-				<rf-item-popup title="商品库存" v-if="parseInt(productDetail.is_stock_visible, 10) == 1" :isEmpty="parseInt(currentStock || productDetail.stock, 10) === 0"
+				<!-- <rf-item-popup title="商品库存" v-if="parseInt(productDetail.is_stock_visible, 10) == 1" :isEmpty="parseInt(currentStock || productDetail.stock, 10) === 0"
 				 empty="库存不足">
 					<view slot="content">{{ currentStock || productDetail.stock || 0 }} 个</view>
-				</rf-item-popup>
+				</rf-item-popup> -->
 				<!--发货地址-->
-				<rf-item-popup title="发货地址" :isEmpty="!productDetail.address_name" empty="发货地址未填写">
+				<!-- <rf-item-popup title="发货地址" :isEmpty="!productDetail.address_name" empty="发货地址未填写">
 					<view slot="content">{{ productDetail.address_name }}</view>
-				</rf-item-popup>
+				</rf-item-popup> -->
 				<!--购买类型-->
-				<rf-item-popup title="购买类型" @hide="hideService" :specClass="specClass" @show="toggleSpec" :isEmpty="specSelected.length === 0"
+				<!-- <rf-item-popup title="购买类型" @hide="hideService" :specClass="specClass" @show="toggleSpec" :isEmpty="specSelected.length === 0"
 				 :empty="`基础款 * ${cartCount}`">
 					<view slot="content">
 						<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
@@ -112,16 +112,16 @@
 						</view>
 						<button class="btn" @tap="toggleSpec">完成</button>
 					</view>
-				</rf-item-popup>
+				</rf-item-popup> -->
 				<!--优惠券-->
-				<rf-item-popup title="优惠券" @hide="hideService" :specClass="couponClass" @show="showPopupService('couponClass', 1)">
+				<!-- <rf-item-popup title="优惠券" @hide="hideService" :specClass="couponClass" @show="showPopupService('couponClass', 1)">
 					<view slot="content">
 						<text class="con t-r red">领取优惠券</text>
 					</view>
 					<view slot="right"><text class="iconfont iconyou"></text></view>
-					<view slot="popup" class="service">
+					<view slot="popup" class="service"> -->
 						<!-- 优惠券列表 -->
-						<view class="sub-list valid">
+						<!-- <view class="sub-list valid">
 							<view class="row" v-for="(item,index) in productDetail.canReceiveCoupon" :key="index" @tap.stop="getCoupon(item)">
 								<view class="carrier">
 									<view class="title">
@@ -152,15 +152,15 @@
 							</view>
 						</view>
 					</view>
-				</rf-item-popup>
+				</rf-item-popup> -->
 				<!--限购说明-->
-				<rf-item-popup title="限购说明">
+				<!-- <rf-item-popup title="限购说明">
 					<view slot="content">
 						<text>{{ parseInt(productDetail.max_buy, 10) === 0 ? '不限购' : `${productDetail.max_buy} 件` }}</text>
 					</view>
-				</rf-item-popup>
+				</rf-item-popup> -->
 				<!--积分活动-->
-				<rf-item-popup title="积分活动">
+				<!-- <rf-item-popup title="积分活动">
 					<view slot="content" class="con-list">
 						<text v-if="productDetail.point_exchange_type">兑换类型: {{ productDetail.point_exchange_type | pointExchangeTypeFilter }}
 						</text>
@@ -171,9 +171,9 @@
 						<text v-if="productDetail.max_use_point != 0">可使用抵扣积分: {{ productDetail.max_use_point }}</text>
 						<text class="buy-now" @tap="addCart('buy', true)" v-if="productDetail.point_exchange_type == 3">积分兑换 >> </text>
 					</view>
-				</rf-item-popup>
+				</rf-item-popup> -->
 				<!--服务-->
-				<rf-item-popup title="服务" @hide="hideService" @show="showPopupService('serviceClass', productDetail.tags)"
+				<!-- <rf-item-popup title="服务" @hide="hideService" @show="showPopupService('serviceClass', productDetail.tags)"
 				 :specClass="serviceClass" :isEmpty="productDetail.tags.length === 0" empty="暂无相关服务">
 					<view slot="content">
 						<text>{{ productDetail.tags[0] }}</text>
@@ -188,9 +188,9 @@
 						</view>
 						<button class="btn" @tap="hideService">完成</button>
 					</view>
-				</rf-item-popup>
+				</rf-item-popup> -->
 				<!--阶梯优惠-->
-				<rf-item-popup title="阶梯优惠" @hide="hideService" @show="showPopupService('ladderPreferentialClass', productDetail.ladderPreferential)"
+				<!-- <rf-item-popup title="阶梯优惠" @hide="hideService" @show="showPopupService('ladderPreferentialClass', productDetail.ladderPreferential)"
 				 :specClass="ladderPreferentialClass" :isEmpty="productDetail.ladderPreferential.length === 0" empty="暂无阶梯优惠">
 					<view slot="content" class="con-list">
 						<text>
@@ -212,9 +212,9 @@
 						</view>
 						<button class="btn" @tap="hideService">完成</button>
 					</view>
-				</rf-item-popup>
+				</rf-item-popup> -->
 				<!--商品参数-->
-				<rf-item-popup title="商品参数" @hide="hideService" @show="showPopupService('attributeValueClass', productDetail.attributeValue)"
+				<!-- <rf-item-popup title="商品参数" @hide="hideService" @show="showPopupService('attributeValueClass', productDetail.attributeValue)"
 				 :specClass="attributeValueClass" :isEmpty="productDetail.attributeValue.length === 0" empty="暂无商品参数">
 					<view slot="content">
 						<text>
@@ -232,9 +232,9 @@
 						<button class="btn" @tap="hideService">完成</button>
 					</view>
 				</rf-item-popup>
-			</view>
+			</view> -->
 			<!-- 评价 -->
-			<view class="eva-section" @tap="toEvaluateList">
+			<!-- <view class="eva-section" @tap="toEvaluateList">
 				<view class="e-header">
 					<text class="tit">评价</text>
 					<text>({{ productDetail.comment_num || 0 }})</text>
@@ -259,7 +259,7 @@
 						</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 			<!--底部商品详情-->
 			<view class="detail-desc">
 				<view class="d-header">
@@ -301,16 +301,16 @@
 			</view>
 		</view>
 		<!-- 404页面 -->
-		<view v-if="!productDetail.name && !loading">
+		<!-- <view v-if="!productDetail.name && !loading">
 			<rf-no-data :custom="true">
 				<view class="no-data-title">
 					{{ errorInfo || '暂无数据' }}
 				</view>
 				<view @tap="getProductDetail(productDetail.id)" slot="refresh" class="spec-color">重新加载</view>
 			</rf-no-data>
-		</view>
+		</view> -->
 		<!--页面加载动画-->
-		<rf-loading v-if="loading"></rf-loading>
+		<!-- <rf-loading v-if="loading"></rf-loading> -->
 	</view>
 </template>
 
@@ -428,30 +428,32 @@
 				loveTimes:0,//收藏次数
 			};
 		},
-		computed: {
-			buyBtnDisabled() {
-				return parseInt(this.currentStock || this.productDetail.stock, 10) === 0;
-			},
-			addCartBtnDisabled() {
-				return this.productDetail.point_exchange_type == 2 ||
-					this.productDetail.point_exchange_type == 4 ||
-					(this.currentStock || this.productDetail.stock) == 0 ||
-					this.productDetail.is_virtual == 1;
-			}
-		},
+		// computed: {
+		// 	buyBtnDisabled() {
+		// 		return parseInt(this.currentStock || this.productDetail.stock, 10) === 0;
+		// 	},
+		// 	addCartBtnDisabled() {
+		// 		return this.productDetail.point_exchange_type == 2 ||
+		// 			this.productDetail.point_exchange_type == 4 ||
+		// 			(this.currentStock || this.productDetail.stock) == 0 ||
+		// 			this.productDetail.is_virtual == 1;
+		// 	}
+		// },
 		async onLoad(options) {
-			this.initData(options.id);
-			//规格 默认选中第一条
-			this.specList.forEach(item => {
-				for (let cItem of this.specChildList) {
-					if (cItem.pid === item.id) {
-						this.$set(cItem, 'selected', true);
-						this.specSelected.push(cItem);
-						break; //forEach不能使用break
-					}
-				}
-			});
-			this.product_id = options.id;
+			this.productDetail = options.info;
+			console.log(options.info)
+			// this.initData(options.id);
+			// //规格 默认选中第一条
+			// this.specList.forEach(item => {
+			// 	for (let cItem of this.specChildList) {
+			// 		if (cItem.pid === item.id) {
+			// 			this.$set(cItem, 'selected', true);
+			// 			this.specSelected.push(cItem);
+			// 			break; //forEach不能使用break
+			// 		}
+			// 	}
+			// });
+			// this.product_id = options.id;
 		},
 		onShareAppMessage() {
 			// #ifdef MP-WEIXIN
@@ -1215,16 +1217,17 @@
 				margin-right: 20rpx;
 			}
 		}
+		.p-b-btn{
+			width: 96upx;
+			flex-direction: column;
+		}
 		.p-b-btn,.bottom_btn{
-			align-items: center;
 			font-size: $font-sm;
 			color: $font-color-base;			
 			height: 80upx;
-			display: flex;
-			flex-direction: column;
+			display: flex;			
 			align-items: center;
-			justify-content: center;
-			width: 96upx;
+			justify-content: center;			
 			.iconfont {
 				font-size: 36upx;
 				line-height: 48upx;
