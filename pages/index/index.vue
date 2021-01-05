@@ -70,7 +70,7 @@
 					<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
 				</view>				
 			</view>	
-			<view class="search" @tap="target('/pages/category/category?type=1')">
+			<view class="search" @tap="target('/pages/category/category')">
 				<view class="search_more">查看更多</view>
 			</view>
 			
@@ -81,7 +81,7 @@
 					<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
 				</view>
 			</view>	
-			<view class="search" @tap="target('/pages/category/category?type=2')">
+			<view class="search" @tap="target('/pages/category/category')">
 				<view class="search_more">查看更多</view>
 			</view>
 			<view class="bottom_assure">

@@ -150,11 +150,10 @@
 	   		  </view>
 		</view>
 	 </s-popup>	
-	 <!-- 城市定位 -->
-	 <s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
-		<citySearch />
-	 </s-popup>
-	  
+		 <!-- 城市定位 -->
+		 <s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
+			<citySearch />
+		 </s-popup>
   </view>
 </template>
 <script>
@@ -349,13 +348,14 @@
 			  }
 		},
 		// 每次页面显示 执行该方法
-		onLoad(option) {
-			this.initData();
-			if(option.type == 1){
-				this.currentIndex = 'recommend'
-			}else{
-				this.currentIndex = 'new'
-			}
+		onLoad(options) {
+			// console.log(options.type)
+			// this.initData();
+			// if(options.type == 1){
+			// 	this.currentIndex = 'recommend'
+			// }else{
+			// 	this.currentIndex = 'new'
+			// }
 		},
 		methods: {
 			// 定位搜索
