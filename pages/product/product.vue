@@ -4,13 +4,28 @@
 			<!--顶部商品轮播图-->
 			<view class="carousel">
 				<!-- <swiper indicator-dots circular=true duration="400"> -->
-				<swiper-item class="swiper-item" v-for="(item,index) in productDetail" :key="index">
+				<!-- <swiper-item class="swiper-item"> -->
 					<view class="image-wrapper">
-						<image :src="item.imgsrc" class="loaded" mode="aspectFill"></image>
+						<image :src="productDetail.imgsrc" class="loaded" mode="aspectFill"></image>
 					</view>
-				</swiper-item>
+					<view class="card_text">
+						<view class="name">{{productDetail.name}}</view>
+						<view class="text_middle">
+							<text class="middle-text">{{productDetail.age}}岁</text>
+							<image class="sex_img" src="/static/women.svg"></image>
+							<span class="line">|</span>
+							<text class="middle-text">从业{{productDetail.time}}年</text>
+						</view>
+						<view class="language">
+							<text class="language-text">{{productDetail.language[0]}}</text>
+							<span class="line">|</span>
+							<text class="language-text">{{productDetail.language[1]}}</text>
+						</view>
+					</view>
+				<!-- </swiper-item> -->
 				<!-- </swiper> -->
 			</view>
+			<!--  -->
 			<!--商品信息-->
 			<!-- <view class="introduce-section">
 				<view class="title">
@@ -261,14 +276,26 @@
 				</view>
 			</view> -->
 			<!--底部商品详情-->
+			<view class="detail-info">
+				<view class="info-header">
+					<text>个人信息</text>
+				</view>
+				<rich-text :nodes="productDetail.intro | formatRichText"></rich-text>
+			</view>
+			<view class="detail-info">
+				<view class="info-header">
+					<text>工作履历</text>
+				</view>
+				<rich-text :nodes="productDetail.intro | formatRichText"></rich-text>
+			</view>
 			<view class="detail-desc">
 				<view class="d-header">
-					<text>商品详情</text>
+					<text>培训记录</text>
 				</view>
 				<rich-text :nodes="productDetail.intro | formatRichText"></rich-text>
 			</view>
 			<!-- 底部操作菜单 -->
-			<view class="page-bottom">
+			<view class="new_page-bottom">
 				<!-- <navigator url="/pages/index/index" open-type="switchTab" class="p-b-btn">
 					<i class="iconfont iconxiatubiao--copy"></i>
 					<text>首页</text>
@@ -280,12 +307,15 @@
 				</navigator> -->
 				<view class="bottom_btn" :class="{active: favorite}" @tap="toFavorite">
 					<view><i class="iconfont iconshoucang"></i></view>
-					<view>收藏</view>
+					<view class="love">收藏</view>
 					<view>({{loveTimes}})</view>
 				</view>
 				<view class="action-btn">
-					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">面试TA</button>
+					<button type="primary" class="action-btn no-border buy-now-btn" @tap="addCart('buy')">面试TA</button>
 				</view>
+				<!-- <view class="action-btn">
+					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">面试TA</button>
+				</view> -->
 				<!-- <view @tap="navTo(`/pages/product/service/index`)" class="p-b-btn">
 				<i class="iconfont icondanseshixintubiao-"></i>
 				<text>客服</text>
@@ -406,7 +436,17 @@
 				cartType: null,
 				maskState: 0, //优惠券面板显示状态
 				couponList: [],
-				productDetail: {},
+				productDetail: {
+					id:1,
+					name:'张三',
+					imgsrc:"/static/people.svg",
+					age:27,
+					sex:"women",
+					position:'澳大利亚',
+					time:"2",
+					language:['普通话','英语'],
+					type:"包月小时工",
+				},
 				styleObject: {},
 				showTypeImage: null,
 				specSelected: [],
@@ -440,9 +480,7 @@
 		// 	}
 		// },
 		async onLoad(options) {
-			this.productDetail = options.info;
-			console.log(options.info)
-			// this.initData(options.id);
+			// this.initData(options);
 			// //规格 默认选中第一条
 			// this.specList.forEach(item => {
 			// 	for (let cItem of this.specChildList) {
@@ -540,6 +578,7 @@
 				}).then(async r => {
 					this.loading = false;
 					this.productDetail = r.data;
+					console.log(r)
 					this.evaluateList = await r.data.evaluate;
 					this.favorite = this.productDetail.myCollect ? true : false;
 					this.specList = this.productDetail.base_attribute_format
@@ -737,26 +776,72 @@
 
 <style scoped lang='scss'>
 	page {
-		background: $page-color-base;
+		background: #FFFFFF;
 	}
-
+	.product{
+		background: #FFFFFF;
+	}
 	.detail {
-		padding-bottom: 160upx;
+		padding-bottom: 160rpx;
 	}
 
 	.carousel {
-		height: 722upx;
+		/* height: 722rpx; */
 		position: relative;
+		top: 100%;
 
 		swiper {
 			height: 100%;
 		}
 
 		.image-wrapper {
+			background: #FFFFFF;
 			width: 100%;
-			height: 100%;
+			padding: 24rpx 20rpx 0 18rpx;
+			text-align: center;
+			.loaded{
+				border-radius: 50%;
+				width: 306rpx;
+				height: 306rpx;
+			}
 		}
-
+		.card_text{
+			margin-top: 20rpx;
+			display: block;
+			justify-content: center;
+			width: 100%;
+			.name{
+				text-align: center;
+				font-family: Tensentype MingSongJ-W8;
+				font-size: 24rpx;
+				font-style: normal;
+				font-weight: 900;
+				line-height: 28.8rpx;
+				letter-spacing: 0em;
+			}
+			.text_middle{
+				line-height: 24rpx;
+				margin: 12rpx 0;
+				text-align: center;
+				width: 100%;
+				.sex_img{
+					width: 12rpx;
+					height: 19.58rpx;
+					align-items: center;
+					margin: 0 4rpx;
+				}
+				
+			}
+			.line{
+				margin: 0 8rpx;
+				height: 24rpx;
+				line-height: 20rpx;
+			}
+			.language{
+				line-height: 24rpx;
+				text-align: center;
+			}
+		}
 		.swiper-item {
 			display: flex;
 			justify-content: center;
@@ -1052,12 +1137,18 @@
 	}
 
 	/*  详情 */
-	.detail-desc {
+	.detail-info{
+		
+	}
+	.detail-work{
+		
+	}
+	.detail-desc ,.detail-info,.detail-work{
 		background: #fff;
 		margin-top: 16upx;
 		padding: 0 10upx;
 
-		.d-header {
+		.d-header,.info-header,work-header {
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -1182,7 +1273,85 @@
 			}
 		}
 	}
-
+	.new_page-bottom{
+		position: fixed;
+		bottom: 30rpx;
+		z-index: 95;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		height: 100rpx;
+		background: rgba(255, 255, 255, .9);
+		box-shadow: 0 0 20upx 0 rgba(0, 0, 0, .5);
+		border-radius: 16upx;
+		.cart {
+			position: relative;
+		
+			.badge {
+				position: absolute;
+				top: -8upx;
+				right: 0upx;
+			}
+		}
+		.bottom_btn{
+			widows: 35%;
+			padding-left: 20rpx;
+			display: flex;
+			align-items: center;			
+			font-size: $font-sm;
+			color: $font-color-base;			
+			height: 80upx;
+			display: flex;			
+			align-items: center;
+			justify-content: center;			
+			.iconfont {
+				font-size: 36upx;
+				line-height: 48upx;
+				color: $font-color-light;
+			}
+			
+			&.active,
+			&.active .iconfont {
+				color: $uni-color-primary;
+			}
+			
+			.icon-fenxiang2 {
+				font-size: 42upx;
+				transform: translateY(-2upx);
+			}
+			
+			.iconshoucang {
+				font-size: 40upx;
+			}
+			
+			.icondanseshixintubiao- {
+				font-size: 46upx;
+			}
+			
+			.red {
+				color: $base-color;
+			}
+			.love{
+				margin-left: 20rpx;
+				margin-right: 20rpx;
+			};
+		}
+		.action-btn{
+			height:100%;
+			width: 65%;
+			display: flex;			
+			overflow: hidden;
+			align-items: center;
+			justify-content: center;
+			background: #F56C6C;
+			// box-shadow: 0 20upx 40upx -16upx #fa436a;
+			// box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
+			// background: linear-gradient(to right, #ffac30, #fa436a, #F56C6C);
+			// margin: 0 20upx;
+			// position: relative;
+		}
+	}
 	/* 底部操作菜单 */
 	.page-bottom {
 		position: fixed;
@@ -1207,21 +1376,9 @@
 				right: 0upx;
 			}
 		}
-		.bottom_btn{
-			widows: 35%;
-			padding-left: 20rpx;
-			display: flex;
-			align-items: center;
-			&>view:nth-child(2){
-				margin-left: 20rpx;
-				margin-right: 20rpx;
-			}
-		}
 		.p-b-btn{
 			width: 96upx;
 			flex-direction: column;
-		}
-		.p-b-btn,.bottom_btn{
 			font-size: $font-sm;
 			color: $font-color-base;			
 			height: 80upx;

@@ -414,11 +414,12 @@
         {
           "path": "product",
           "style": {
-            "navigationBarTitleText": "详情展示",
+		    "backgroundColor": "#FFFFFF",
+            "navigationBarTitleText": "阿姨信息",
             "app-plus": {
-              "titleNView": {
-                "type": "transparent"
-              }
+              // "titleNView": {
+              //   "type": "transparent"
+              // }
             }
           }
         }
