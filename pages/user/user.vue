@@ -104,7 +104,8 @@
 						<image class="share-img" src="../../static/my/share.svg"></image>
 						<view class="fct-content">分享有礼</view>
 					</view>
-					<view class="fct-center-six fct-center-all">
+					<view class="fct-center-six fct-center-all" 
+						@tap="navTochat('/pages/user/chat/chat')">
 						<image class="service-img" src="../../static/my/service.svg"></image>
 						<view class="fct-content">在线客服</view>
 					</view>
@@ -270,6 +271,12 @@ import {footPrintList, memberInfo} from '@/api/userInfo';
                     this.footPrintList = r.data
                 });
             },
+			navTochat(url){
+				console.log(url)
+				uni.navigateTo({
+					url
+				})
+			},
 			// 统一跳转接口,拦截未登录路由
             navTo(route) {
                 if (!route) {

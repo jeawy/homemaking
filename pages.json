@@ -269,7 +269,15 @@
       "style": {
         "navigationBarTitleText": "积分详情"
       }
-    }
+    },
+	// 在线客服
+	{
+	  "path": "pages/user/chat/chat",
+	  "style": {
+	    "navigationBarTitleText": "在线客服"
+	  }
+	}
+	
   ],
   "subPackages": [
     // 设置
