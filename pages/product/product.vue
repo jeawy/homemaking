@@ -1275,7 +1275,7 @@
 	}
 	.new_page-bottom{
 		position: fixed;
-		bottom: 30rpx;
+		bottom: 0;
 		z-index: 95;
 		display: flex;
 		justify-content: space-between;
@@ -1284,7 +1284,7 @@
 		height: 100rpx;
 		background: rgba(255, 255, 255, .9);
 		box-shadow: 0 0 20upx 0 rgba(0, 0, 0, .5);
-		border-radius: 16upx;
+		/* border-radius: 16upx; */
 		.cart {
 			position: relative;
 		
@@ -1344,12 +1344,7 @@
 			overflow: hidden;
 			align-items: center;
 			justify-content: center;
-			background: #F56C6C;
-			// box-shadow: 0 20upx 40upx -16upx #fa436a;
-			// box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
-			// background: linear-gradient(to right, #ffac30, #fa436a, #F56C6C);
-			// margin: 0 20upx;
-			// position: relative;
+			background: #FF8D0E;
 		}
 	}
 	/* 底部操作菜单 */
