@@ -310,8 +310,8 @@
 					<view class="love">收藏</view>
 					<view>({{loveTimes}})</view>
 				</view>
-				<view class="action-btn">
-					<button type="primary" class="action-btn no-border buy-now-btn" @tap="addCart('buy')">面试TA</button>
+				<view class="action-btn" @tap="toInterview('/pages/product/interview')">
+					<button type="primary" class="action-btn no-border buy-now-btn">面试TA</button>
 				</view>
 				<!-- <view class="action-btn">
 					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">面试TA</button>
@@ -513,6 +513,11 @@
 			// #endif
 		},
 		methods: {
+			toInterview(route){
+				this.$mRouter.push({
+					route
+				});
+			},
 			navTo(route) {
 				if (!this.hasLogin) {
 					this.$mHelper.backToLogin();

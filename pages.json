@@ -422,7 +422,14 @@
               // }
             }
           }
-        }
+        },
+		{
+			"path": "interview",
+			"style": {
+			  "backgroundColor": "#FFFFFF",
+			  "navigationBarTitleText": "立即预约"
+			}
+		}
       ]
     },
     // 订单
