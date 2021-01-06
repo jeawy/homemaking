@@ -342,7 +342,7 @@
 			width: 100%;
 			z-index: 100;
 			background-color: #ffffff;
-			padding-top: 56rpx;
+			padding-top: 70rpx;//设置距离顶部的距离
 			justify-content: space-between;
 		}
 		.fonttext,.location_text,.search_more,.assure_text

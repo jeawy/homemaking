@@ -500,7 +500,7 @@
 		  align-items: center;
     }
     .nev{
-       top: 56rpx;
+       top: 70rpx;//设置距离顶部的距离
 	   height: 48rpx;
 	   position: fixed;
 	   width: 100%;
@@ -508,7 +508,7 @@
 	   background-color: #ffffff;
     }
 	.top_search{
-		padding-top: 100rpx;
+		padding-top: 114rpx;//设置距离顶部的距离
 		position: fixed;
 		width: 100%;
 		z-index: 90;
@@ -516,7 +516,7 @@
 	}
 	.main_content{
 		position: relative;
-		padding-top: 150rpx;
+		padding-top: 164rpx;//设置距离顶部的距离
 		width: 100%;
 		background-color: #ffffff;
 	}

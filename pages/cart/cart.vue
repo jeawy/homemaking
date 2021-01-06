@@ -347,7 +347,7 @@ page, .content{
 }
 .list-scroll-content{
 	height: 100vh;
-	padding-top: 164rpx;
+	padding-top: 178rpx;//设置距离顶部的距离
 }
 /*顶部导航*/
 .top{
@@ -356,7 +356,7 @@ page, .content{
 	background: #FFFFFF;
     position: fixed;
 	z-index: 10;
-	padding-top: 56rpx;
+	padding-top: 70rpx;//设置距离顶部的距离
 	padding-bottom: 20rpx;
 	.navbar-top{
 		display: flex;
