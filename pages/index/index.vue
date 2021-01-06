@@ -50,8 +50,8 @@
 			<view class="middle">
 				<!--广告-->
 				<view class="ads">
-					<image class="ads_left_img" src="../../static/home/LeftAdsDiscount.svg"></image>
-					<image class="ads_img" src="../../static/home/RightAdsLocal.svg"></image>
+					<image class="ads_left_img" src="../../static/home/LeftAdsDiscount.png"></image>
+					<image class="ads_img" src="../../static/home/RightAdsLocal.png"></image>
 				</view>
 				<!--VIP-->
 				<image class="vip_img" src="../../static/home/MidAdsVip.svg"></image>
@@ -59,8 +59,8 @@
 			<!--分享礼品-->
 			<view class="gift_ads">
 				<view class="gift">
-					<image class="gift_left_img" src="../../static/home/LastLeftShare.svg"></image>
-					<image class="gift_img" src="../../static/home/LastRightReturn.svg"></image>
+					<image class="gift_left_img" src="../../static/home/LastLeftShare.png"></image>
+					<image class="gift_img" src="../../static/home/LastRightReturn.png"></image>
 				</view>			
 			</view>
 			<!-- 阿姨推荐 -->
@@ -466,18 +466,23 @@
 			height: 357.68rpx;
 			margin-top: 20rpx;
 			.ads{
-				display: flex;
-				margin-right: 12rpx;
+				display: flex;				
 				height: 180rpx;
+				justify-content: space-between;
 				.ads_left_img{
-					position: relative;
-					left: 18rpx;
-					height: 190rpx;
+					margin-left: 40rpx;
+					margin-right: 19rpx;
+					height: 180rpx;
+					width: 163px;
+					border-radius: 16rpx;
+					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
 				}
 				.ads_img{
-					height: 190rpx;
-					position: relative;
-					right: 10rpx;
+					height: 180rpx;
+					width: 163px;
+					border-radius: 16rpx;
+					margin-right: 40rpx;
+					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
 				}
 			}
 			.vip_img{
@@ -492,15 +497,19 @@
 			.gift{
 				display: flex;
 				height: 140rpx;
+				justify-content: space-between;
 				.gift_left_img{
-					position: relative;
-					left: 18rpx;
-					height: 148rpx;
+					margin-left:40rpx;
+					margin-right: 19rpx;
+					height: 140rpx;
+					border-radius: 16rpx;
+					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
 				}
 				.gift_img{
-					position: relative;
-					right: 18rpx;
-					height: 148rpx;
+					margin-right: 40rpx;
+					height: 140rpx;
+					border-radius: 16rpx;
+					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
 				}
 			}
 		}	
