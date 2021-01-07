@@ -617,25 +617,27 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/tab-home.png",
+        "iconPath": "static/tabbar/Home.png",
         "selectedIconPath": "static/tab-home-current.png",
         "text": "首页"
       },
+	  //#ifdef APP_PLUS || H5 || MP-ALIPAY
       {
         "pagePath": "pages/category/category",
-        "iconPath": "static/tab-cate.png",
+        "iconPath": "static/tabbar/Find.png",
         "selectedIconPath": "static/tab-cate-current.png",
         "text": "找阿姨"
       },
+	  //#endif
       {
         "pagePath": "pages/cart/cart",
-        "iconPath": "static/tab-cart.png",
+        "iconPath": "static/tabbar/shoplisted.png",
         "selectedIconPath": "static/tab-cart-current.png",
         "text": "订单"
       },
       {
         "pagePath": "pages/user/user",
-        "iconPath": "static/tab-my.png",
+        "iconPath": "static/tabbar/user.png",
         "selectedIconPath": "static/tab-my-current.png",
         "text": "我的"
       }
