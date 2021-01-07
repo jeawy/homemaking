@@ -12,7 +12,7 @@
 			</view>
 			<view class="list_phone">
 				<image class="uni-img" src="../../static/houseKeeping/phone.png"></image>
-				<input class="uni-input-phone" name="number" v-model="phone"
+				<input class="uni-input-phone" type="number" v-model="phone"
 					maxlength='10' placeholder='请输入电话号码' />
 			</view>
 			<view class="list_dept">
@@ -21,7 +21,7 @@
 					<input class="uni-input" name="input" :disabled='true' placeholder="请选择工种" />
 				</view>
 				<view v-else  class="line">
-					<picker mode="time" @change="bindPickerdept" :value="deptindex" :range="deptarray">
+					<picker class="picker" mode="selector" @change="bindPickerdept" :value="deptindex" :range="deptarray">
 						<view class="uni-dept-input">{{deptarray[deptindex]}}</view>
 					</picker>
 				</view>				
@@ -32,7 +32,7 @@
 					<input class="uni-input" name="input" :disabled='true' placeholder="请选择用工时间" />
 				</view>
 				<view v-else  class="line">
-					<picker mode="time" :value="time" start="00:00" end="24:00" @change="bindTimeChange">
+					<picker class="picker" mode="time" :value="time" start="00:00" end="24:00" @change="bindTimeChange">
 						<view class="uni-time-input">{{time}}</view>
 					</picker>
 				</view>
@@ -44,7 +44,7 @@
 					<input class="uni-input" name="input" :disabled='true' placeholder="请选择您的服务地址" />
 				</view>
 				<view v-else  class="line">
-					<picker mode="time" @change="bindPickeraddress" :value="addreindex" :range="addrearray">
+					<picker class="picker" mode="selector" @change="bindPickeraddress" :value="addreindex" :range="addrearray">
 						<view class="uni-dept-input">{{addrearray[addreindex]}}</view>
 					</picker>
 				</view>
@@ -93,7 +93,7 @@
 				 this.deptindex = e.target.value
 			},
 			bindPickeraddress:function(e){
-				 this.addrearray = e.target.value
+				 this.addreindex = e.target.value
 			},
 			formSubmit: function(e){
 				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
@@ -120,6 +120,9 @@
 	.uni-img{
 		width: 60rpx;
 		height: 60rpx;
+	}
+	.picker{
+		width: 100%;
 	}
 	.list_name{
 		border-bottom: 2rpx solid #f1f1f1;
