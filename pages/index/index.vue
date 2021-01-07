@@ -496,6 +496,7 @@
 					height: 140rpx;
 					width: 100%;
 					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
+					border-radius: 54rpx;
 				}
 				.vip_img_top{
 					z-index: 100;
