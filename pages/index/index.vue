@@ -54,7 +54,11 @@
 					<image class="ads_img" src="../../static/home/RightAdsLocal.png"></image>
 				</view>
 				<!--VIP-->
-				<image class="vip_img" src="../../static/home/MidAdsVip.svg"></image>
+				<view class="vip">
+					<image class="vip_img" src="../../static/home/MidAdsVip.png"></image>
+					<image class="vip_img_top" src="../../static/home/Group.png"></image>
+				</view>
+			
 			</view>
 			<!--分享礼品-->
 			<view class="gift_ads">
@@ -485,12 +489,24 @@
 					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
 				}
 			}
-			.vip_img{
-				position: relative;
-				top: -16rpx;
-				height: 200rpx;
-				width: 100%;
+			.vip{
+				height: 140rpx;
+				margin: 20rpx 40rpx;
+				.vip_img{
+					height: 140rpx;
+					width: 100%;
+					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
+				}
+				.vip_img_top{
+					z-index: 100;
+					position: relative;
+					top: -190rpx;
+					left: -6.6rpx;
+					width: 202rpx;
+					height: 200rpx;
+				}
 			}
+			
 		}
 		.gift_ads{
 			height: 158rpx;
