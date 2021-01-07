@@ -617,29 +617,27 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/tabbar/Home.png",
-        "selectedIconPath": "static/tab-home-current.png",
-        "text": "首页"
+        "iconPath": "static/tabbar/Home2.png",
+        "selectedIconPath": "static/tabbar/homeselected2.png"
+        // "text": "首页"
       },
-	  //#ifdef APP_PLUS || H5 || MP-ALIPAY
       {
         "pagePath": "pages/category/category",
-        "iconPath": "static/tabbar/Find.png",
-        "selectedIconPath": "static/tab-cate-current.png",
-        "text": "找阿姨"
+        "iconPath": "static/tabbar/Find2.png",
+        "selectedIconPath": "static/tabbar/searchselected2.png"
+        // "text": "找阿姨"
       },
-	  //#endif
       {
         "pagePath": "pages/cart/cart",
-        "iconPath": "static/tabbar/shoplisted.png",
-        "selectedIconPath": "static/tab-cart-current.png",
-        "text": "订单"
+        "iconPath": "static/tabbar/shoplisted2.png",
+        "selectedIconPath": "static/tabbar/listselected2.png"
+        // "text": "订单"
       },
       {
         "pagePath": "pages/user/user",
-        "iconPath": "static/tabbar/user.png",
-        "selectedIconPath": "static/tab-my-current.png",
-        "text": "我的"
+        "iconPath": "static/tabbar/user2.png",
+        "selectedIconPath": "static/tabbar/meselected2.png"
+        // "text": "我的"
       }
     ]
   }
