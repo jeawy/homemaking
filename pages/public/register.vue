@@ -72,7 +72,7 @@
 					promoCode: '',
 					nickname: '',
 					code: '',
-					type:1,
+					type:2,
 				},
 				btnLoading: false,
 				reqBody: {},
