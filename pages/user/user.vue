@@ -218,7 +218,7 @@ import listCell from '@/components/rf-list-cell';
             }
 		},
 		onLoad(){
-			console.log(this.userInfo)
+			//console.log(this.userInfo)
 		},
 		async onShow() {
             // 初始化数据
@@ -251,7 +251,7 @@ import listCell from '@/components/rf-list-cell';
                 this.promotionList[1].value = data.promoter && data.promoter.user_brokerage || 0;
                 this.promotionList[2].value = data.promoter && data.promoter.amount_drawn_brokerage || 0;
                 // 更新userInfo缓存
-				console.log(data)
+				//console.log(data)
                 
             },
 			 async getMemberInfo() {
@@ -300,7 +300,7 @@ import listCell from '@/components/rf-list-cell';
 			// 获取足迹列表
             async getFootPrintList() {
                 await this.$http.get(`${footPrintList}`).then(r => {
-					console.log(r.data)
+					//console.log(r.data)
                     this.footPrintList = r.data
                 });
             },
@@ -317,7 +317,7 @@ import listCell from '@/components/rf-list-cell';
 			},
 			// 统一跳转接口,拦截未登录路由
             navTo(route) {
-				console.log(route)
+				//console.log(route)
                 if (!route) {
                     return;
                 }
