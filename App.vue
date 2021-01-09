@@ -11,7 +11,7 @@
             async initData() {
                 const token = uni.getStorageSync('accessToken');
                 if (token) {
-                    await this.initNavCartNum();
+                    // await this.initNavCartNum();
                     // await this.initWebsocket(token);
                     await this.initSystemInfo();
                     // #ifdef H5
@@ -45,7 +45,7 @@
                     }
                 });
             },
-		        // 初始化购物车在tab的数字角标
+		    // 初始化购物车在tab的数字角标
             initNavCartNum() {
                 const cartNum = uni.getStorageSync('cartNum');
                 // 注意text只能是字符串不能是数字

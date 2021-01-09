@@ -121,8 +121,12 @@
 			</view>
 			<!-- 浏览历史 -->
 			<view class="history-section">
-				<list-cell icon="iconlishijilu" iconColor="#5eba8f" @eventClick="navTo('/pages/user/footprint/footprint')"
-				           title="我的足迹"></list-cell>
+				<!-- <list-cell icon="iconlishijilu" iconColor="#FFAB4E" @eventClick="navTo('/pages/user/footprint/footprint')"
+				           title="我的足迹"></list-cell> -->
+				<view class="fct-top" @tap="navTo('/pages/user/footprint/footprint')">
+					<view class="fct-name">我的足迹</view>
+					<image class="arrow-img" src="../../static/my/arrow_right_orange.svg"></image>
+				</view>
 				<view v-if="hasLogin">
 					<scroll-view scroll-x class="h-list" v-if="footPrintList.length > 0">
 						<view class="h-item" v-for="item in footPrintList" :key="item.id">
@@ -224,12 +228,10 @@ import listCell from '@/components/rf-list-cell';
 			async initData() {
             	this.hasLogin = this.$mStore.getters.hasLogin;
                 if (this.hasLogin) {
-					console.log("1111")
                     await this.getMemberInfo();
-                    await this.initCartItemCount();
+                    //await this.initCartItemCount();
                 } else {
                     this.loading = false;
-					console.log("222")
                     this.resetSectionData();
                 }
             },
@@ -257,12 +259,10 @@ import listCell from '@/components/rf-list-cell';
                     this.loading = false;
 					this.userInfo = r.data;
 					uni.setStorageSync('userInfo', r.data);
-					console.log(this.userInfo)
-                    await uni.setStorageSync('cartNum', r.data.cart_num);
+                    //await uni.setStorageSync('cartNum', r.data.cart_num);
                     // 获取足迹列表
                     await this.getFootPrintList();
 					await this.setSectionData(r.data);
-					console.log(this.userInfo)
                 }).catch(() => {
                 	  this.hasLogin = false;
                 	  this.userInfo = {};
@@ -270,7 +270,7 @@ import listCell from '@/components/rf-list-cell';
                     this.loading = false;
                 });
 			},
-			            // 设置购物车数量角标
+			// 设置购物车数量角标
             async initCartItemCount() {
 							if (this.hasLogin && parseInt(uni.getStorageSync('cartNum'), 10) > 0) {
                 await uni.setTabBarBadge({
@@ -282,7 +282,7 @@ import listCell from '@/components/rf-list-cell';
                 uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
 							}
             },
-			 // 清空个人中心的各模块状态
+			// 清空个人中心的各模块状态
             resetSectionData() {
                 uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
                 this.amountList[0].value = 0;
@@ -296,7 +296,8 @@ import listCell from '@/components/rf-list-cell';
                 this.orderSectionList[2].num = 0;
                 this.orderSectionList[3].num = 0;
                 this.orderSectionList[4].num = 0;
-            },// 获取足迹列表
+            },
+			// 获取足迹列表
             async getFootPrintList() {
                 await this.$http.get(`${footPrintList}`).then(r => {
 					console.log(r.data)
@@ -574,11 +575,29 @@ import listCell from '@/components/rf-list-cell';
 		/*我的足迹*/
 		.history-section {
 			width: 690rpx;
-			height: 400rpx;
+			height: 350rpx;
 			margin-top: 30rpx;
 			background: #FFFFFF;
 			box-shadow: 0px 4rpx 8rpx rgba(142, 142, 142, 0.1);
 			border-radius: 8rpx;
+			.fct-top{
+				display: flex;
+				padding-top: 20rpx;
+				padding-bottom: 20rpx;
+				border-bottom:2rpx solid #FFAB4E;
+				.fct-name{
+					padding-left: 20rpx;
+					font-size: 24rpx;
+					line-height: 28rpx;
+					color: #2D2D2D;
+				}
+				.arrow-img{
+					margin-left: 80%;
+					margin-top:8rpx;
+					width:9rpx;
+					height:18rpx;
+				}
+			}
 			.sec-header {
 				display: flex;
 				align-items: center;
