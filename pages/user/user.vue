@@ -52,14 +52,14 @@
 		<view class="user-content">
 			<!--我的订单-->
 			<view class="my-order">
-				<view class="order-top">
+				<view class="order-top" @tap="target('/pages/cart/cart')">
 					<view class="order-name">我的订单</view>
 					<view class="look-order">查看全部订单</view>
 					<image class="order-arrow-img" src="../../static/my/arrow_right_orange.svg"></image>
 				</view>
 				<view class="order-center">
 					<view v-for="(item,index) in orderList" :key="index">
-						<view class="order-center-item">
+						<view class="order-center-item" @tap="target('/pages/cart/cart?tab='+item.index)">
 							<image class="nopay-img" :src="item.image"></image>
 							<view class="order-content">{{item.value}}</view>
 						</view>
@@ -84,7 +84,7 @@
 					<view class="fct-name">常用功能</view>
 				</view>
 				<view class="fct-center">
-					<view class="fct-center-one fct-center-all">
+					<view class="fct-center-one fct-center-all" @tap="navTo('/pages/user/address/address')">
 						<image class="address-img" src="../../static/my/address.svg"></image>
 						<view class="fct-content">常用地址</view>
 					</view>
@@ -119,12 +119,39 @@
 					</view>
 				</view>
 			</view>
+			<!-- 浏览历史 -->
+			<view class="history-section">
+				<list-cell icon="iconlishijilu" iconColor="#5eba8f" @eventClick="navTo('/pages/user/footprint/footprint')"
+				           title="我的足迹"></list-cell>
+				<view v-if="hasLogin">
+					<scroll-view scroll-x class="h-list" v-if="footPrintList.length > 0">
+						<view class="h-item" v-for="item in footPrintList" :key="item.id">
+							<image class="h-item-img" @tap.stop="navTo(`/pages/product/product?id=${item.product.id}`)"
+							       :src="item.product.picture" mode="aspectFill"></image>
+						<view class="h-item-text in2line">{{ item.product.name }}</view>
+						</view>
+					</scroll-view>
+					<view class="no-foot-print" v-else-if="footPrintList.length === 0" @tap="navTo('/pages/product/list')">
+						<i class="iconfont iconshare no-foot-print-icon"/>
+						先去浏览一些吧~
+					</view>
+				</view>
+				<view class="no-foot-print" v-else @tap="navTo('/pages/user/footprint/footprint')">
+					<i class="iconfont iconmima no-foot-print-icon"/>
+					登陆后查看
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
 <script>
 import {footPrintList, memberInfo} from '@/api/userInfo';
+import userinfoVue from './userinfo/userinfo.vue';
+import listCell from '@/components/rf-list-cell';
     export default {
+		components: {
+		    listCell
+		},
         data() {
             return {
 				message:"../../static/my/white_message.svg",
@@ -142,7 +169,7 @@ import {footPrintList, memberInfo} from '@/api/userInfo';
                 promotionList: this.$mConstDataConfig.promotionList,
 				footnum:35,
 				couponum:4,
-				 headImg: this.$mAssetsPath.headImg,
+				headImg: this.$mAssetsPath.headImg,
 				attentList:[
 					{
 						num:2,
@@ -181,7 +208,9 @@ import {footPrintList, memberInfo} from '@/api/userInfo';
 				],
 				userInfo: { // 用户信息
                     promoter: null  // 分销商信息
-                },
+				},
+				hasLogin:true,
+				footPrintList:[]
             }
 		},
 		onLoad(){
@@ -195,10 +224,12 @@ import {footPrintList, memberInfo} from '@/api/userInfo';
 			async initData() {
             	this.hasLogin = this.$mStore.getters.hasLogin;
                 if (this.hasLogin) {
+					console.log("1111")
                     await this.getMemberInfo();
                     await this.initCartItemCount();
                 } else {
                     this.loading = false;
+					console.log("222")
                     this.resetSectionData();
                 }
             },
@@ -268,17 +299,24 @@ import {footPrintList, memberInfo} from '@/api/userInfo';
             },// 获取足迹列表
             async getFootPrintList() {
                 await this.$http.get(`${footPrintList}`).then(r => {
+					console.log(r.data)
                     this.footPrintList = r.data
                 });
             },
 			navTochat(url){
-				console.log(url)
 				uni.navigateTo({
 					url
 				})
 			},
+			// tabbar页面跳转（查看更多）
+			target(url){
+				uni.switchTab({
+					url
+				})				
+			},
 			// 统一跳转接口,拦截未登录路由
             navTo(route) {
+				console.log(route)
                 if (!route) {
                     return;
                 }
@@ -533,6 +571,78 @@ import {footPrintList, memberInfo} from '@/api/userInfo';
 				
 			}
 		}
+		/*我的足迹*/
+		.history-section {
+			width: 690rpx;
+			height: 400rpx;
+			margin-top: 30rpx;
+			background: #FFFFFF;
+			box-shadow: 0px 4rpx 8rpx rgba(142, 142, 142, 0.1);
+			border-radius: 8rpx;
+			.sec-header {
+				display: flex;
+				align-items: center;
+				font-size: $font-base;
+				color: $font-color-dark;
+				.iconfont {
+					color: #5eba8f;
+					margin-right: 16upx;
+					line-height: 40upx;
+				}
+				.content {
+					flex: 1;
+				}
+				.iconyou {
+					font-size: $font-base + 2upx;
+					color: $font-color-base;
+					margin-left: $uni-spacing-row-sm;
+				}
+			}
+			.h-list {
+				white-space: nowrap;
+				padding: 20upx 30upx 0;
+				.h-item {
+					display: inline-block;
+					font-size: $font-sm;
+					color: $font-color-base;
+					width: 160upx;
+					margin-right: 20upx;
+					border-radius: 10upx;
+					.h-item-img {
+						width: 160upx;
+						height: 160upx;
+					}
+					.h-item-text {
+						font-size: $font-sm;
+					}
+				}
+			}
+
+			.no-foot-print {
+				text-align: center;
+				padding: 48upx 0;
+
+				.no-foot-print-icon {
+					color: $base-color;
+					font-size: $font-lg + 2upx;
+					margin-right: 10upx;
+				}
+			}
+
+			.share-btn {
+				height: 102upx;
+				text-align: left;
+				background: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			.share-btn:after {
+				border: none;
+				border-radius: none;
+			}
+		}
 	}
+	
 }
 </style>
