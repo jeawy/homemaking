@@ -53,7 +53,7 @@ export default{
     ],
     data(){
         return{
-			status:0
+			hasLogin:true
         }
     },
     methods:{
@@ -77,6 +77,7 @@ export default{
 			if (!route) {
 		        return;
 			}
+			console.log(this.hasLogin)
 			if (!this.hasLogin) {
 		        uni.showModal({
 		            content: '你暂未登陆，是否跳转登录页面？',
