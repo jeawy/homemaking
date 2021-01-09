@@ -5,7 +5,7 @@
 			<view class="navbar-top">
 				<view class="navbar-top-text">我的订单</view>
 				<view class="navbar-top-img">
-					<image class="search-img" src="/static/order/search.svg"></image>
+					<image class="search-img" @tap="navTo('/pages/index/search/search')" src="/static/order/search.svg"></image>
 					<image class="erji-img" src="/static/order/erji.svg"></image>
 					<image class="message-img" src="/static/order/orange_messages.svg"></image>
 				</view>
@@ -24,11 +24,13 @@
 		<swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
 			<!--全部订单页面-->
 			<swiper-item>
-				<orderCard :orderList="allOrderList"/>
+				<orderCard :orderList="orderList" :productList="productList" 
+				:orderStatus="orderStatus" @getOrderList="getOrderList"/>
 			</swiper-item>
 			<!--待付款订单页面-->
 			<swiper-item>
-				<orderCard :orderList="unPayList"/>
+				<orderCard :orderList="orderList" :productList="productList" 
+				:orderStatus="orderStatus" @getOrderList="getOrderList"/>
 			</swiper-item>
 			<!--进行中订单页面-->
 			<swiper-item class="process-order">
@@ -41,20 +43,23 @@
 			</swiper-item>
 			<!--已完成订单页面-->
 			<swiper-item>
-				<orderCard :orderList="finishedList"/>
+				<orderCard :orderList="orderList" :productList="productList" 
+				:orderStatus="orderStatus" @getOrderList="getOrderList"/>
 			</swiper-item>
 			<!--待评价订单页面-->
 			<swiper-item>
-				<orderCard :orderList="unEvalList"/>
+				<orderCard :orderList="orderList" :productList="productList" 
+				:orderStatus="orderStatus" @getOrderList="getOrderList"/>
 			</swiper-item>
 		</swiper>
-		<!-- <rf-loading v-if="loading"></rf-loading> -->
+		<rf-loading v-if="loading"></rf-loading>
 	</view>
 </template>
 
 <script>
 	import mainCard from '@/components/main-card.vue';
 	import orderCard from '@/components/order-card.vue';
+	import {orderList} from '@/api/userInfo';
 	export default {
 		components: {
 			mainCard,
@@ -86,64 +91,7 @@
 						ispay:1,
 						money:400,
 						num:3
-					},
-					{
-						image:"../../static/order/zhang.svg",
-						name:"艾米",
-						content:"小时工 - 清洁",
-						ispay:0,
-						money:60,
-						num:1
-					},
-					{
-						image:"../../static/order/zhang.svg",
-						name:"张阿姨",
-						content:"包全天家政",
-						ispay:1,
-						money:400,
-						num:2
-					},
-					{
-						image:"../../static/order/zhang.svg",
-						name:"张阿姨",
-						content:"包全天家政",
-						ispay:0,
-						money:400,
-						num:4
-					},
-					{
-						image:"../../static/order/zhang.svg",
-						name:"艾米",
-						content:"小时工 - 清洁",
-						ispay:1,
-						money:60,
-						num:1
-					},{
-						image:"../../static/order/zhang.svg",
-						name:"艾米",
-						content:"小时工 - 清洁",
-						ispay:1,
-						money:60,
-						num:1
-					},{
-						image:"../../static/order/zhang.svg",
-						name:"艾米",
-						content:"小时工 - 清洁",
-						ispay:1,
-						money:60,
-						num:1
 					}
-				],
-				// 未付款订单
-				unPayList:[
-					{
-						image:"../../static/order/zhang.svg",
-						name:"艾米",
-						content:"小时工 - 清洁",
-						ispay:0,
-						money:60,
-						num:1
-					},
 				],
 				// 进行中订单
 				processList:[{
@@ -165,32 +113,20 @@
 					language:['普通话','英语'],
 					type:"包月小时工"
 				}],
-				// 已完成订单
-				finishedList:[
-					{
-						image:"../../static/order/zhang.svg",
-						name:"张阿姨",
-						content:"包全天家政",
-						ispay:1,
-						money:400,
-						num:3
-					}
-				],
-				// 待评价订单
-				unEvalList:[
-					{
-						image:"../../static/order/zhang.svg",
-						name:"张阿姨",
-						content:"包全天家政",
-						ispay:1,
-						money:400,
-						num:3
-					}
-				],
 				loading: true,
+				hasLogin:true,
+				orderList:[],
+				productList:[],
+				page:1,
+				orderStatus:[]
 			};
 		},
 		onShow(){
+			// #ifdef H5 || APP-PLUS
+			this.page = 1;
+			this.orderList.length = 0;
+			this.initData();
+			// #endif
 		},
 		onLoad(options){
 
@@ -198,12 +134,91 @@
 		methods: {
 			// 监听swiper切换
 			changeTab(e){
-				console.log(e.target.current)
 				this.tabCurrentIndex = e.target.current;
+				this.loading = true;
+				this.getOrderList();
 			},
 			// 顶部tab点击
 			tabClick(index){
 				this.tabCurrentIndex = index;
+				this.loading = true;
+				this.getOrderList();
+			},
+			navTo(route){
+				if (!route) {
+                    return;
+				}
+				if (!this.hasLogin) {
+                    uni.showModal({
+                        content: '你暂未登陆，是否跳转登录页面？',
+                        success: (confirmRes) => {
+                            if (confirmRes.confirm) {
+                                this.$mRouter.push({route: '/pages/public/logintype'});
+                            }
+                        }
+                    });
+                } else {
+					this.$mRouter.push({route});
+                }
+			},
+			// 数据初始化
+			initData () {
+				this.getOrderList();
+			},
+			// 订单状态
+			statusformat(status) {
+				switch (status) {
+					case "0":
+						return "待付款";
+					case "1":
+						return "待发货";
+					case "2":
+						return "已发货";
+					case "3":
+						return "已收货";
+					case "4":
+						return "已完成";
+					case "-1":
+						return "退货申请";
+					case "-2":
+						return "退款中";
+					case "-3":
+						return "已退货";
+					case "-4":
+						return "已关闭";
+					case "-5":
+						return "撤销申请";
+				}
+			},
+			// 获取订单列表
+			async getOrderList(type) {
+				this.loading = true;
+				let params = {};
+				let index = this.tabCurrentIndex;
+				if (this.tabCurrentIndex) {
+					params.synthesize_status = index - 1;
+				}
+				params.page = this.page;
+				await this.$http.get(`${orderList}`, params).then(async r => {
+					if (type === 'refresh') {
+						uni.stopPullDownRefresh();
+					}
+					//this.loadingType  = r.data.length === 10 ? 'more' : 'nomore';
+					this.orderList = [ ...r.data ];
+					this.orderList.map(item=>{
+						this.productList.push(item.product[0])
+						this.orderStatus.push(this.statusformat(item.product[0].order_status))
+					})
+					// if (this.orderList.length === 0) {
+				    // await this.getGuessYouLikeList();
+					// }
+					this.loading = false;
+				}).catch(() => {
+					this.loading = false;
+					if (type === 'refresh') {
+						uni.stopPullDownRefresh();
+					}
+				});
 			},
 		}
 	}
@@ -278,101 +293,6 @@ page, .content{
 		.current{
 			color: #ff8d0e;
 			border-bottom:2rpx solid #FF8D0E;
-		}
-	}
-}
-/*订单列表*/
-.order-list {
-	// margin-top:4rpx;
-	// margin-top:216rpx;
-	margin-left:30rpx;
-	.order-item{
-		margin-bottom:20rpx;
-		height: 240rpx;
-		width:690rpx;
-		background-color:#FFFFFF;
-		border-radius: 8rpx;
-		font-family: Tensentype MingSongJ-W4;
-		font-style: normal;
-		font-weight: normal;
-		.order-item-img{
-			position: absolute;
-			border-radius: 8rpx;
-			width:120rpx;
-			height: 120rpx;
-			margin-top:24rpx;
-			margin-left:10rpx
-		}
-		.order-item-name{
-			position: absolute;
-			margin-left: 150rpx;
-			margin-top: 24rpx;
-			width: 72rpx;
-			height: 28rpx;
-			font-size: 24rpx;
-			color: #515151;
-		}
-		.order-item-content{
-			position: absolute;
-			height: 24rpx;
-			margin-left: 150rpx;
-			margin-top: 72rpx;
-			font-size: 20rpx;
-			color: #888888;
-
-		}
-		.order-item-ispay{
-			position: absolute;
-			height: 22rpx;
-			right: 38rpx;
-			margin-top: 30rpx;
-			font-size: 18rpx;
-			color: #FF8D0E;
-		}
-		.activeColor{
-			color: #FF480E;
-		}
-		.order-item-money{
-			position: absolute;
-			height: 24rpx;
-			right: 44rpx;
-			margin-top: 72rpx;
-			font-size: 20rpx;
-			color: #515151;
-		}
-		.order-item-num{
-			position: absolute;
-			width: 26rpx;
-			height: 24rpx;
-			right: 38rpx;
-			margin-top: 96rpx;
-			font-size: 20rpx;
-			color: #888888;
-		}
-		.order-item-price{
-			position: absolute;
-			height: 28rpx;
-			right: 40rpx;
-			margin-top: 140rpx;
-			font-size: 24rpx;		
-			color: #515151;
-		}
-		.order-item-side{
-			position: absolute;
-			color: #FF8D0E;
-			display: flex;
-			flex-wrap: wrap;
-			margin-top:188rpx;
-			// padding-left: 258rpx;
-			right: 40rpx;
-			.btn{
-				margin-left:20rpx;
-				font-size: 20rpx;
-				padding: 8rpx 22rpx;
-				border: 2rpx solid #FF8D0E;
-				box-sizing: border-box;
-				border-radius: 4rpx;
-			}
 		}
 	}
 }

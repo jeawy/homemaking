@@ -4,50 +4,95 @@
             class="list-scroll-content"
             scroll-y
         >
-            <view class="order-list">
+            <view class="order-list" v-if="orderList.length>0">
                 <view
                     class="order-item"
                     v-for="(item, index) in orderList"
                     :key="index"
                 >
-                    <image class="order-item-img" :src="item.image"></image>
-                    <view class="order-item-name">{{item.name}}</view>
+                    <image class="order-item-img" :src="productList[index].product_picture"></image>
+                    <view class="order-item-name">{{productList[index].product_name}}</view>
                     <view class="order-item-content">{{item.content}}</view>
                     <view class="order-item-ispay" 
-                        :class="{activeColor: item.ispay==0}">
-                        {{item.ispay==0?"未付款":"已付款"}}
+                        :class="{activeColor: productList[index].order_status==0}">
+                        {{orderStatus[index]}}
                     </view>
-                    <view class="order-item-money">${{item.money}}</view>
-                    <view class="order-item-num">x{{item.num}}</view>
+                    <view class="order-item-money">${{item.pay_money}}</view>
+                    <view class="order-item-num">x{{item.product_count}}</view>
                     <view class="order-item-price">
                         总价
-                    <span style="color:#FF8D0E;font-size:20rpx">${{item.money * item.num}}</span>
+                    <span style="color:#FF8D0E;font-size:20rpx">${{item.pay_money * item.product_count}}</span>
                     </view>
                     <view class="order-item-side">
-                        <view class="btn">删除订单</view>
+                        <view class="btn" @tap="deleteOrder(item.id)">删除订单</view>
                         <view class="btn">申请单据</view>
-                        <view class="btn">发表评论</view>
+						<view @tap="navTo('/pages/order/evaluation/evaluation')">
+							<view v-if="item.is_evaluate==0">
+								<view class="btn">发表评论</view>
+							</view>
+							<view v-else>
+								<view class="btn">已评论</view>
+							</view>
+						</view>
                     </view>
                 </view>
             </view>
+			<view class="process-order" v-else>
+				<image class="process-img" src="/static/order/order.svg"></image>
+				<view class="process-text">您还没有相关的订单哦</view>
+			</view>
         </scroll-view>
     </view>
 </template>
 
 <script>
+import {orderDelete} from '@/api/userInfo';
 export default{
     props:[
-        "orderList"
+        "orderList","productList","orderStatus"
     ],
     data(){
         return{
+			status:0
         }
     },
     methods:{
-        
-    },
+		deleteOrder(id) {
+			uni.showModal({
+				content: '确定要删除该订单吗',
+				success: (e) => {
+					if (e.confirm) {
+						    this.$http.delete(`${orderDelete}?id=${id}`, {}).then(() => {
+							this.$mHelper.toast('订单删除成功');
+							setTimeout(() => {
+								// 调用父组件的方法
+								this.$emit('getOrderList');
+							}, 500)
+						})
+					}
+				}
+			})
+		},
+		navTo(route){
+			if (!route) {
+		        return;
+			}
+			if (!this.hasLogin) {
+		        uni.showModal({
+		            content: '你暂未登陆，是否跳转登录页面？',
+		            success: (confirmRes) => {
+		                if (confirmRes.confirm) {
+		                    this.$mRouter.push({route: '/pages/public/logintype'});
+		                }
+		            }
+		        });
+		    } else {
+				this.$mRouter.push({route});
+		    }
+		},
+	},
     onLoad() {
-        console.log(orderList)
+        console.log(productList)
     }
 }
 </script>
@@ -86,7 +131,6 @@ export default{
 			position: absolute;
 			margin-left: 150rpx;
 			margin-top: 24rpx;
-			width: 72rpx;
 			height: 28rpx;
 			font-size: 24rpx;
 			color: #515151;
@@ -103,7 +147,8 @@ export default{
 		.order-item-ispay{
 			position: absolute;
 			height: 22rpx;
-			right: 38rpx;
+			// right: 38rpx;
+			right:44rpx;
 			margin-top: 30rpx;
 			font-size: 18rpx;
 			color: #FF8D0E;
@@ -153,6 +198,31 @@ export default{
 				border-radius: 4rpx;
 			}
 		}
+	}
+}
+/*进行中列表*/
+.process-order{
+	.process-img{
+		width:232rpx;
+		height:284rpx;
+		margin-left: 34.67%;
+		margin-top: 100rpx;
+	}
+	.process-text{
+		margin-left: 36.8%;
+		margin-top: 28rpx;
+		font-size: 20rpx;
+		line-height: 24rpx;
+		color: #888888;
+
+	}
+	.process-tip{
+		margin-left: 36.8%;
+		margin-top: 100rpx;
+		margin-bottom: 20rpx;
+		font-size: 20rpx;
+		line-height: 24rpx;
+		color: #363636;
 	}
 }
 </style>
