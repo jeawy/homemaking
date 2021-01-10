@@ -1,7 +1,12 @@
 <template>
 	<view class="notice">
-		<view class="listitem" v-for="(item, index) in noticelst" :key="index" @touchstart="touchSlideStart($event,index)"
-		 @touchend="touchSlideEnd($event,index)" @touchmove="touchSlideMove($event,index)" :style="{transform:'translate3d('+item.slide_x+'px, 0, 0)'}">
+		<view class="listitem" 
+			v-for="(item, index) in noticelst" 
+			:key="index" 
+			@touchstart="touchSlideStart($event,index)"
+			 @touchend="touchSlideEnd($event,index)" 
+			 @touchmove="touchSlideMove($event,index)" 
+			 :style="{transform:'translate3d('+item.slide_x+'px, 0, 0)'}">
 			<view class="detail" :style="{minWidth: screenWidth+'px'}" @tap="target('/pages/track/detail?id='+item.id)">
 				<view class="left">
 					<image class="icon_dian" :src='item.src'></image>
