@@ -7,7 +7,7 @@
 				<view class="location_text">西安</view>
 				<image class="location_img" src="../../static/home/City.svg"></image>		
 			</view>
-			<view class="notice">
+			<view class="notice" @tap="navTo('/pages/user/notice/notice')">
 				<image class="notice_img" src="../../static/home/Notification.svg"></image>
 			</view>
 		</view>	
@@ -229,10 +229,10 @@
        //          uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
 							// }
        //      },
-       //      // 通用跳转
-       //      navTo(route) {
-       //          this.$mRouter.push({route});
-       //      },
+            // 通用跳转
+            navTo(route) {
+                this.$mRouter.push({route});
+            },
        //      // 通用跳转
        //      navToSearch() {
        //          this.$mRouter.push({route: `/pages/index/search/search?data=${JSON.stringify(this.search)}`});

@@ -12,7 +12,7 @@
 			   <input class="search_input" placeholder="搜索关键字"/>
 			   <image class="search_talk" src="/static/houseKeeping/microphone.svg"></image>  
 		  </view>
-		  <view class="notice">
+		  <view class="notice" @tap="navTo('/pages/user/notice/notice')">
 				<image class="notice_img" src="/static/home/Notification.svg"></image>	  
 		  </view>
 		</view>
@@ -358,6 +358,10 @@
 			// }
 		},
 		methods: {
+			// 通用跳转
+            navTo(route) {
+                this.$mRouter.push({route});
+            },
 			// 定位搜索
 			positionSearch(){
 				this.cityVisiable = !this.cityVisiable

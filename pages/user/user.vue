@@ -5,7 +5,7 @@
 			<view class="setting">
 			   <image class="setting_img" src="/static/my/set.svg"></image>  
 			</view>
-			<view class="notice">
+			<view class="notice" @tap="navTo(userInfo ? '/pages/user/notice/notice' : 'login')">
 				<image class="notice_img" src="/static/my/white_message.svg"></image>	  
 			</view>
 		</view>

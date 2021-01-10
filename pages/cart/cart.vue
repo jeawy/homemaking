@@ -7,7 +7,8 @@
 				<view class="navbar-top-img">
 					<image class="search-img" @tap="navTo('/pages/index/search/search')" src="/static/order/search.svg"></image>
 					<image class="erji-img" src="/static/order/erji.svg"></image>
-					<image class="message-img" src="/static/order/orange_messages.svg"></image>
+					<image @tap="navTo('/pages/user/notice/notice')"
+					 class="message-img" src="/static/order/orange_messages.svg"></image>
 				</view>
 			</view>
 			<view class="navbar-bottom">
