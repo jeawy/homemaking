@@ -276,6 +276,13 @@
 	  "style": {
 	    "navigationBarTitleText": "在线客服"
 	  }
+	},
+	//消息界面
+	{
+	  "path": "pages/user/notice/notice",
+	  "style": {
+	    "navigationBarTitleText": "消息"
+	  }
 	}
 	
   ],
