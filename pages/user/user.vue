@@ -117,6 +117,10 @@
 						<image class="user-img" src="../../static/my/userdocument.svg"></image>
 						<view class="fct-content">用户协议</view>
 					</view>
+					<view class="fct-center-eight fct-center-all" @tap="navTo('/pages/user/my-appointment/index')">
+						<image class="user-img" src="../../static/my/userdocument.svg"></image>
+						<view class="fct-content">我的预约</view>
+					</view>
 				</view>
 			</view>
 			<!-- 浏览历史 -->

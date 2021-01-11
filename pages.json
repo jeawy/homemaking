@@ -283,9 +283,18 @@
 	  "style": {
 	    "navigationBarTitleText": "消息"
 	  }
-	}
-	
-  ],
+	},
+	// 个人中心 => 我的预约
+	{
+		"path" : "pages/user/my-appointment/index",
+		"style" :                                                                                    
+		{
+			"navigationBarTitleText": "我的预约",
+			"enablePullDownRefresh": false
+		}
+            
+        }
+    ],
   "subPackages": [
     // 设置
     {
