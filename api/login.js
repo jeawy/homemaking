@@ -7,7 +7,7 @@
  */
 
 // 密码注册
-const registerByPass = '/tiny-shop/v1/site/register';
+const registerByPass = '/users/register/';
 
 // 密码登录
 // const loginByPass = '/tiny-shop/v1/site/login';

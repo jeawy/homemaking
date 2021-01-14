@@ -12,13 +12,13 @@
 			<view class="input-content">
 				<view class="input-item">
 					<text class="tit">手机号码</text>
-					<input type="number" v-model="registerParams.mobile" placeholder="请输入手机号码" maxlength="11" />
+					<input type="number" v-model="registerParams.phone" placeholder="请输入手机号码" maxlength="11" />
 				</view>
 				<view class="input-item input-item-sms-code">
 					<view class="input-wrapper">
 						<view class="rf-input-wrapper">
 							<view class="tit">验证码</view>
-							<input type="number" v-model="registerParams.code" placeholder="请输入验证码" maxlength="4" data-key="mobile" />
+							<input type="number" v-model="registerParams.code" placeholder="请输入验证码" maxlength="4" data-key="phone" />
 						</view>
 						<button class="sms-code-btn" :disabled="smsCodeBtnDisabled" @tap.stop="getSmsCode">
 							<text v-if="!smsCodeBtnDisabled">获取验证码</text>
@@ -37,12 +37,12 @@
 				</view>
 				<view class="input-item">
 					<text class="tit">昵称</text>
-					<input type="text" v-model="registerParams.nickname" placeholder="请输入您的昵称" maxlength="12" />
+					<input type="text" v-model="registerParams.username" placeholder="请输入您的昵称" maxlength="12" />
 				</view>
-				<view class="input-item">
+				<!-- <view class="input-item">
 					<text class="tit">邀请码</text>
 					<input type="text" v-model="registerParams.promoCode" placeholder="请输入您的邀请码" />
-				</view>
+				</view> -->
 			</view>
 			<button class="confirm-btn" :disabled="btnLoading" :loading="btnLoading" @tap="toRegister">注册</button>
 		</view>
@@ -66,11 +66,11 @@
 		data() {
 			return {
 				registerParams: {
-					mobile: '',
+					phone: '',
 					password: '',
 					password_repetition: '',
 					promoCode: '',
-					nickname: '',
+					username: '',
 					code: '',
 					type:2,
 				},
@@ -105,14 +105,14 @@
 			},
 			// 获取手机验证码
 			getSmsCode() {
-				this.reqBody['mobile'] = this.registerParams['mobile'];
+				this.reqBody['phone'] = this.registerParams['phone'];
 				let checkSendCode = this.$mGraceChecker.check(this.reqBody, this.$mFormRule.sendCodeRule);
 				if (!checkSendCode) {
 					this.$mHelper.toast(this.$mGraceChecker.error);
 					return;
 				}
 				this.$http.post(smsCode, {
-					mobile: this.registerParams.mobile,
+					phone: this.registerParams.phone,
 					usage: 'register'
 				}).then(r => {
 					this.$mHelper.toast(`验证码发送成功, 验证码是${r.data}`);
@@ -135,10 +135,10 @@
 			},
 			// 注册账号
 			async toRegister() {
-				this.reqBody['mobile'] = this.registerParams['mobile'];
+				this.reqBody['phone'] = this.registerParams['phone'];
 				this.reqBody['password'] = this.registerParams['password'];
 				this.reqBody['code'] = this.registerParams['code'];
-				this.reqBody['nickname'] = this.registerParams['nickname'];
+				this.reqBody['username'] = this.registerParams['username'];
 				const cheRes = this.$mGraceChecker.check(this.reqBody, this.$mFormRule.registerRule);
 				if (!cheRes) {
 					this.$mHelper.toast(this.$mGraceChecker.error);
@@ -148,23 +148,11 @@
 					this.$mHelper.toast('两次输入的密码不一致');
 					return;
 				}
-				this.reqBody['password_repetition'] = this.registerParams['password_repetition'];
-				this.reqBody['promoCode'] = this.registerParams['promoCode'];
-				this.reqBody['type'] = this.registerParams['type'];
-				/*  #ifdef  APP-PLUS  */
-				this.reqBody.group = 'tinyShopApp'
-				/*  #endif  */
-				/*  #ifdef H5  */
-				this.reqBody.group = 'tinyShopH5'
-				/*  #endif  */
-				/*  #ifdef  MP-WEIXIN  */
-				this.reqBody.group = 'tinyShopWechatMq'
-				/*  #endif  */
-				/*  #ifdef  MP-QQ  */
-				this.reqBody.group = 'tinyShopQqMq'
-				/*  #endif  */
+				// this.reqBody['password_repetition'] = this.registerParams['password_repetition'];
+				
 				this.btnLoading = true;
 				await this.$http.post(registerByPass, this.reqBody).then(() => {
+					// console.log("注册界面")
 					this.btnLoading = false;
 					this.$mHelper.toast('恭喜您注册成功');
 					this.$mRouter.push({

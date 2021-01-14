@@ -236,7 +236,7 @@ import listCell from '@/components/rf-list-cell';
                 if (this.hasLogin) {
                     // await this.getMemberInfo();
 					//await this.initCartItemCount();
-					console.log(this.$mStore.state.userInfo)
+					// console.log(this.$mStore.state.userInfo)
 					this.userInfo = this.$mStore.state.userInfo
                 } else {
                     this.loading = false;

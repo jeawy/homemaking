@@ -98,12 +98,13 @@ export default {
 			checkType: 'string',
 			checkRule: '6,18',
 			errorMsg: '请输入6-18位密码'
-		}, {
-			name: 'nickname',
-			checkType: 'string',
-			checkRule: '2,12',
-			errorMsg: '请输入2-12位昵称'
-		}
+		},
+		//  {
+		// 	name: 'username',
+		// 	checkType: 'string',
+		// 	checkRule: '2,12',
+		// 	errorMsg: '请输入2-12位昵称'
+		// }
 	],
 
 	/* 密码重置 */
