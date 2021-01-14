@@ -4,6 +4,8 @@
  *@blog https://stavtop.club
  *@date 2019/11/18 13:57:54
  */
+// 找阿姨列表
+const categoryList = '/product/productsapi/';
 // 首页列表
 const indexList = '/tiny-shop/v1/index/index';
 // 产品分类列表
@@ -66,6 +68,7 @@ const discountProductIndex= '/tiny-shop/v1/marketing/discount-product/index';
 
 
 export {
+    categoryList,
     indexList,
     productCate,
     productCateList,

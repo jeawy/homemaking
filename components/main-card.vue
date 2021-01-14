@@ -3,26 +3,29 @@
 	<!-- <view> -->
 		<!-- <view class="card_contant" > -->
 			<view class="card"  @tap="navTo(`/pages/product/product?info=${info}`)">
-				<view class="card_top">
-					<image class="card_img" :src="info.imgsrc"></image>
+				<!-- <view class="card_top" v-if="info.thumbnail_portait != null">
+					<image class="card_img" :src="baseurl+info.thumbnail_portait?info.thumbnail_portait:imgsrc"></image>
+				</view>				 -->
+				<view class="card_top" >
+					<image class="card_img" :src="imgsrc"></image>
 				</view>				
 				<view class="card_text">
-					<view class="name">{{info.name}}</view>
+					<view class="name">{{info.username}}</view>
 					<view class="text_middle">
 						<text class="middle-text">{{info.age}}岁</text>
 						<image class="sex_img" src="../static/women.svg"></image>
-						<text class="middle-text">{{info.position}}</text>
+						<text class="middle-text">{{info.nation}}</text>
 						<span class="line">|</span>
-						<text class="middle-text">从业{{info.time}}年</text>
+						<text class="middle-text">从业{{info.workyears}}年</text>
 					</view>
 					<view class="language">
-						<text class="language-text">{{info.language[0]}}</text>
+						<text class="language-text">{{info.languages}}</text>
 						<span class="line">|</span>
-						<text class="language-text">{{info.language[1]}}</text>
+						<text class="language-text">{{info.languages}}</text>
 					</view>
 				</view>
 				<view class="card_bottom">
-					<view class="bottom_left">{{info.type}}</view>
+					<view class="bottom_left">{{info.category}}</view>
 					<view class="bottom_button">
 						<text class="button_text">预约面试</text>
 					</view>
@@ -38,7 +41,8 @@
 		],
 		data(){
 			return{
-				
+				baseurl:"",
+				imgsrc:"/static/people.svg",
 			}
 		},
 		methods:{
@@ -48,6 +52,7 @@
 			},
 		},
 		onLoad() {
+			this.baseurl = this.$mStore.state.BaseUrl
 		}
 	}
 </script>
