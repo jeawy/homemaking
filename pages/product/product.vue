@@ -1,6 +1,6 @@
 <template>
 	<view class="product">
-		<view class="detail" v-if="productDetail.name">
+		<view class="detail" v-if="productDetail.username">
 			<!--顶部商品轮播图-->
 			<view class="carousel">
 				<!-- <swiper indicator-dots circular=true duration="400"> -->
@@ -9,17 +9,17 @@
 						<image :src="productDetail.imgsrc" class="loaded" mode="aspectFill"></image>
 					</view>
 					<view class="card_text">
-						<view class="name">{{productDetail.name}}</view>
+						<view class="name">{{productDetail.username}}</view>
 						<view class="text_middle">
 							<text class="middle-text">{{productDetail.age}}岁</text>
 							<image class="sex_img" src="/static/women.svg"></image>
 							<span class="line">|</span>
-							<text class="middle-text">从业{{productDetail.time}}年</text>
+							<text class="middle-text">从业{{productDetail.workyears}}年</text>
 						</view>
 						<view class="language">
-							<text class="language-text">{{productDetail.language[0]}}</text>
+							<text class="language-text">{{productDetail.language}}</text>
 							<span class="line">|</span>
-							<text class="language-text">{{productDetail.language[1]}}</text>
+							<text class="language-text">{{productDetail.language}}</text>
 						</view>
 					</view>
 				<!-- </swiper-item> -->
@@ -280,20 +280,20 @@
 				<view class="info-header">
 					<text>个人信息</text>
 				</view>
-				<rich-text :nodes="productDetail.intro | formatRichText"></rich-text>
+				<rich-text :nodes="productDetail.detail | formatRichText"></rich-text>
 			</view>
-			<view class="detail-info">
+			<!-- <view class="detail-info">
 				<view class="info-header">
 					<text>工作履历</text>
 				</view>
-				<rich-text :nodes="productDetail.intro | formatRichText"></rich-text>
+				<rich-text :nodes="productDetail.detail | formatRichText"></rich-text>
 			</view>
 			<view class="detail-desc">
 				<view class="d-header">
 					<text>培训记录</text>
 				</view>
-				<rich-text :nodes="productDetail.intro | formatRichText"></rich-text>
-			</view>
+				<rich-text :nodes="productDetail.detail | formatRichText"></rich-text>
+			</view> -->
 			<!-- 底部操作菜单 -->
 			<view class="new_page-bottom">
 				<!-- <navigator url="/pages/index/index" open-type="switchTab" class="p-b-btn">
@@ -331,16 +331,16 @@
 			</view>
 		</view>
 		<!-- 404页面 -->
-		<!-- <view v-if="!productDetail.name && !loading">
+		<view v-if="!productDetail.username && !loading">
 			<rf-no-data :custom="true">
 				<view class="no-data-title">
 					{{ errorInfo || '暂无数据' }}
 				</view>
 				<view @tap="getProductDetail(productDetail.id)" slot="refresh" class="spec-color">重新加载</view>
 			</rf-no-data>
-		</view> -->
-		<!--页面加载动画-->
-		<!-- <rf-loading v-if="loading"></rf-loading> -->
+		</view>
+		<!-- 页面加载动画 -->
+		<rf-loading v-if="loading"></rf-loading>
 	</view>
 </template>
 
@@ -355,7 +355,8 @@
 	import {
 		cartItemCount,
 		cartItemCreate,
-		productDetail
+		productDetail,
+		categoryList
 	} from '@/api/product';
 	import rfNumberBox from '@/components/rf-number-box';
 	import {
@@ -480,7 +481,7 @@
 		// 	}
 		// },
 		async onLoad(options) {
-			// this.initData(options);
+			this.initData(options.id);
 			// //规格 默认选中第一条
 			// this.specList.forEach(item => {
 			// 	for (let cItem of this.specChildList) {
@@ -500,14 +501,14 @@
 				topic_id: this.product_id
 			}).then(() => {
 				return {
-					title: this.productDetail.name,
+					title: this.productDetail.username,
 					path: '/pages/product/product?id=' + this.product_id
 				}
 			})
 			// #endif
 			// #ifdef MP-QQ
 			return {
-				title: this.productDetail.name,
+				title: this.productDetail.username,
 				path: '/pages/product/product?id=' + this.product_id
 			}
 			// #endif
@@ -570,47 +571,47 @@
 				this.cartCount = data.number;
 			},
 			// 数据初始化
-			async initData(id) {
+			async initData(productid) {
 				this.hasLogin = this.$mStore.getters.hasLogin;
 				this.cartNum = uni.getStorageSync('cartNum');
-				this.productDetail.id = id;
-				await this.getProductDetail(id);
+				this.productDetail.id = productid;
+				await this.getProductDetail(productid);
 			},
 			// 获取产品详情
-			async getProductDetail(id) {
-				await this.$http.get(`${productDetail}`, {
-					id
+			async getProductDetail(productid) {
+				await this.$http.get(`${categoryList}`, {
+					productid
 				}).then(async r => {
 					this.loading = false;
-					this.productDetail = r.data;
-					console.log(r)
-					this.evaluateList = await r.data.evaluate;
-					this.favorite = this.productDetail.myCollect ? true : false;
-					this.specList = this.productDetail.base_attribute_format
-					this.specList.forEach(item => {
-						this.specChildList = [...this.specChildList, ...item.value]
-					});
+					this.productDetail = r.msg;
+					// console.log(r)
+					// this.evaluateList = await r.data.evaluate;
+					// this.favorite = this.productDetail.myCollect ? true : false;
+					// this.specList = this.productDetail.base_attribute_format
+					// this.specList.forEach(item => {
+					// 	this.specChildList = [...this.specChildList, ...item.value]
+					// });
 					/**
 					 * 修复选择规格存储错误
 					 * 将这几行代码替换即可
 					 * 选择的规格存放在specSelected中
 					 */
-					this.specSelected = [];
-					r.data.base_attribute_format.forEach(item => {
-						item.value[0].selected = true
-						this.specSelected.push(item.value[0]);
-					});
-					let skuStr = [];
-					this.specSelected.forEach(item => {
-						skuStr.push(item.base_spec_value_id)
-					})
-					this.productDetail.sku.forEach(item => {
-						if (item.data === skuStr.join('-')) {
-							this.currentStock = item.stock;
-							this.currentSkuPrice = item.price;
-							return;
-						}
-					})
+					// this.specSelected = [];
+					// r.data.base_attribute_format.forEach(item => {
+					// 	item.value[0].selected = true
+					// 	this.specSelected.push(item.value[0]);
+					// });
+					// let skuStr = [];
+					// this.specSelected.forEach(item => {
+					// 	skuStr.push(item.base_spec_value_id)
+					// })
+					// this.productDetail.sku.forEach(item => {
+					// 	if (item.data === skuStr.join('-')) {
+					// 		this.currentStock = item.stock;
+					// 		this.currentSkuPrice = item.price;
+					// 		return;
+					// 	}
+					// })
 				}).catch(err => {
 					this.loading = false;
 					this.errorInfo = err;

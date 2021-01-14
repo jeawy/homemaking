@@ -2,7 +2,7 @@
 	<!-- 卡片 -->	
 	<!-- <view> -->
 		<!-- <view class="card_contant" > -->
-			<view class="card"  @tap="navTo(`/pages/product/product?info=${info}`)">
+			<view class="card"  @tap="navTo(`/pages/product/product?id=${info.id}`)">
 				<!-- <view class="card_top" v-if="info.thumbnail_portait != null">
 					<image class="card_img" :src="baseurl+info.thumbnail_portait?info.thumbnail_portait:imgsrc"></image>
 				</view>				 -->
