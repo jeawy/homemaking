@@ -57,47 +57,47 @@ async function handleRefreshToken(refresh_token) {
 	});
 }
 http.interceptor.response(async (response) => { /* 请求之后拦截器 */
-	switch (response.data.code) {
+	switch (response.statusCode) {
 		case 200:
 			return response.data;
 		case 400:
 			mHelper.toast('错误的请求');
 			return Promise.reject(response.data.message);
 			break;
-		case 401:
-			isRefreshing = false;
-			// refreshToken 的返回状态为401
-			if (response.config.url === refreshToken) {
-				uni.removeStorageSync('accessToken');
-				mHelper.backToLogin();
-				throw response.data.message;
-				break;
-			} else {
-				// 如果refreshToken为空 则直接跳转登录
-				if (!store.state.refreshToken) {
-					mHelper.backToLogin();
-					throw response.data.message;
-				} else {
-					// isRefreshing同一个页面只执行一次
-					if (!isRefreshing) {
-						isRefreshing = true;
-						// 刷新token
-						await handleRefreshToken(store.state.refreshToken, response);
-						requests.forEach(cb => cb());
-						requests = [];
-						isRefreshing = false
-						return http.request(response.config);
-					} else {
-						return new Promise((resolve) => {
-							// 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
-							requests.push(() => {
-								resolve(http.request(response.config));
-							})
-						})
-					}
-				}
-			}
-			break;
+		// case 401:
+		// 	isRefreshing = false;
+		// 	// refreshToken 的返回状态为401
+		// 	if (response.config.url === refreshToken) {
+		// 		uni.removeStorageSync('accessToken');
+		// 		mHelper.backToLogin();
+		// 		throw response.data.message;
+		// 		break;
+		// 	} else {
+		// 		// 如果refreshToken为空 则直接跳转登录
+		// 		if (!store.state.refreshToken) {
+		// 			mHelper.backToLogin();
+		// 			throw response.data.message;
+		// 		} else {
+		// 			// isRefreshing同一个页面只执行一次
+		// 			if (!isRefreshing) {
+		// 				isRefreshing = true;
+		// 				// 刷新token
+		// 				await handleRefreshToken(store.state.refreshToken, response);
+		// 				requests.forEach(cb => cb());
+		// 				requests = [];
+		// 				isRefreshing = false
+		// 				return http.request(response.config);
+		// 			} else {
+		// 				return new Promise((resolve) => {
+		// 					// 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
+		// 					requests.push(() => {
+		// 						resolve(http.request(response.config));
+		// 					})
+		// 				})
+		// 			}
+		// 		}
+		// 	}
+		// 	break;
 		case 405:
 			mHelper.toast('当前操作不被允许');
 			return Promise.reject(response.data.message);

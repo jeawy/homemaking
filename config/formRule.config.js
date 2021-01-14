@@ -8,12 +8,12 @@
 export default {
 	/* 用户密码登录 */
 	loginByPassRule: [{
-		name: 'mobile',
+		name: 'phone',
 		checkType: 'notnull',
 		checkRule: '',
 		errorMsg: '手机号不能为空'
 	},{
-		name: 'mobile',
+		name: 'phone',
 		checkType: 'phoneno',
 		checkRule: '',
 		errorMsg: '手机号格式不正确'
@@ -26,12 +26,12 @@ export default {
 
 	/* 用户验证码登录 */
 	loginByCodeRule: [{
-		name: 'mobile',
+		name: 'phone',
 		checkType: 'notnull',
 		checkRule: '',
 		errorMsg: '手机号不能为空'
 	}, {
-		name: 'mobile',
+		name: 'phone',
 		checkType: 'phoneno',
 		checkRule: '',
 		errorMsg: '手机号格式不正确'
@@ -44,12 +44,12 @@ export default {
 
 	/* 发送验证码验证手机号 */
 	sendCodeRule: [{
-		name: 'mobile',
+		name: 'phone',
 		checkType: 'notnull',
 		checkRule: '',
 		errorMsg: '手机号不能为空'
 	}, {
-		name: 'mobile',
+		name: 'phone',
 		checkType: 'phoneno',
 		checkRule: '',
 		errorMsg: '手机号格式不正确'
@@ -79,12 +79,12 @@ export default {
 
 	/* 用户注册 */
 	registerRule: [{
-		name: 'mobile',
+		name: 'phone',
 		checkType: 'notnull',
 		checkRule: '',
 		errorMsg: '手机号不能为空'
 	}, {
-			name: 'mobile',
+			name: 'phone',
 			checkType: 'phoneno',
 			checkRule: '',
 			errorMsg: '手机号格式不正确'
@@ -108,12 +108,12 @@ export default {
 
 	/* 密码重置 */
 	resetPasswordRule: [{
-		name: 'mobile',
+		name: 'phone',
 		checkType: 'notnull',
 		checkRule: '',
 		errorMsg: '手机号不能为空'
 	}, {
-			name: 'mobile',
+			name: 'phone',
 			checkType: 'phoneno',
 			checkRule: '',
 			errorMsg: '手机号格式不正确'
