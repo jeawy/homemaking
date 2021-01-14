@@ -15,20 +15,20 @@
 				<!--用户头像-->
 				<view class="portrait_bg">
 					<image class="portrait"
-						:src="userInfo.head_portrait || headImg"></image>
+						:src="userInfo.thumbnail_portait || headImg"></image>
 				</view>
 				 
 				<!--账户信息-->
 				<view class="account-info">
 					<view class="username">
 						<text>
-							{{ userInfo.realname || userInfo.nickname|| userInfo.username ||'请先登录'}}
+							{{ userInfo.username || userInfo.phone||'请先登录'}}
 						</text>
 						<image class="sign"
 							:src="account_sign"></image>
 					</view>
 					<text class="account">
-						账号：{{ userInfo.mobile  }} 
+						账号：{{ userInfo.phone  }} 
 					</text>
 				</view>
 				<!--右箭头-->
@@ -222,7 +222,8 @@ import listCell from '@/components/rf-list-cell';
             }
 		},
 		onLoad(){
-			//console.log(this.userInfo)
+			// 
+			// this.userInfo = this.$mStore.state.userInfo
 		},
 		async onShow() {
             // 初始化数据
@@ -230,10 +231,13 @@ import listCell from '@/components/rf-list-cell';
         },
         methods: {
 			async initData() {
-            	this.hasLogin = this.$mStore.getters.hasLogin;
+				this.hasLogin = this.$mStore.getters.hasLogin;
+				console.log(this.hasLogin)
                 if (this.hasLogin) {
-                    await this.getMemberInfo();
-                    //await this.initCartItemCount();
+                    // await this.getMemberInfo();
+					//await this.initCartItemCount();
+					console.log(this.$mStore.state.userInfo)
+					this.userInfo = this.$mStore.state.userInfo
                 } else {
                     this.loading = false;
                     this.resetSectionData();
