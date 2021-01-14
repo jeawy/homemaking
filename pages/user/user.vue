@@ -15,7 +15,7 @@
 				<!--用户头像-->
 				<view class="portrait_bg">
 					<image class="portrait"
-						:src="userInfo.thumbnail_portait || headImg"></image>
+						:src="baseurl+userInfo.portrait || headImg"></image>
 				</view>
 				 
 				<!--账户信息-->
@@ -218,12 +218,18 @@ import listCell from '@/components/rf-list-cell';
                     promoter: null  // 分销商信息
 				},
 				hasLogin:true,
-				footPrintList:[]
+				footPrintList:[],
+				baseurl:""
             }
 		},
 		onLoad(){
 			// 
-			// this.userInfo = this.$mStore.state.userInfo
+			this.userInfo = this.$mStore.state.userInfo
+			this.baseurl = this.$mStore.state.BaseUrl
+			console.log(this.$mStore.state.userInfo)
+			console.log(this.baseurl)
+			console.log(this.userInfo.portrait)
+			console.log(this.baseurl + this.userInfo.portrait)
 		},
 		async onShow() {
             // 初始化数据
@@ -232,11 +238,9 @@ import listCell from '@/components/rf-list-cell';
         methods: {
 			async initData() {
 				this.hasLogin = this.$mStore.getters.hasLogin;
-				console.log(this.hasLogin)
                 if (this.hasLogin) {
                     // await this.getMemberInfo();
 					//await this.initCartItemCount();
-					// console.log(this.$mStore.state.userInfo)
 					this.userInfo = this.$mStore.state.userInfo
                 } else {
                     this.loading = false;
