@@ -138,7 +138,7 @@
             <view class="django_button">
               <view
                 class="django_text"
-                @tap="selectOne(index, item)"
+                @tap="selectOne(index, item,'search')"
                 :class="{ django_active: item.checked == true }"
                 v-for="(item, index) in experienceLst"
                 :key="index"
@@ -151,7 +151,7 @@
             <view class="django_button">
               <view
                 class="django_text"
-                @tap="selectTwo(index, item)"
+                @tap="selectTwo(index, item,'search')"
                 :class="{ django_active: item.checked == true }"
                 v-for="(item, index) in languageLst"
                 :key="index"
@@ -464,6 +464,19 @@ export default {
     clear() {
       this.clearButton = "clear";
       this.confirmButton = "";
+      this.searchParams = {}
+      this.experienceLst.forEach((item,index) =>{
+        if(index == 0){
+          this.selectOne(index,item,"clear")
+        }        
+      })
+      this.languageLst.forEach((item,index) =>{
+        if(index == 0){
+          this.selectTwo(index,item,"clear")
+        }        
+      })
+      this.selectthree = 0
+      this.selectfour = 0
     },
     // 点击筛选框中的确定按钮进行搜索
     confirm() {
@@ -499,9 +512,13 @@ export default {
         .catch(() => {});
     },
     // 选择经验要求
-    selectOne(index, item) {
+    selectOne(index, item,type) {
       if(index == 0){
-        item.checked = !item.checked
+        if(type == 'search'){
+          item.checked = !item.checked
+        }else{
+          item.checked = true
+        }        
         for(var i=1;i<this.experienceLst.length;i++){
           this.experienceLst[i].checked = false
         }        
@@ -511,9 +528,14 @@ export default {
       }
     },
     // 选择语言要求
-    selectTwo(index, item) {
+    selectTwo(index, item,type) {
       if(index == 0){
-        item.checked = !item.checked
+        if(type == 'search'){
+          item.checked = !item.checked
+        }else{
+          item.checked = true
+        }   
+        // item.checked = !item.checked
         for(var i=1;i<this.languageLst.length;i++){
           this.languageLst[i].checked = false
         }  
@@ -530,7 +552,6 @@ export default {
     // 选择工具要求
     selectFour(index, item) {
       this.selectfour = index;
-      console.log(item.value);
       this.searchParams.tools = item.value;
     },
     // 数据初始化
