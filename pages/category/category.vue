@@ -74,7 +74,10 @@
     <view class="main_content">
       <!-- 推荐页面 -->
       <view v-if="currentIndex == 'recommend'">
-		<rf-empty :info="'暂无阿姨数据~'" v-if="infolst_recommend.length === 0"></rf-empty>
+        <rf-empty
+          :info="'暂无阿姨数据~'"
+          v-if="infolst_recommend.length === 0"
+        ></rf-empty>
         <scroll-view scroll-y="true" v-else>
           <view class="content">
             <mainCard
@@ -88,7 +91,10 @@
       </view>
       <!-- 最新页面-->
       <view v-if="currentIndex == 'new'">
-		<rf-empty :info="'暂无阿姨数据~'" v-if="infolst_new.length === 0"></rf-empty>
+        <rf-empty
+          :info="'暂无阿姨数据~'"
+          v-if="infolst_new.length === 0"
+        ></rf-empty>
         <scroll-view scroll-y="true" v-else>
           <view class="content">
             <mainCard
@@ -102,7 +108,10 @@
       </view>
       <!-- 附近页面-->
       <view v-if="currentIndex == 'nearby'">
-		<rf-empty :info="'暂无阿姨数据~'" v-if="infolst_nearby.length === 0"></rf-empty>
+        <rf-empty
+          :info="'暂无阿姨数据~'"
+          v-if="infolst_nearby.length === 0"
+        ></rf-empty>
         <scroll-view scroll-y="true" v-else>
           <view class="nearby_map">
             <map />
@@ -123,80 +132,82 @@
       <!-- 筛选弹框 -->
       <view class="django_search">
         <view class="django_header">筛选</view>
-        <view class="experience">
-          <view class="django_title">经验要求</view>
-          <view class="django_button">
-            <view
-              class="django_text"
-              @tap="selectOne(index)"
-              :class="{ django_active: selectone === index }"
-              v-for="(item, index) in experienceLst"
-              :key="index"
-              >{{ item.value }}
+        <form @submit="confirm" @reset="clear">
+          <view class="experience">
+            <view class="django_title">经验要求</view>
+            <view class="django_button">
+              <view
+                class="django_text"
+                @tap="selectOne(index, item)"
+                :class="{ django_active: selectone === index }"
+                v-for="(item, index) in experienceLst"
+                :key="index"
+                >{{ item.label }}
+              </view>
             </view>
           </view>
-        </view>
-        <view class="language">
-          <view class="django_title">语言要求</view>
-          <view class="django_button">
-            <view
-              class="django_text"
-              @tap="selectTwo(index)"
-              :class="{ django_active: selecttwo === index }"
-              v-for="(item, index) in languageLst"
-              :key="index"
-              >{{ item.value }}
+          <view class="language">
+            <view class="django_title">语言要求</view>
+            <view class="django_button">
+              <view
+                class="django_text"
+                @tap="selectTwo(index, item)"
+                :class="{ django_active: selecttwo === index }"
+                v-for="(item, index) in languageLst"
+                :key="index"
+                >{{ item.value }}
+              </view>
             </view>
           </view>
-        </view>
-        <view class="price">
-          <view class="django_title">
-            <text>价格筛选</text>
-            <text>(单选)</text>
-          </view>
-          <view class="django_button">
-            <view
-              class="django_text"
-              @tap="selectThree(index)"
-              :class="{ django_active: selectthree === index }"
-              v-for="(item, index) in priceLst"
-              :key="index"
-              >{{ item.value }}
+          <view class="price">
+            <view class="django_title">
+              <text>价格筛选</text>
+              <text>(单选)</text>
+            </view>
+            <view class="django_button">
+              <view
+                class="django_text"
+                @tap="selectThree(index, item)"
+                :class="{ django_active: selectthree === index }"
+                v-for="(item, index) in priceLst"
+                :key="index"
+                >{{ item.label }}
+              </view>
             </view>
           </view>
-        </view>
-        <view class="tool">
-          <view class="django_title">
-            <text>工具</text>
-            <text>(单选)</text>
-          </view>
-          <view class="django_button">
-            <view
-              class="django_text"
-              @tap="selectFour(index)"
-              :class="{ django_active: selectfour === index }"
-              v-for="(item, index) in toolLst"
-              :key="index"
-              >{{ item.value }}
+          <view class="tool">
+            <view class="django_title">
+              <text>工具</text>
+              <text>(单选)</text>
+            </view>
+            <view class="django_button">
+              <view
+                class="django_text"
+                @tap="selectFour(index, item)"
+                :class="{ django_active: selectfour === index }"
+                v-for="(item, index) in toolLst"
+                :key="index"
+                >{{ item.label }}
+              </view>
             </view>
           </view>
-        </view>
-        <view class="menu">
-          <view
-            class="clear_button"
-            :class="{ click_button: clearButton == 'clear' }"
-            @tap="clear"
-          >
-            <text class="menu_text">清除</text>
+          <view class="menu">
+            <view
+              class="clear_button"
+              :class="{ click_button: clearButton == 'clear' }"
+              @tap="clear"
+            >
+              <text class="menu_text">清除</text>
+            </view>
+            <view
+              class="confirm_button"
+              :class="{ click_button: confirmButton == 'confirm' }"
+              @tap="confirm"
+            >
+              <text class="menu_text">确认</text>
+            </view>
           </view>
-          <view
-            class="confirm_button"
-            :class="{ click_button: confirmButton == 'confirm' }"
-            @tap="confirm"
-          >
-            <text class="menu_text">确认</text>
-          </view>
-        </view>
+        </form>
       </view>
     </s-popup>
     <!-- 城市定位 -->
@@ -230,7 +241,6 @@ export default {
     return {
       // hotSearchDefault: '请输入关键字', // 搜索默认关键字
       // showCategoryIndex: 0, // 一级菜单高亮显示序号
-      // categoryList: ['推荐','最近','附近'], // 左上角分类列表
       // search: {},
       // cateTop: {}, // 分类通用广告图
       // animation: 'animation-slide-right',
@@ -357,22 +367,27 @@ export default {
       experienceLst: [
         {
           value: "不限",
+          label: "不限",
           checked: true,
         },
         {
-          value: "1-3年",
+          label: "1-3年",
+          value: "1-3",
           checked: false,
         },
         {
-          value: "3-5年",
+          label: "3-5年",
+          value: "3-5",
           checked: false,
         },
         {
-          value: "5-10年",
+          label: "5-10年",
+          value: "5-10",
           checked: false,
         },
         {
-          value: "10年以上",
+          label: "10年以上",
+          value: "10",
           checked: false,
         },
       ],
@@ -399,19 +414,24 @@ export default {
         },
       ],
       priceLst: [
-        { value: "不限" },
-        { value: "20/h" },
-        { value: "40/h" },
-        { value: "60/h" },
-        { value: "80/h" },
+        { label: "不限", value: "不限" },
+        { label: "20/h", value: "20" },
+        { label: "40/h", value: "40" },
+        { label: "60/h", value: "60" },
+        { label: "80/h", value: "80" },
       ],
-      toolLst: [{ value: "不限" }, { value: "自带" }, { value: "雇主提供" }],
+      toolLst: [
+        { label: "不限", value: "不限" },
+        { label: "自带", value: "0" },
+        { label: "雇主提供", value: "1" },
+      ],
       selectone: 0,
       selecttwo: 0,
       selectthree: 0,
       selectfour: 0,
       clearButton: "",
       confirmButton: "",
+      searchParams: {},
     };
   },
   // 每次页面显示 执行该方法
@@ -442,26 +462,45 @@ export default {
       this.clearButton = "clear";
       this.confirmButton = "";
     },
-    // 点击筛选框中的确定按钮
+    // 点击筛选框中的确定按钮进行搜索
     confirm() {
       this.confirmButton = "confirm";
       this.clearButton = "";
+      for(var i in this.searchParams){
+        if(this.searchParams[i] == '不限'){
+          this.$delete(this.searchParams,i)
+        }        
+      }
+      this.searchCate(this.searchParams);
+    },
+    // 搜索阿姨列表
+    async searchCate(data) {
+      await this.$http.get(`${categoryList}`, data).then((r) => {
+          this.infolst_recommend = r.msg;
+          this.infolst_new = r.msg;
+        })
+        .catch(() => {});
     },
     // 选择经验要求
-    selectOne(index) {
+    selectOne(index, item) {
       this.selectone = index;
+      this.searchParams.workyears = item.value;
     },
     // 选择语言要求
-    selectTwo(index) {
+    selectTwo(index, item) {
       this.selecttwo = index;
+      this.searchParams.language = item.value;
     },
     // 选择价格要求
-    selectThree(index) {
+    selectThree(index, item) {
       this.selectthree = index;
+      this.searchParams.price = item.value;
     },
     // 选择工具要求
-    selectFour(index) {
+    selectFour(index, item) {
       this.selectfour = index;
+      console.log(item.value);
+      this.searchParams.tools = item.value;
     },
     // 数据初始化
     async initData() {
@@ -472,7 +511,7 @@ export default {
           ? "如: " + this.search.hot_search_default
           : "");
       this.getProductCate();
-    //   this.initCartItemCount();
+      //   this.initCartItemCount();
     },
     // 设置购物车数量角标
     async initCartItemCount() {
@@ -491,21 +530,13 @@ export default {
     },
     // 获取商品分类列表
     async getProductCate() {
-      await this.$http.get(`${categoryList}`).then((r) => {
-		  this.infolst_recommend = r.msg
-		  this.infolst_new = r.msg
-          // 获取分类广告图 注：广告图不是一级分类图
-        //   this.getAdvList();
-          // 过滤掉没有二级菜单的一级菜单
-        //   r.data.forEach((item) => {
-        //     if (item.child.length > 0) {
-        //       this.categoryList.push(item);
-        //     }
-        //   });
+      await this.$http
+        .get(`${categoryList}`)
+        .then((r) => {
+          this.infolst_recommend = r.msg;
+          this.infolst_new = r.msg;
         })
-        .catch(() => {
-          
-        });
+        .catch(() => {});
     },
     // 获取广告列表
     async getAdvList() {
