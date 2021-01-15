@@ -139,20 +139,20 @@
               <view
                 class="django_text"
                 @tap="selectOne(index, item)"
-                :class="{ django_active: selectone === index }"
+                :class="{ django_active: item.checked == true }"
                 v-for="(item, index) in experienceLst"
                 :key="index"
                 >{{ item.label }}
               </view>
             </view>
-          </view>
+           </view>
           <view class="language">
             <view class="django_title">语言要求</view>
             <view class="django_button">
               <view
                 class="django_text"
                 @tap="selectTwo(index, item)"
-                :class="{ django_active: selecttwo === index }"
+                :class="{ django_active: item.checked == true }"
                 v-for="(item, index) in languageLst"
                 :key="index"
                 >{{ item.value }}
@@ -431,7 +431,10 @@ export default {
       selectfour: 0,
       clearButton: "",
       confirmButton: "",
-      searchParams: {},
+      searchParams: {
+        workyears:'',
+        language:'',
+      },
     };
   },
   // 每次页面显示 执行该方法
@@ -466,11 +469,25 @@ export default {
     confirm() {
       this.confirmButton = "confirm";
       this.clearButton = "";
+      this.searchParams.workyears = ''
+      this.searchParams.language = ''
       for(var i in this.searchParams){
         if(this.searchParams[i] == '不限'){
           this.$delete(this.searchParams,i)
         }        
       }
+      this.experienceLst.forEach(element => {
+        if(element.checked == true){
+          this.searchParams.workyears += element.value+','
+        }
+      });
+      this.searchParams.workyears = this.searchParams.workyears.substring(0,this.searchParams.workyears.lastIndexOf(','))
+      this.languageLst.forEach(element => {
+        if(element.checked == true){
+          this.searchParams.language += element.value+','
+        }
+      });
+      this.searchParams.language = this.searchParams.language.substring(0,this.searchParams.language.lastIndexOf(','))
       this.searchCate(this.searchParams);
     },
     // 搜索阿姨列表
@@ -483,13 +500,27 @@ export default {
     },
     // 选择经验要求
     selectOne(index, item) {
-      this.selectone = index;
-      this.searchParams.workyears = item.value;
+      if(index == 0){
+        item.checked = !item.checked
+        for(var i=1;i<this.experienceLst.length;i++){
+          this.experienceLst[i].checked = false
+        }        
+      }else{
+        this.experienceLst[0].checked = false
+        item.checked = !item.checked
+      }
     },
     // 选择语言要求
     selectTwo(index, item) {
-      this.selecttwo = index;
-      this.searchParams.language = item.value;
+      if(index == 0){
+        item.checked = !item.checked
+        for(var i=1;i<this.languageLst.length;i++){
+          this.languageLst[i].checked = false
+        }  
+      }else{
+        this.languageLst[0].checked = false
+        item.checked = !item.checked
+      }
     },
     // 选择价格要求
     selectThree(index, item) {
