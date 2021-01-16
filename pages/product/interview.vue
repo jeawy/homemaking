@@ -1,7 +1,7 @@
 <template>
 	<view class="interview">
 		<view class="top_line"></view>
-		<!-- 立即预约 -->
+		<!-- W -->
 		<form class="form" @submit="formSubmit">			
 			<view class="list_name">
 				预约的阿姨:{{infolist.name}}

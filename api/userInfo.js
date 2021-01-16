@@ -4,6 +4,19 @@
  *@blog https://stavtop.club
  *@date 2019/11/16 11:04:16
  */
+
+import { http } from '@/utils/request';
+export function queryScheduleList(){
+	return http.get('/book/books/')
+}
+
+
+
+
+
+
+
+
 // 个人信息
 const memberInfo = '/tiny-shop/v1/member/member/index';
 // 个人信息修改

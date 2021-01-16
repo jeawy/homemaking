@@ -40,12 +40,12 @@ const store = new Vuex.Store({
     },
     mutations: {
         login(state, provider) {
-			state.accessToken=provider.token;
-			// state.refreshToken=provider.refresh_token;
+            const TOKEN = `JWT ${provider.token}`
+			state.accessToken=TOKEN;
 			state.userInfo = provider;
 			state.user = provider;
             uni.setStorageSync('user', provider);
-			uni.setStorageSync('accessToken', provider.token);
+			uni.setStorageSync('accessToken',TOKEN);
 			// uni.setStorageSync('refreshToken', provider.refresh_token);
 			uni.setStorageSync('userInfo', provider);
         },
