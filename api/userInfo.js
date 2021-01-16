@@ -6,6 +6,7 @@
  */
 
 import { http } from '@/utils/request';
+// 查询预约列表
 export function queryScheduleList(){
 	return http.get('/book/books/')
 }

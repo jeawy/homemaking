@@ -4,6 +4,13 @@
  *@blog https://stavtop.club
  *@date 2019/11/18 13:57:54
  */
+
+import { http } from '@/utils/request';
+// 发起预约
+export function postSchedule(data){
+	return http.post('/book/books/',data)
+}
+
 // 找阿姨列表
 const categoryList = '/product/productsapi/';
 // 首页列表

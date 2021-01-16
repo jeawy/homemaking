@@ -310,8 +310,8 @@
 					<view class="love">收藏</view>
 					<view>({{loveTimes}})</view>
 				</view>
-				<view class="action-btn" @tap="toInterview('/pages/product/interview')">
-					<button type="primary" class="action-btn no-border buy-now-btn">面试TA</button>
+				<view class="action-btn" @tap="toInterview('/pages/product/interview?id='+productDetail)">
+					<button type="primary" class="action-btn no-border buy-now-btn">预约</button>
 				</view>
 				<!-- <view class="action-btn">
 					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">面试TA</button>
@@ -515,6 +515,7 @@
 		},
 		methods: {
 			toInterview(route){
+				uni.setStorageSync('product_detail',this.productDetail)
 				this.$mRouter.push({
 					route
 				});

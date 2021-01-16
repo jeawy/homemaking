@@ -2,106 +2,90 @@
 	<view class="interview">
 		<view class="top_line"></view>
 		<!-- W -->
-		<form class="form" @submit="formSubmit">			
+		<form class="form" @submit="formSubmit">
 			<view class="list_name">
-				预约的阿姨:{{infolist.name}}
+				预约的阿姨:{{personInfo.productname}}
 			</view>
-			<view class="list_people">
-				<image class="uni-img" src="../../static/houseKeeping/mine.png"></image>
-				<input class="uni-input-people" name="input" v-model="people" placeholder='请输入用户名称' />
-			</view>
-			<view class="list_phone">
-				<image class="uni-img" src="../../static/houseKeeping/phone.png"></image>
-				<input class="uni-input-phone" type="number" v-model="phone"
-					maxlength='10' placeholder='请输入电话号码' />
-			</view>
-			<view class="list_dept">
+			
+			<view class="list_dept schedule-section">
 				<image class="uni-img" src="../../static/houseKeeping/people.png"></image>
-				<view v-if="deptarray.length == 0" class="line">
+				<view class="line">
+					{{personInfo.category}}
+				</view>
+				<!-- <view v-if="deptarray.length == 0" class="line">
 					<input class="uni-input" name="input" :disabled='true' placeholder="请选择工种" />
 				</view>
-				<view v-else  class="line">
+				<view v-else class="line">
 					<picker class="picker" mode="selector" @change="bindPickerdept" :value="deptindex" :range="deptarray">
 						<view class="uni-dept-input">{{deptarray[deptindex]}}</view>
 					</picker>
-				</view>				
+				</view> -->
 			</view>
-			<view class="list_time">
+			<view class="list_time schedule-section">
 				<image class="uni-img" src="../../static/houseKeeping/time.png"> </image>
-				<view v-if="deptarray.length == 0"  class="line">
-					<input class="uni-input" name="input" :disabled='true' placeholder="请选择用工时间" />
-				</view>
-				<view v-else  class="line">
-					<picker class="picker" mode="time" :value="time" start="00:00" end="24:00" @change="bindTimeChange">
-						<view class="uni-time-input">{{time}}</view>
+				<view class="line">
+					<picker class="picker" mode="date" :value="form.date" @change="bindTimeChange($event,'date')">
+						<view class="uni-time-input">{{form.date||'选择日期'}}</view>
 					</picker>
-				</view>
-				
-			</view>
-			<view class="list_address">
-				<image class="uni-img" src="../../static/houseKeeping/address.png"></image>
-				<view v-if="deptarray.length == 0"  class="line">
-					<input class="uni-input" name="input" :disabled='true' placeholder="请选择您的服务地址" />
-				</view>
-				<view v-else  class="line">
-					<picker class="picker" mode="selector" @change="bindPickeraddress" :value="addreindex" :range="addrearray">
-						<view class="uni-dept-input">{{addrearray[addreindex]}}</view>
+					<picker class="picker" mode="time" :value="form.time" @change="bindTimeChange($event,'time')">
+						<view class="uni-time-input">{{form.time||'选择时间'}}</view>
 					</picker>
 				</view>
 			</view>
-			<view class="list_textarea">
-				<textarea class="textarea_content" placeholder-style="color:#9e9e9e" placeholder="请输入您的服务内容"/>
-			</view>
+			<view class="list_textarea schedule-section">
+				<textarea class="textarea_content" v-model="form.comment" placeholder-style="color:#9e9e9e" placeholder="请输入您的服务内容" />
+				</view>
 			<view class="action-btn">
-				<view type="primary" class="action-btn no-border buy-now-btn">立即预约</view>
+				<view :loading="isLoading" @tap="formSubmit()"  class="action-btn no-border buy-now-btn">立即预约</view>
 			</view>
 		</form>
 	</view>
 </template>
 
 <script>
+	import {postSchedule} from "@/api/product.js"
+	import dayjs from "dayjs"
 	export default{
 		data(){
 			return{
-				infolist:{
-					id:1,
-					name:'张三',
-					imgsrc:"/static/people.svg",
-					age:27,
-					sex:"women",
-					position:'澳大利亚',
-					time:"2",
-					language:['普通话','英语'],
-					type:"包月小时工"
-				},
-				phone:"15555555555",
-				people:"ios端客户",
-				time:"06:30",
+				personInfo:{},
+				form:{date:'',time:''},
+				isLoading:false,
 				deptarray:['清洁工', '洗碗工'],
 				deptindex:0,
-				addrearray:['西安', '上海'],
 				addreindex:0,
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+			this.personInfo = uni.getStorageSync('product_detail',this.productDetail)
+			uni.setStorageSync('product_detail',undefined)
 		},
 		methods:{
-			bindTimeChange: function(e) {
-				this.time = e.target.value
-			},
-			bindPickerdept:function(e){
-				 this.deptindex = e.target.value
-			},
-			bindPickeraddress:function(e){
-				 this.addreindex = e.target.value
+			bindTimeChange: function(e,key) {
+				console.log(key,e)
+				this.form[key] = e.detail.value
 			},
 			formSubmit: function(e){
-				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
-				var formdata = e.detail.value
-				uni.showModal({
-					content: '表单数据内容：' + JSON.stringify(formdata),
-					showCancel: false
-				});
+				
+				this.isLoading = true
+				const data = {
+					comment:this.form.comment,
+					book_time:`${this.form.date.replace(/\-/g,'/')} ${this.form.time}`,
+					productid:this.personInfo.id
+				}
+				postSchedule(data).then(({status,msg})=>{
+					this.$mHelper.toast(msg);
+					if(status == 0){
+						uni.navigateBack()
+					}
+				})
+				.catch((err)=>{
+					this.$mHelper.toast(err);
+				})
+				.finally(()=>{
+					this.isLoading = false
+				})
+				
 			}
 		}
 	}
@@ -115,12 +99,16 @@
 			height: 2rpx;
 			background-color: #F1F1F1;
 		}
-				
+		.schedule-section{
+			display: flex;
+			.uni-img{
+				width: 60rpx;
+				height: 60rpx;
+				flex: 0 0 60rpx;
+			}
+		}
 	}
-	.uni-img{
-		width: 60rpx;
-		height: 60rpx;
-	}
+	
 	.picker{
 		width: 100%;
 	}
@@ -130,8 +118,7 @@
 	.list_name,.list_people,.list_phone,.list_dept,.list_time,.list_address{
 		display:flex;
 		align-items: center;
-		height: 100rpx;
-		padding: 0 20rpx;				
+		padding: 32rpx;				
 	}
 	.line,.uni-input-people,.uni-input-phone{
 		display: flex;

@@ -1,23 +1,23 @@
 <template>
 	<!-- 我的预约 -->
 	<view class="my-appointment">
-		<uni-calendar :insert="true" :lunar="true" :selected="selectedData" @change="dateChangeHandler"></uni-calendar>
+		<uni-calendar ref="calendar" :insert="true" :lunar="true" :selected="selectedData" @change="dateChangeHandler"></uni-calendar>
 		<view class="my-appointment_detail" v-if="detailData!=null">
 			<view class="detail_title">
-				{{detailData.date}}2012-12-24
+				{{detailData.date}}
 			</view>
 			<view class="detail_content" v-for="(item,index) of detailData.data" :key="index">
 				<view class="content_time">
-					{{item.time}}15:23
+					{{item.time}}
 				</view>
 				<view class="content_event">
 
-					{{item.content}}213213
+					{{item.content}}
 				</view>
 			</view>
-			<button class="synchroniz-btn" type="primary" @click="synchronizeToPhone">同步到手机日程</button>
+			
 		</view>
-		<!-- W -->
+		<button class="synchroniz-btn" :disabled="detailData==null" type="primary" @click="synchronizeToPhone">同步到手机日程</button>
 
 
 	</view>
@@ -36,7 +36,7 @@
 		data() {
 			return {
 				detailData: null,
-				selectedData: []
+				selectedData: [],
 			};
 		},
 		methods: {
@@ -56,7 +56,7 @@
 			},
 			// 请求预约列表
 			queryList() {
-				queryScheduleList().then(({
+				return queryScheduleList().then(({
 					status,
 					msg
 				}) => {
@@ -76,17 +76,17 @@
 								}
 							}
 						})
-						for (let e of arr) {
-							// 如果同意日期已经添加过
-							if (this.selectedData.findIndex((el) => e.data == el.data)) {
+						for (let ae of arr) {
+							// 如果同一日期已经添加过
+							if (this.selectedData.findIndex((el) => ae.date == el.date) > -1) {
 								continue
 							}
 							// 否则  相同日期的添加到一个data下面
 							const SAME = arr.filter(el => {
-								return el.data === e.data
+								return el.date === ae.date
 							})
 							this.selectedData.push({
-								...e,
+								...ae,
 								data: SAME.map(s => s.data)
 							})
 						}
@@ -95,8 +95,10 @@
 			}
 
 		},
-		onLoad() {
-			this.queryList()
+		async onReady () {
+			await this.queryList()
+			const today = dayjs(new Date()).format('YYYY-MM-DD')
+			this.detailData = this.selectedData.find((e)=>e.date==today) 
 		}
 	}
 </script>
@@ -141,6 +143,10 @@
 		}
 
 		.synchroniz-btn {
+			position: fixed;
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
 			width: 375upx;
 		}
 	}
