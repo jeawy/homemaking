@@ -1,6 +1,6 @@
 <template>
 	<view class="create-orders">
-		<view class="order-address">
+		<view class="order-address" @tap="target('./receive_address')">
 			请选择收获地址&nbsp;&nbsp;>
 		</view>
 		<view>
@@ -30,16 +30,39 @@
 		-->
 		<view>
 			<view>
-				备注<input class="uni-input" placeholder="请填写备注信息" />
+				<input-box leftText="备注" placeholder="请输入备注信息"></input-box>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import inputBox from '@/components/input-box/input-box.vue'; 
+	export default {
+		components:{
+			inputBox
+		},
+		data() {
+			return {
+				
+			}
+		},
+		created() {
+		},
+		methods: {
+			target(url){
+				uni.navigateTo({
+					url:url
+				});
+			}
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
+	page {
+		background: #FFFFFF;
+	}
 	.create-orders{
 		padding-top: 20upx;
 		.goods-container{

@@ -451,6 +451,12 @@
 			"style": {
 			  "navigationBarTitleText": "创建订单"
 			}
+		},
+		{
+			"path": "receive_address",
+			"style": {
+			  "navigationBarTitleText": "地址"
+			}
 		}
       ]
     },
