@@ -138,6 +138,7 @@
 				this.tabCurrentIndex = e.target.current;
 				this.loading = true;
 				this.getOrderList();
+				console.log('tab变换');
 			},
 			// 顶部tab点击
 			tabClick(index){
@@ -193,6 +194,7 @@
 			},
 			// 获取订单列表
 			async getOrderList(type) {
+				console.log('获取订单列表');
 				this.loading = true;
 				let params = {};
 				let index = this.tabCurrentIndex;
@@ -200,7 +202,11 @@
 					params.synthesize_status = index - 1;
 				}
 				params.page = this.page;
+				console.log(params);
+				console.log(`${orderList}`);
 				await this.$http.get(`${orderList}`, params).then(async r => {
+					console.log("等待数据返回");
+					console.log(r);
 					if (type === 'refresh') {
 						uni.stopPullDownRefresh();
 					}
