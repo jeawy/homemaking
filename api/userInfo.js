@@ -47,7 +47,8 @@ const couponReceive = '/tiny-shop/v1/marketing/coupon-type/create';
 const couponClear = '/tiny-shop/v1/member/coupon/clear';
 
 // 获取我的订单
-const orderList = '/tiny-shop/v1/member/order/index';
+//const orderList = '/tiny-shop/v1/member/order/index';
+const orderList = '/bill/bills/';
 // 订单确认收货
 const orderTakeDelivery = '/tiny-shop/v1/member/order/take-delivery';
 // 退货/退款申请
