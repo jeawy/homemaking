@@ -24,7 +24,8 @@ const memberInfo = '/tiny-shop/v1/member/member/index';
 const memberUpdate = '/tiny-shop/v1/member/member/update';
 
 // 收货地址列表
-const addressList = '/tiny-shop/v1/member/address/index';
+//const addressList = '/tiny-shop/v1/member/address/index';
+const addressList = '/address/addresses/';
 // 默认收货地址
 const addressDefault = '/tiny-shop/v1/member/address/default';
 // 默认收货地址
