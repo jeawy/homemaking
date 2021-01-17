@@ -313,6 +313,17 @@
 				<view class="action-btn" @tap="toInterview('/pages/product/interview?id='+productDetail)">
 					<button type="primary" class="action-btn no-border buy-now-btn">预约</button>
 				</view>
+				<view class="action-btn">
+					<button type="primary" class="action-btn no-border buy-now-btn" @click="openPopup()">下单</button>
+					<uni-popup ref = "popup" type = "bottom" class="popup">
+						<echone-sku
+						  :combinations="combinations"
+						  :specifications="specifications"
+						  :cbName = "cbName"
+						  @closePopup="closePopup"
+						></echone-sku>
+					</uni-popup>
+				</view>
 				<!-- <view class="action-btn">
 					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">面试TA</button>
 				</view> -->
@@ -373,6 +384,10 @@
 	import uniTag from '@/components/uni-tag/uni-tag'
 	import rfNoData from '@/components/rf-no-data'
 	import rfItemPopup from '@/components/rf-item-popup'
+	import echoneSku from '@/components/echone-sku/echone-sku.vue'
+	import unipopup from "@/components/uni-popup/uni-popup.vue"
+	import unipopupMessage from "@/components/uni-popup/uni-popup-message.vue"
+	import unipopupDialog from "@/components/uni-popup/uni-popup-dialog.vue"
 	export default {
 		components: {
 			rfItemPopup,
@@ -380,7 +395,11 @@
 			rfRate,
 			rfNumberBox,
 			uniTag,
-			rfNoData
+			rfNoData,
+			echoneSku,
+			unipopup, 
+			unipopupMessage,
+			unipopupDialog 
 		},
 		filters: {
 			/**
@@ -429,6 +448,31 @@
 		},
 		data() {
 			return {
+				cbName:'',
+				imgsrc:'http://47.95.239.228:8091/',
+				specifications: [
+				  {
+				    name: '规格',
+				    id: '123',
+				    list: ['月付', '时薪'],
+				  }
+				],
+				combinations: [
+				  {
+				    id: '',
+				    value: '月付',
+				    image:'',
+				    price: 0,
+				    stock: 1000,
+				  },
+				  {
+				    id: '',
+				    value: '时薪',
+				    image:'',
+				    price: 0,
+				    stock: 500,
+				  }
+				],
 				serviceClass: 'none', //服务弹窗css类，控制开关动画
 				ladderPreferentialClass: 'none', //服务弹窗css类，控制开关动画
 				attributeValueClass: 'none', //scss类，控制开关动画
@@ -514,6 +558,15 @@
 			// #endif
 		},
 		methods: {
+			openPopup(){
+					this.$refs.popup.open();
+			},
+			closePopup(){
+				this.$refs.popup.close();
+				uni.navigateTo({
+					url:'./create_order'
+				});
+			},
 			toInterview(route){
 				uni.setStorageSync('product_detail',this.productDetail)
 				this.$mRouter.push({
@@ -583,8 +636,22 @@
 				await this.$http.get(`${categoryList}`, {
 					productid
 				}).then(async r => {
+					console.log(r);
 					this.loading = false;
 					this.productDetail = r.msg;
+					this.cbName = r.msg.productname;
+					for(var i=0;i<r.msg.rules.length;i++){
+						if(r.msg.rules[i].name ==="月付"){
+							this.combinations[0].id = r.msg.rules[i].id;
+							this.combinations[0].price = r.msg.rules[i].price;
+							this.combinations[0].image = r.msg.rules[i].thumbnail_portait;
+						}
+						if(r.msg.rules[i].name ==="时薪"){
+							this.combinations[1].id = r.msg.rules[i].id;
+							this.combinations[1].price = r.msg.rules[i].price;
+							this.combinations[1].image = r.msg.rules[i].thumbnail_portait;
+						}
+					}
 					// console.log(r)
 					// this.evaluateList = await r.data.evaluate;
 					// this.favorite = this.productDetail.myCollect ? true : false;
@@ -1346,7 +1413,7 @@
 		}
 		.action-btn{
 			height:100%;
-			width: 65%;
+			width: 32%;
 			display: flex;			
 			overflow: hidden;
 			align-items: center;
@@ -1455,7 +1522,7 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				width: 180upx;
+				width: 100upx;
 				height: 100%;
 				font-size: $font-base;
 				padding: 0;
