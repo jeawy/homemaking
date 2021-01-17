@@ -445,18 +445,6 @@
 			  "backgroundColor": "#FFFFFF",
 			  "navigationBarTitleText": "立即预约"
 			}
-		},
-		{
-			"path": "create_order",
-			"style": {
-			  "navigationBarTitleText": "创建订单"
-			}
-		},
-		{
-			"path": "receive_address",
-			"style": {
-			  "navigationBarTitleText": "地址"
-			}
 		}
       ]
     },
