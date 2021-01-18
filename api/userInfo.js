@@ -5,26 +5,32 @@
  *@date 2019/11/16 11:04:16
  */
 
-import { http } from '@/utils/request';
+import {
+	http
+} from '@/utils/request';
 // 查询预约列表
-export function queryScheduleList(){
+export function queryScheduleList() {
 	return http.get('/book/books/')
 }
-
-
-
-
-
-
-
+const ADDRESS_PATH = '/address/addresses/'
+// 查新地址列表
+export const queryAddressList = () => http.get(ADDRESS_PATH)
+// 添加地址
+export const addAddress = data => http.post(ADDRESS_PATH, data)
+// 删除地址
+export const deleteAddress = data => http.delete(ADDRESS_PATH, data)
+// 获取省份列表
+export const queryProvinceList = () => http.get('/area/get_provice_list/')
+// 获取省份下城市列表
+export const queryCityList = (params) => http.get('/area/get_city_list',params)
+// 获取区县列表
+export const queryCountyList = (params) => http.get('/area/get_county_list/',params)
 
 // 个人信息
 const memberInfo = '/tiny-shop/v1/member/member/index';
 // 个人信息修改
 const memberUpdate = '/tiny-shop/v1/member/member/update';
 
-// 收货地址列表
-const addressList = '/tiny-shop/v1/member/address/index';
 // 默认收货地址
 const addressDefault = '/tiny-shop/v1/member/address/default';
 // 默认收货地址
@@ -121,48 +127,47 @@ const orderCustomerRefundClose = '/tiny-shop/v1/member/order-customer/close';
 const uploadImage = '/tiny-shop/v1/common/file/images';
 
 export {
-    memberInfo,
-    memberUpdate,
-    addressList,
-    addressCreate,
-    addressDefault,
-    addressDetail,
-    addressUpdate,
-    addressDelete,
-    couponList,
-    myCouponList,
-    couponClear,
-    couponDetail,
-    orderList,
-    orderRefundApply,
-    closeOrderRefundApply,
-    orderProductSalesReturn,
-    orderDetail,
-    orderDelete,
-    orderTakeDelivery,
-    couponReceive,
-    footPrintList,
-    footPrintDel,
-    collectList,
-    creditsLogList,
-    evaluateCreate,
-    evaluateAgain,
-    invoiceList,
-    invoiceCreate,
-    invoiceUpdate,
-    invoiceDetail,
-    invoiceDefault,
-    invoiceDel,
-    orderInvoiceList,
-    uploadImage,
-    opinionList,
-    opinionCreate,
-    opinionDetail,
-    thirdPartyAuthList,
-    thirdPartyAuthDelete,
-    rechargeConfigIndex,
-    orderCustomerSalesReturn,
-    orderCustomerRefundApply,
-    orderCustomerRefundClose,
-    orderProductIndex
+	memberInfo,
+	memberUpdate,
+	addressCreate,
+	addressDefault,
+	addressDetail,
+	addressUpdate,
+	addressDelete,
+	couponList,
+	myCouponList,
+	couponClear,
+	couponDetail,
+	orderList,
+	orderRefundApply,
+	closeOrderRefundApply,
+	orderProductSalesReturn,
+	orderDetail,
+	orderDelete,
+	orderTakeDelivery,
+	couponReceive,
+	footPrintList,
+	footPrintDel,
+	collectList,
+	creditsLogList,
+	evaluateCreate,
+	evaluateAgain,
+	invoiceList,
+	invoiceCreate,
+	invoiceUpdate,
+	invoiceDetail,
+	invoiceDefault,
+	invoiceDel,
+	orderInvoiceList,
+	uploadImage,
+	opinionList,
+	opinionCreate,
+	opinionDetail,
+	thirdPartyAuthList,
+	thirdPartyAuthDelete,
+	rechargeConfigIndex,
+	orderCustomerSalesReturn,
+	orderCustomerRefundApply,
+	orderCustomerRefundClose,
+	orderProductIndex
 };
