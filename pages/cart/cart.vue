@@ -205,8 +205,13 @@
 				this.loading = true;
 				let params = {};
 				let index = this.tabCurrentIndex;
+				console.log(index);
 				if (this.tabCurrentIndex) {
-					params.synthesize_status = index - 1;
+					if(this.tabCurrentIndex === 3 || this.tabCurrentIndex === 4){
+						params.status = 3;
+					}else{
+						params.status = index - 1;
+					}
 				}
 				params.page = this.page;
 				await this.$http.get(`${orderList}`, params).then(async r => {
