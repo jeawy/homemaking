@@ -61,7 +61,8 @@ const closeOrderRefundApply = '/tiny-shop/v1/member/order-product/refund-close';
 // 获取订单详情
 const orderDetail = '/tiny-shop/v1/member/order/view';
 // 删除已关闭订单
-const orderDelete = '/tiny-shop/v1/member/order/delete';
+//const orderDelete = '/tiny-shop/v1/member/order/delete';
+const orderDelete = '/bill/bills/'
 
 // 获取我的足迹
 const footPrintList = '/tiny-shop/v1/member/footprint/index';

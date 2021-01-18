@@ -25,13 +25,17 @@
 		<swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
 			<!--全部订单页面-->
 			<swiper-item>
+				<!--
 				<orderCard :orderList="orderList" :productList="productList" 
-				:orderStatus="orderStatus" @getOrderList="getOrderList"/>
+				:orderStatus="orderStatus" @getOrderList="getOrderList"/>-->
+				<orderCard :orderList="orderList" @getOrderList="getOrderList"/>
 			</swiper-item>
 			<!--待付款订单页面-->
 			<swiper-item>
+				<!--
 				<orderCard :orderList="orderList" :productList="productList" 
-				:orderStatus="orderStatus" @getOrderList="getOrderList"/>
+				:orderStatus="orderStatus" @getOrderList="getOrderList"/>-->
+				<orderCard :orderList="orderList" @getOrderList="getOrderList"/>
 			</swiper-item>
 			<!--进行中订单页面-->
 			<swiper-item class="process-order">
@@ -44,13 +48,17 @@
 			</swiper-item>
 			<!--已完成订单页面-->
 			<swiper-item>
+				<!--
 				<orderCard :orderList="orderList" :productList="productList" 
-				:orderStatus="orderStatus" @getOrderList="getOrderList"/>
+				:orderStatus="orderStatus" @getOrderList="getOrderList"/>-->
+				<orderCard :orderList="orderList" @getOrderList="getOrderList"/>
 			</swiper-item>
 			<!--待评价订单页面-->
 			<swiper-item>
+				<!--
 				<orderCard :orderList="orderList" :productList="productList" 
-				:orderStatus="orderStatus" @getOrderList="getOrderList"/>
+				:orderStatus="orderStatus" @getOrderList="getOrderList"/>-->
+				<orderCard :orderList="orderList" @getOrderList="getOrderList"/>
 			</swiper-item>
 		</swiper>
 		<rf-loading v-if="loading"></rf-loading>
@@ -194,7 +202,6 @@
 			},
 			// 获取订单列表
 			async getOrderList(type) {
-				console.log('获取订单列表');
 				this.loading = true;
 				let params = {};
 				let index = this.tabCurrentIndex;
@@ -202,20 +209,17 @@
 					params.synthesize_status = index - 1;
 				}
 				params.page = this.page;
-				console.log(params);
-				console.log(`${orderList}`);
 				await this.$http.get(`${orderList}`, params).then(async r => {
-					console.log("等待数据返回");
-					console.log(r);
 					if (type === 'refresh') {
 						uni.stopPullDownRefresh();
 					}
 					//this.loadingType  = r.data.length === 10 ? 'more' : 'nomore';
-					this.orderList = [ ...r.data ];
+					this.orderList = [ ...r.msg];
+					/*
 					this.orderList.map(item=>{
-						this.productList.push(item.product[0])
-						this.orderStatus.push(this.statusformat(item.product[0].order_status))
-					})
+						this.productList.push(item.rules.thumbnail_portait);
+						this.orderStatus.push(this.statusformat(item.status));
+					})*/
 					// if (this.orderList.length === 0) {
 				    // await this.getGuessYouLikeList();
 					// }
