@@ -205,7 +205,6 @@
 				this.loading = true;
 				let params = {};
 				let index = this.tabCurrentIndex;
-				console.log(index);
 				if (this.tabCurrentIndex) {
 					if(this.tabCurrentIndex === 3 || this.tabCurrentIndex === 4){
 						params.status = 3;
