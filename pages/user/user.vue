@@ -2,7 +2,7 @@
 	<view class="user">
 		<!--顶部导航栏-->
 		<view class="user-navbar">
-			<view class="setting">
+			<view class="setting" @tap="navTo('/pages/set/set')">
 			   <image class="setting_img" src="/static/my/set.svg"></image>  
 			</view>
 			<view class="notice" @tap="navTo(userInfo ? '/pages/user/notice/notice' : 'login')">
