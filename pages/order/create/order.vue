@@ -1,19 +1,19 @@
 <template>
 	<view class="rf-create-order">
-		<view class="order" v-if="orderDetail.products">
+		<view class="order" >
 			<!--选择地址-->
 			<navigator url="/pages/user/address/address?source=1" class="rf-address-section">
 				<view class="order-content">
 					<i class="iconfont iconshouhuodizhi"></i>
 					<view v-if="addressData" class="cen">
 						<view class="top">
-							<text class="name">{{addressData.realname}}</text>
-							<text class="mobile">{{addressData.mobile}}</text>
+							<text class="name">{{addressData.receiver}}</text>
+							<text class="mobile">{{addressData.phone}}</text>
 						</view>
-						<text class="address">{{ addressData.address_name }} {{addressData.address_details}}</text>
+						<text class="address">{{ addressData.detail}}</text>
 					</view>
 					<view class="no-default-address" v-else>
-						请选择收货地址
+						请选择服务地址
 					</view>
 					<i class="iconfont iconyou"></i>
 				</view>
@@ -23,14 +23,14 @@
 			<view class="rf-goods-section">
 				<view class="g-header b-b">
 					<!--<image class="logo" src="http://duoduo.qibukj.cn/./Upload/Images/20190321/201903211727515.png"></image>-->
-					<text class="name">商品列表</text>
+					<text class="name">阿姨信息</text>
 				</view>
 				<!-- 商品列表 -->
-				<view class="g-item" v-for="(item, index) in orderDetail.products" :key="index" @tap="navTo(`/pages/product/product?id=${item.product_id}`)">
+				<view class="g-item" v-for="(item, index) in products" :key="index" @tap="navTo(`/pages/product/product?id=${item.product_id}`)">
 					<rf-image :src="item.product_picture"></rf-image>
 					<view class="right">
 						<text class="title clamp in2line">{{ item.product_name }}</text>
-						<text class="spec">{{ item.sku_name || '基础款' }} * {{ item.num }}</text>
+						<text class="spec">{{ item.rulename  }} * {{ item.num }}</text>
 						<view class="price-box">
 							<text class="price base-color">￥ {{item.product_money}}</text>
 							<text class="number"></text>
@@ -38,121 +38,14 @@
 					</view>
 				</view>
 			</view>
-			<!-- 优惠明细 -->
-			<view class="yt-list">
-				<view class="yt-list-cell b-b" @tap="toggleMask('show')">
-					<view class="cell-icon">
-						券
-					</view>
-					<text class="cell-tit clamp">优惠券</text>
-					<text class="cell-tip active">
-						{{ couponItem.title || '选择优惠券' }}
-					</text>
-					<text class="cell-more wanjia wanjia-gengduo-d"></text>
-				</view>
-				<view class="yt-list-cell b-b" @tap="showSinglePicker" v-if="parseInt(orderDetail.is_logistics, 10) === 1">
-					<view class="cell-icon">
-						寄
-					</view>
-					<text class="cell-tit clamp">配送方式</text>
-					<text class="cell-tip active">
-						{{ currentShippingType.label || '选择配送方式' }}
-					</text>
-					<text class="cell-more wanjia wanjia-gengduo-d"></text>
-				</view>
-				<view class="yt-list-cell b-b" @tap="showCompanyPicker" v-if="parseInt(currentShippingType.value, 10) === 1 && orderDetail.company.length > 0">
-					<view class="cell-icon">
-						递
-					</view>
-					<text class="cell-tit clamp">快递公司</text>
-					<text class="cell-tip active">
-						{{ currentCompany && currentCompany.label || '选择快递公司' }}
-					</text>
-					<text class="cell-more wanjia wanjia-gengduo-d"></text>
-				</view>
-				<view class="yt-list-cell b-b" @tap="showPickupPointPicker" v-if="parseInt(currentShippingType.value, 10) === 2">
-					<view class="cell-icon">
-						提
-					</view>
-					<text class="cell-tit clamp">门店自提点</text>
-					<text class="cell-tip active in1line">
-						{{ currentPickupPoint && currentPickupPoint.label || '门店自提点' }}
-					</text>
-					<text class="cell-more wanjia wanjia-gengduo-d"></text>
-				</view>
-				<view class="yt-list-cell b-b" v-if="pointExchangeType[0] == 2 || pointExchangeType[0] == 4">
-					<view class="cell-icon hb">
-						分
-					</view>
-					<text class="cell-tit clamp">需要使用 {{ orderDetail.preview && orderDetail.preview.point || 0 }} 积分</text>
-					<text class="cell-tip disabled"></text>
-					<view class="cell-tip red">
-							<label class="radio">
-								<radio siza="mini" color="#fa436a" :disabled="true" :checked="true" />
-							</label>
-					</view>
-				</view>
-				<view class="yt-list-cell b-b" v-if="(pointExchangeType[0] == 1 || pointExchangeType[0] == 3) && parseInt(pointConfig.is_open) === 1">
-					<view class="cell-icon hb">
-						减
-					</view>
-					<text class="cell-tit clamp">可用{{ maxUsePoint }}积分抵用{{ maxUsePointFee }}元</text>
-					<text class="cell-tip disabled"></text>
-					<view class="cell-tip red">
-							<label class="radio">
-								<radio siza="mini" color="#fa436a" @tap="handleIsUsePoint" :disabled="isUsePointDisabled" :checked="isUsePoint" />
-							</label>
-					</view>
-				</view>
-			</view>
+		 
 			<!-- 金额明细 -->
 			<view class="yt-list">
 				<view class="yt-list-cell b-b">
-					<text class="cell-tit clamp">商品金额</text>
+					<text class="cell-tit clamp">总金额</text>
 					<text class="cell-tip red">￥{{ amountGoods }}</text>
 				</view>
-				<view class="yt-list-cell b-b">
-					<text class="cell-tit clamp">优惠金额</text>
-					<text class="cell-tip red">-￥ {{ discountAmount }}</text>
-				</view>
-				<view class="yt-list-cell b-b">
-					<text class="cell-tit clamp">运费</text>
-					<text class="cell-tip red">
-						<text>￥ {{ shippingMoney }}</text>
-					</text>
-				</view>
-				<view class="yt-list-cell b-b">
-					<text class="cell-tit clamp">发票税费</text>
-					<text class="cell-tip red">
-						<text>￥ {{ invoiceAmount }}</text>
-					</text>
-				</view>
-				<view class="yt-list-cell b-b">
-					<text class="cell-tit clamp">赠送积分</text>
-					<text class="cell-tip">
-						<text>{{ orderDetail.preview && orderDetail.preview.give_point }} 积分</text>
-					</text>
-				</view>
-				<navigator url="/pages/set/invoice/invoice?source=1">
-					<view class="yt-list-cell b-b">
-						<text class="cell-tit clamp">开具发票</text>
-						<view class="cell-tip">
-							<view class="invoice" v-if="invoiceItem.type">
-								{{ `电子发票 - ${parseInt(invoiceItem.type, 10) === 1 ? '公司' : '个人'} - ${invoiceItem.title}` }}
-								<i class="iconfont iconshanchu4"></i>
-							</view>
-							<text v-else>本次不开具发票</text>
-							<view v-if="invoiceItem.type">
-								<radio-group name="gender" class="gender">
-									<label class="gender-item" v-for="(item, index) in orderDetail.invoice && orderDetail.invoice.list" :key="index">
-										<radio @click.stop="handleInvoiceChange(item)" style="transform:scale(0.7)" class="gender-item-radio" color="#fa436a" :checked="index === 0" />
-										<text class="gender-item-text">{{ item }}</text>
-									</label>
-								</radio-group>
-							</view>
-						</view>
-					</view>
-				</navigator>
+				  
 				<view class="yt-list-cell desc-cell">
 					<text class="cell-tit clamp">备注</text>
 					<input class="desc" type="text" v-model="buyerMessage" placeholder="请填写备注信息" placeholder-class="placeholder" />
@@ -166,79 +59,16 @@
 					<text class="price">{{ `${realAmount} ${ maxUsePoint > 0 && (isUsePoint ? ` + ${maxUsePoint} 积分` : '') || (orderDetail.preview && orderDetail.preview.point ? ` + ${orderDetail.preview && orderDetail.preview.point} 积分` : '') }` }}</text>
 				</view>
 	<!--			orderDetail.preview.point-->
-				<button class="submit" @tap="submit" :disabled="btnLoading" :loading="btnLoading" v-if="orderDetail.preview && (userInfo.account.user_integral >= orderDetail.preview.point)">
+				<button class="submit" @tap="submit" :disabled="btnLoading" :loading="btnLoading" >
 					提交订单
 				</button>
-				<text class="submit disabled" v-else>
-					积分不足
-				</text>
+				 
 			</view>
 		</view>
-		<!-- 404页面 -->
-		<view v-if="!orderDetail.products && !loading">
-			<rf-no-data class="rf-no-data" :custom="true">
-				<view class="title">
-					{{ errorInfo || '订单不存在' }}
-				</view>
-				<view @tap="getOrderDetail" slot="refresh" class="spec-color">重新加载</view>
-			</rf-no-data>
-		</view>
+	 
 		<!--页面加载动画-->
     <rf-loading v-if="loading"></rf-loading>
-		<!-- 优惠券面板 -->
-		<view class="mask" :class="maskState===1 ? 'show' : 'none'" @tap="toggleMask">
-			<view class="mask-content" @tap.stop.prevent="stopPrevent">
-	      <!-- 优惠券列表 -->
-	      <view class="sub-list valid">
-	        <view class="row" v-for="(item,index) in orderDetail.coupons" :key="index" @tap.stop="selectCoupon(item)">
-	          <view class="carrier">
-	            <view class="title">
-		            <view>
-		              <text class="cell-icon">{{ parseInt(item.range_type, 10) === 2 ? '限' : '全' }}</text>
-		              <text class="cell-title">{{item.title}}</text>
-		            </view>
-		            <view>
-									<text class="price" v-if="item.money">{{item.money }}</text>
-									<text class="price-discount" v-else>{{ `${item.discount}折` }}</text>
-		            </view>
-	            </view>
-	            <view class="term">
-	              <text>{{ item.start_time | time }} ~ {{ item.end_time | time }}</text>
-								<text class="at_least">满{{ item.at_least }}可用</text>
-	            </view>
-	            <view class="usage">
-								<text>
-									{{ parseInt(item.range_type, 10) === 2 ? '部分产品使用' : '全场产品使用' }}
-								</text>
-	            </view>
-	          </view>
-	        </view>
-	      </view>
-				<!-- 优惠券页面，仿mt -->
-				<text class="no-coupon" v-if="orderDetail.coupons && orderDetail.coupons.length === 0">暂无优惠券</text>
-			</view>
-		</view>
-		<rf-picker
-				themeColor="#fa436a"
-				ref="shippingTypePicker"
-				mode="selector"
-				:deepLength="1"
-				@onConfirm="onShippingConfirm"
-				:pickerValueArray="pickerShippingType" />
-		<rf-picker
-			themeColor="#fa436a"
-			ref="companyTypePicker"
-			mode="selector"
-			:deepLength="1"
-			@onConfirm="onCompanyConfirm"
-			:pickerValueArray="orderDetail.company" />
-		<rf-picker
-			themeColor="#fa436a"
-			ref="pickupPointPicker"
-			mode="selector"
-			:deepLength="1"
-			@onConfirm="onPickupPointConfirm"
-			:pickerValueArray="orderDetail.pickup_point_config && orderDetail.pickup_point_config.list" />
+		  
 	</view>
 </template>
 
@@ -257,7 +87,7 @@
 				maskState: 0, //优惠券面板显示状态
 				desc: '', //备注
 				payType: 1, //1微信 2支付宝
-				orderDetail: {},
+				orderDetail: {"realname":"张阿姨"},
 				pointExchangeType: [],
 				loadingType: 'more', //加载更多状态
 				pickerShippingType: [
@@ -269,12 +99,10 @@
 				currentCompany: {},
 				currentPickupPoint: {},
 				cartIds: null,
-				invoiceItem: {},
-				addressData: {},
+				addressData: null,
 				couponItem: {},
 				pointConfig: {},
-				product: null,
-				shippingMoney: 0,
+				product: null, 
 				isUsePoint: false,
 				isUsePointDisabled: false,
 				data: {},
@@ -283,40 +111,45 @@
 				invoiceContent: null,
 				loading: true,
 				errorInfo: '',
-				buyerMessage: ''
+				buyerMessage: '',
+				products : [
+					{
+						"product_picture":"http://47.95.239.228:8091/media/portrait/51611055969.0.png",
+						"product_name" : "李阿姨",
+						"rulename" : "按月",
+						"ruleid" : "按月",
+						"num" : 2,
+						"product_money" : 2000,
+				}]
 			}
 		},
 		computed: {
 	    // 计算商品金额
 			amountGoods(){
+				return 2000;
 				let amount = 0;
 				this.orderDetail.products && this.orderDetail.products.forEach(item => {
 					amount += parseInt(item.num, 10) * parseFloat(item.price)
 				});
 				return this.floor(amount);
 			},
-	    // 计算优惠金额
-			discountAmount() {
-				const discountMoney = this.floor((100 - this.couponItem.discount) / 100 * this.amountGoods);
-				return parseInt(this.couponItem.type, 10) === 2 ? discountMoney : this.couponItem.money || 0;
-			},
+	     
 	    // 计算实付金额
 			realAmount(){
-				const realAmount = this.amountGoods - this.discountAmount + parseFloat(this.shippingMoney) - (this.isUsePoint ? this.maxUsePointFee : 0)
-				return (this.floor(parseFloat(this.invoiceAmount) + realAmount) || 0).toFixed(2);
+				return 100;
+				const realAmount = this.amountGoods - this.discountAmount  - (this.isUsePoint ? this.maxUsePointFee : 0)
+				return (this.floor(   realAmount) || 0).toFixed(2);
 			},
-	    // 计算发票税费
-		  invoiceAmount () {
-			  const realAmount = this.amountGoods - this.discountAmount - (this.isUsePoint ? this.maxUsePointFee : 0);
-			  return this.invoiceItem.type ? this.floor(this.orderDetail.invoice.order_invoice_tax / 100 * realAmount) : 0;
-		  },
+	    
 	    // 计算可用积分
 			maxUsePoint() {
+				return 0;
 				return this.orderDetail.max_use_point > uni.getStorageSync('userInfo').account.user_integral
 						? uni.getStorageSync('userInfo').account.user_integral : this.orderDetail.max_use_point;
 			},
 	    // 计算最大积分可抵扣金额
 			maxUsePointFee() {
+				return 30;
 				return this.maxUsePoint * this.pointConfig.convert_rate;
 			}
 		},
@@ -326,11 +159,11 @@
 			}
 		},
 		onShow() {
-			if (this.addressData && this.addressData.realname) {
-				this.getOrderFreightFee();
-			}
+			console.log(this.addressData)
+			 
 		},
 		onLoad(options){
+			console.log("onLoad")
 			this.initData(options);
 		},
 		methods: {
@@ -340,10 +173,7 @@
 	    navTo(route) {
         this.$mRouter.push({route});
 	    },
-			// 不使用发票
-			closeInvoice() {
-				this.invoiceItem = {}
-			},
+			 
 			// 向下取整
 			floor(val) {
 				return Math.floor(val * 100) / 100;
@@ -357,44 +187,7 @@
 			    this.isUsePoint = true;
           this.use_point = this.maxUsePoint;
 				}
-			},
-			// 选择物流
-			showSinglePicker() {
-				this.$refs.shippingTypePicker.show()
-			},
-			// 选择快递公司
-			showCompanyPicker() {
-				this.$refs.companyTypePicker.show()
-			},
-			// 选择自提点
-			showPickupPointPicker() {
-				this.$refs.pickupPointPicker.show()
-			},
-			// 确定选择物流
-			onShippingConfirm(e) {
-				e.value = e.value[0]
-				this.currentShippingType = e;
-				if (this.currentShippingType.value == 2) {
-					if (parseFloat(this.realAmount) > parseFloat(this.orderDetail.pickup_point_config.pickup_point_freight)) {
-						this.shippingMoney = 0;
-					} else {
-						this.shippingMoney = parseFloat(this.orderDetail.pickup_point_config.pickup_point_fee) || 0;
-					}
-				} else {
-					this.currentCompany = this.orderDetail.company[0];
-					this.getOrderFreightFee();
-				}
-			},
-			// 确定选择快递公司
-			async onCompanyConfirm(e) {
-				e.value = e.value[0]
-        this.currentCompany = e;
-		    if (this.orderDetail.is_full_mail) {
-		       this.shippingMoney = 0;
-		       return;
-		    }
-				this.getOrderFreightFee();
-      },
+			}, 
 			// 确定选择自提点
 			async onPickupPointConfirm(e) {
 				e.value = e.value[0]
@@ -404,62 +197,14 @@
 					return;
 				}
       },
-			// 计算运费
-			async getOrderFreightFee() {
-				const params = {};
-				if (this.addressData) {
-					params.address_id = this.addressData.id;
-				}
-				if (this.currentCompany) {
-					params.company_id = this.currentCompany.value;
-				}
-				await this.$http.get(`${orderFreightFee}`, {
-					...params,
-					...this.data
-				}).then(r => {
-					this.shippingMoney = r.data.shipping_money || 0;
-				}).catch(err => {
-					console.log(err)
-				})
-			},
+			 
 			// 数据初始化
 			async initData(options) {
+				console.log(options)
 				this.data = await JSON.parse(options.data);
-        this.userInfo = uni.getStorageSync('userInfo');
-				await this.getOrderDetail();
-			},
-			// 获取订单详情
-			async getOrderDetail() {
-				await this.$http.get(`${orderPreview}`, this.data).then(r => {
-			    this.loading = false;
-					this.orderDetail = r.data;
-					this.pointConfig = this.orderDetail.point_config
-					this.addressData = this.orderDetail.address;
-					this.currentShippingType = this.pickerShippingType[0]
-					this.orderDetail.company.forEach(item => {
-						item.label = item.title;
-						item.value = item.id;
-					});
-					this.currentCompany = this.orderDetail.company[0];
-					this.pointExchangeType = [];
-					this.orderDetail.products.forEach(item => {
-						this.pointExchangeType.push(item.point_exchange_type)
-					});
-					if (parseInt(this.orderDetail.pickup_point_config.buyer_self_lifting, 10) === 1) {
-						this.orderDetail.pickup_point_config.list.forEach(item => {
-							item.label = `${item.contact || '无名'} - ${item.name || '未知'} - ${item.address || '未知'}`;
-							item.value = item.id;
-						});
-						this.currentPickupPoint = this.orderDetail.pickup_point_config.list[0] || {};
-						this.shippingMoney = r.data.preview.shipping_money;
-					} else {
-						this.orderDetail.pickup_point_config.list = [];
-					}
-				}).catch(err => {
-			    this.loading = false;
-			    this.errorInfo = err;
-				});
-			},
+                this.userInfo = uni.getStorageSync('userInfo');
+				this.loading = false; 
+			}, 
 			// 显示优惠券面板
 			toggleMask(type){
 				let timer = type === 'show' ? 10 : 300;
@@ -487,10 +232,7 @@
 				if (this.couponItem && this.couponItem.id) {
 					params.coupon_id = this.couponItem.id;
 				}
-				if (this.invoiceItem && this.invoiceItem.id) {
-					params.invoice_id = this.invoiceItem.id;
-					params.invoice_content = this.invoiceContent || this.orderDetail.invoice.list[0];
-				}
+				 
 				if (this.currentCompany && this.currentCompany.value) {
 					params.company_id = this.currentCompany.value;
 				}
@@ -510,35 +252,21 @@
 				}).then(r => {
 					const data = {}
 					data.order_id = parseInt(r.data.id, 10);
-					if (this.data.type === 'cart') this.setCartItemCount();
+				 
 					if (parseInt(r.data.pay_status, 10) === 1) {
             uni.redirectTo({
-              url: '/pages/user/money/success'
-            });
-          } else {
-            uni.redirectTo({
-              url: `/pages/user/money/pay?id=${r.data.id}`
-            })
-          }
-				}).catch(() => {
-					this.btnLoading = false;
-				})
-			},
-      // 设置购物车数量角标
-      async setCartItemCount() {
-          await this.$http.get(`${cartItemCount}`).then(r => {
-              if (parseInt(r.data, 10) > 0) {
-                  uni.setStorageSync('cartNum', r.data);
-                  uni.setTabBarBadge({
-                      index: this.$mConstDataConfig.cartIndex,
-                      text: r.data
-                  });
-              } else {
-                  uni.removeStorageSync('cartNum');
-                  uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
-              }
-          });
-      },
+				  url: '/pages/user/money/success'
+				});
+			  } else {
+				uni.redirectTo({
+						  url: `/pages/user/money/pay?id=${r.data.id}`
+						})
+					  }
+					}).catch(() => {
+						this.btnLoading = false;
+					})
+				},
+     
 			stopPrevent(){
 			},
 			selectCoupon(item){

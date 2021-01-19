@@ -5,14 +5,14 @@
 	-->
 	<view class="sku-box">
 			<view class="sku-header container">
-				<image class="goods-img" :src="selectSkuInfo[cbImage]"></image>
+				<image class="goods-img" :src="cbProductImage"></image>
 				
 				<view class="sku-goods-info">
 					<view class="name">
 						<text>{{cbName}}</text>
 					</view>
 					<view class="money" :style="{color:themeColor}">
-						<text class="symbol fs-26">￥</text>
+						<text class="symbol fs-26">$</text>
 						<text class="amount fs-38">{{selectSkuInfo[cbPrice] | toFixed2}}</text>
 					</view>
 					<!--
@@ -68,6 +68,10 @@
 		},
 		props: {
 			cbName:{
+				type: String,
+				default: ''
+			},
+			cbProductImage:{
 				type: String,
 				default: ''
 			},
@@ -163,11 +167,14 @@
 		methods: {
 			initSkuData() {
 				this.selectedIndex = this.defaultSelectIndex
+				
 				this.selectSkuInfo = this.combinations[this.selectedIndex]
+				console.log(this.cbProductImage)
+				console.log(this.specifications)
 				this.mySpecifications = JSON.parse(JSON.stringify(this.specifications))
 				this.mySpecifications.forEach((item,idx) => {
-					//当前规格组合值
-					const selects = this.combinations[this.selectedIndex][this.cbValue].split(',')
+					//当前规格组合值 
+					const selects = this.combinations[this.selectedIndex][this.cbValue].split(',') 
 					//每类规格对应其列表的下标 并记录在属性sidx在mySpecifications的子对象中
 					const sIndex = item[this.speList].indexOf(selects[idx])
 					if(sIndex === -1) {
@@ -213,9 +220,21 @@
 			handleConfirm() {
 				const result = this.selectSkuInfo
 				result.count = this.buyCount*1
-				console.log(result);
+				console.log(this.selectSkuInfo);
 				this.$emit("closePopup");
 				this.$emit('confirm', result);
+ 
+				const data = {}; 
+				 
+				data.num = result.count ;
+				data.product_picture = this.cbProductImage
+				data.product_name = this.cbName
+				data.ruleid = this.selectSkuInfo["id"]
+				data.rulename = this.selectSkuInfo["value"]
+				data.num = this.selectSkuInfo["count"]
+				data.product_money = this.selectSkuInfo["price"]
+				  
+				this.$mRouter.push({route: `/pages/order/create/order?data=${JSON.stringify(data)}`});
 			}
 		}
 	}
