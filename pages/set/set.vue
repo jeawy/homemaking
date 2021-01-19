@@ -83,15 +83,22 @@
 			toLogout(){
 				uni.showModal({
 				    content: '确定要退出登录么',
-				    success: (e)=>{
+				    success: (e)=>{ 
 				    	if(e.confirm){
+							this.$mStore.commit('logout');
+							uni.reLaunch({
+										url: '/pages/user/userinfo/userinfo'
+									})
+								/*
 				    		this.$http.post(`${logout}`).then(() => {
-									this.$mStore.commit('logout');
+									//this.$mStore.commit('logout');
 									uni.reLaunch({
 										url: '/pages/user/user'
 									})
 								})
-				    	}
+								*/
+						}
+						
 				    }
 				});
 			},

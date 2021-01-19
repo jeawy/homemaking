@@ -2,7 +2,7 @@
 	<view class="user">
 		<!--顶部导航栏-->
 		<view class="user-navbar">
-			<view class="setting">
+			<view class="setting" @tap="navTo('/pages/set/set')">
 			   <image class="setting_img" src="/static/my/set.svg"></image>  
 			</view>
 			<view class="notice" @tap="navTo(userInfo ? '/pages/user/notice/notice' : 'login')">
@@ -13,9 +13,11 @@
 		<view class="user-section">
 			<view class="middle" @tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login')">
 				<!--用户头像-->
-				<view class="portrait_bg">
-					<image class="portrait"
-						:src="baseurl+userInfo.portrait || headImg"></image>
+				<view class="portrait_bg" v-if="hasLogin">
+					<image class="portrait" :src="portrait"></image>
+				</view>
+				<view class="portrait_bg" v-else >
+					<image class="portrait" :src="headImg"></image>
 				</view>
 				 
 				<!--账户信息-->
@@ -24,8 +26,7 @@
 						<text>
 							{{ userInfo.username || userInfo.phone||'请先登录'}}
 						</text>
-						<image class="sign"
-							:src="account_sign"></image>
+						<image class="sign" :src="account_sign"></image>
 					</view>
 					<text class="account">
 						账号：{{ userInfo.phone  }} 
@@ -92,7 +93,7 @@
 						<image class="payment-img" src="../../static/my/payment.svg"></image>
 						<view class="fct-content">付款方式</view>
 					</view>
-					<view class="fct-center-three fct-center-all">
+					<view class="fct-center-three fct-center-all" @tap="navTo('/pages/set/set')">
 						<image class="setting-img" src="../../static/my/settings.svg"></image>
 						<view class="fct-content">基本设置</view>
 					</view>
@@ -219,27 +220,34 @@ import listCell from '@/components/rf-list-cell';
 				},
 				hasLogin:true,
 				footPrintList:[],
-				baseurl:""
+				baseurl:"",
+				portrait:""
+				
             }
 		},
 		onLoad(){
 			// 
+			
 			this.userInfo = this.$mStore.state.userInfo
+			
 			this.baseurl = this.$mStore.state.BaseUrl
-			console.log(this.$mStore.state.userInfo)
+			this.portrait = this.baseurl+this.userInfo.portrait 
+			console.log(this.$mAssetsPath.headImg)
 			console.log(this.baseurl)
 			console.log(this.userInfo.portrait)
 			console.log(this.baseurl + this.userInfo.portrait)
 		},
 		async onShow() {
-            // 初始化数据
+			// 初始化数据
+			console.log(this.$mStore.state.userInfo)
             this.initData();
         },
         methods: {
 			async initData() {
 				this.hasLogin = this.$mStore.getters.hasLogin;
+				 
                 if (this.hasLogin) {
-                    // await this.getMemberInfo();
+                    await this.getMemberInfo();
 					//await this.initCartItemCount();
 					this.userInfo = this.$mStore.state.userInfo
                 } else {
@@ -267,15 +275,22 @@ import listCell from '@/components/rf-list-cell';
                 
             },
 			 async getMemberInfo() {
+				 console.log("memberInfo")
+				 let _this = this
                 await this.$http.get(memberInfo).then(async r => {
                     this.loading = false;
-					this.userInfo = r.data;
-					uni.setStorageSync('userInfo', r.data);
+					this.userInfo = r.msg;
+					console.log(r.msg)
+					uni.setStorageSync('userInfo', r.msg);
+					this.userInfo.portrait = r.msg.head_portrait
+					this.portrait = this.baseurl+ r.msg.head_portrait
+					console.log(this.portrait)
+					
                     //await uni.setStorageSync('cartNum', r.data.cart_num);
                     // 获取足迹列表
-                    await this.getFootPrintList();
-					await this.setSectionData(r.data);
-                }).catch(() => {
+                    //await this.getFootPrintList();
+					//await this.setSectionData(r.msg);
+                }).catch(() => { 
                 	  this.hasLogin = false;
                 	  this.userInfo = {};
                     this.resetSectionData();
@@ -525,8 +540,7 @@ import listCell from '@/components/rf-list-cell';
 		}
 		/*常用功能*/
 		.common-function{
-			width: 690rpx;
-			height: 434rpx;
+			width: 690rpx; 
 			margin-top: 30rpx;
 			background: #FFFFFF;
 			box-shadow: 0px 4rpx 8rpx rgba(142, 142, 142, 0.1);

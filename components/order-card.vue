@@ -10,22 +10,34 @@
                     v-for="(item, index) in orderList"
                     :key="index"
                 >
+					<!--
                     <image class="order-item-img" :src="productList[index].product_picture"></image>
+					-->
+					<image class="order-item-img" :src="imgsrc+item.rules[0].thumbnail_portait"></image>
+					<!--
                     <view class="order-item-name">{{productList[index].product_name}}</view>
+					-->
+					<view class="order-item-name">{{item.rules[0].username}}</view>
+					<!--
                     <view class="order-item-content">{{item.content}}</view>
+					-->
+					<view class="order-item-content">{{item.rules[0].rule_title}}*{{item.rules[0].num}}</view>
+					<!--
                     <view class="order-item-ispay" 
                         :class="{activeColor: productList[index].order_status==0}">
                         {{orderStatus[index]}}
                     </view>
-                    <view class="order-item-money">${{item.pay_money}}</view>
-                    <view class="order-item-num">x{{item.product_count}}</view>
+					-->
+                    <view class="order-item-money">${{item.rules[0].price}}</view>
+                    <view class="order-item-num">x{{item.rules[0].num}}</view>
                     <view class="order-item-price">
                         总价
-                    <span style="color:#FF8D0E;font-size:20rpx">${{item.pay_money * item.product_count}}</span>
+                    <span style="color:#FF8D0E;font-size:20rpx">${{item.rules[0].price * item.rules[0].num}}</span>
                     </view>
                     <view class="order-item-side">
                         <view class="btn" @tap="deleteOrder(item.id)">删除订单</view>
                         <view class="btn">申请单据</view>
+						<!--
 						<view @tap="navTo('/pages/order/evaluation/evaluation')">
 							<view v-if="item.is_evaluate==0">
 								<view class="btn">发表评论</view>
@@ -34,6 +46,7 @@
 								<view class="btn">已评论</view>
 							</view>
 						</view>
+						-->
                     </view>
                 </view>
             </view>
@@ -48,11 +61,16 @@
 <script>
 import {orderDelete} from '@/api/userInfo';
 export default{
+	/*
     props:[
         "orderList","productList","orderStatus"
-    ],
+    ],*/
+	props:[
+	    "orderList"
+	],
     data(){
         return{
+			imgsrc:'http://47.95.239.228:8091/',
 			hasLogin:true
         }
     },
@@ -62,12 +80,16 @@ export default{
 				content: '确定要删除该订单吗',
 				success: (e) => {
 					if (e.confirm) {
-						    this.$http.delete(`${orderDelete}?id=${id}`, {}).then(() => {
-							this.$mHelper.toast('订单删除成功');
-							setTimeout(() => {
-								// 调用父组件的方法
-								this.$emit('getOrderList');
-							}, 500)
+						    this.$http.post(`${orderDelete}`, {ids:id,method:'delete'}).then((r) => {
+							if(r.status === 0){
+									this.$mHelper.toast('订单删除成功');
+									setTimeout(() => {
+										// 调用父组件的方法
+										this.$emit('getOrderList');
+									}, 500)
+							}else{
+								this.$mHelper.toast('订单删除失败');
+							}
 						})
 					}
 				}
@@ -93,7 +115,6 @@ export default{
 		},
 	},
     onLoad() {
-        console.log(productList)
     }
 }
 </script>

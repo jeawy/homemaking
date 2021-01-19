@@ -7,7 +7,7 @@
       <!--#ifdef H5-->
 			<!--h5直接上传头像-->
 			<view class="portrait-box" @tap="uploadImage">
-				<image class="portrait" :src="profileInfo.head_portrait || headImg"></image>
+				<image class="portrait" :src="baseurl+profileInfo.head_portrait || headImg"></image>
 			</view>
       <!-- #endif -->
 			<!--#ifndef H5-->
@@ -15,7 +15,7 @@
 			<view class="portrait-box">
         <avatar
 					canRotate="false"
-          selWidth="200px" selHeight="400upx" @upload="handleUploadFile" :avatarSrc="profileInfo.head_portrait || headImg"
+          selWidth="200px" selHeight="400upx" @upload="handleUploadFile" :avatarSrc="baseurl+profileInfo.head_portrait || headImg"
           avatarStyle="width: 200upx; height: 200upx; border-radius: 100%; border: 6upx solid #fff;">
         </avatar>
 			</view>
@@ -26,7 +26,7 @@
 					<text class="tit">手机号</text>
 					<input
 						type="number"
-						v-model="profileInfo.mobile"
+						v-model="profileInfo.phone"
 						disabled
 						placeholder="请输入手机号码"
 					/>
@@ -35,24 +35,17 @@
 					<text class="tit">昵　称</text>
 					<input
 						type="text"
-						v-model="profileInfo.nickname"
+						v-model="profileInfo.username"
 						placeholder="请输入您的昵称"
 					/>
 				</view>
-				<view class="input-item">
-					<text class="tit">姓　名</text>
-					<input
-						type="text"
-						v-model="profileInfo.realname"
-						placeholder="请输入您的姓名"
-					/>
-				</view>
+				 
 				<view class="input-item">
 					<text class="tit">性　别</text>
-					<radio-group @change="handleGenderChange">
-						<label class="gender-item" v-for="(item, index) in genders" :key="index">
-							<radio class="gender-item-radio" color="#fa436a" :value="item.value" :checked="item.value === profileInfo.gender" />
-							<text class="gender-item-text">{{ item.name }}</text>
+					<radio-group @change="handlesexChange">
+						<label class="sex-item" v-for="(item, index) in sexs" :key="index">
+							<radio class="sex-item-radio" color="#fa436a" :value="item.value" :checked="item.value === profileInfo.sex" />
+							<text class="sex-item-text">{{ item.name }}</text>
 						</label>
 					</radio-group>
 				</view>
@@ -62,14 +55,7 @@
 						<view class="date" style="background: none;">{{ date || '请选择日期' }}</view>
 					</picker>
 				</view>
-				<view class="input-item">
-					<text class="tit">Q　Q</text>
-					<input
-						type="number"
-						v-model="profileInfo.qq"
-						placeholder="请输入您的QQ"
-					/>
-				</view>
+				 
 				<view class="input-item">
 					<text class="tit">邮　箱</text>
 					<input
@@ -106,17 +92,17 @@
 				loadProgress: 0,
 				CustomBar: this.CustomBar,
 				profileInfo: {},
-				genders: [
+				sexs: [
 					{
 						value: '0',
 						name: '未知'
 					},
 					{
-						value: '1',
+						value: '男',
 						name: '男'
 					},
 					{
-						value: '2',
+						value: '女',
 						name: '女'
 					}],
 				date: moment().format('YYYY-MM-DD'),
@@ -124,11 +110,14 @@
 				loading: true,
 				headImg: this.$mAssetsPath.headImg,
 				userBg: this.$mAssetsPath.userBg,
-				btnLoading: false
+				btnLoading: false,
+				baseurl: "",
+				userInfo : ""
 			};
 		},
 		onLoad () {
 			this.initData()
+			this.baseurl = this.$mStore.state.BaseUrl
 		},
 		methods: {
 			// 上传头像
@@ -148,18 +137,22 @@
 			handleUploadFile (data) {
 				const _this = this;
 		    let filePath = data.path || data[0];
-        _this.$http.upload(uploadImage, {filePath, name: 'file'}).then(r => {
-							_this.profileInfo.head_portrait = r.data.url;
-							_this.handleUpdateInfo(_this.profileInfo);
-        });
+			_this.$http.upload(uploadImage, {filePath, name: 'file'}).then(r => {
+								_this.profileInfo.head_portrait = r.msg;
+								_this.userInfo = this.$mStore.state.userInfo
+								_this.userInfo.head_portrait = r.msg
+								console.log(_this.userInfo)
+								uni.setStorageSync('userInfo', _this.userInfo);
+								//_this.handleUpdateInfo(_this.profileInfo);
+			});
 			},
 			// 监听日期更改
 			bindDateChange(e) {
 				this.date = e.target.value
 			},
 			// 监听性别更改
-			handleGenderChange (e) {
-		    this.profileInfo.gender = e.detail.value;
+			handlesexChange (e) {
+		    this.profileInfo.sex = e.detail.value;
 			},
 			// 数据初始化
 			initData(){
@@ -169,8 +162,9 @@
 			// 获取用户信息
 			async getMemberInfo () {
 				await this.$http.get(memberInfo).then(r => {
+					console.log(r)
 			    this.loading = false;
-					this.profileInfo = r.data;
+					this.profileInfo = r.msg;
 					this.date = this.profileInfo.birthday;
 				}).catch(() => {
 			    this.loading = false;
@@ -184,20 +178,28 @@
 			async handleUpdateInfo () {
 				this.btnLoading = true;
 				this.loadProgress = this.loadProgress + 6;
-		    const timer = setInterval(() => {
-					this.loadProgress = this.loadProgress + 6;
-		    }, 50);
-				await this.$http.put(`${memberUpdate}?id=${this.profileInfo.id}`, {
+				const timer = setInterval(() => {
+						this.loadProgress = this.loadProgress + 6;
+				}, 50);
+				await this.$http.post(`${memberUpdate}?userid=${this.profileInfo.userid}`, {
 					...this.profileInfo,
-					birthday: this.date
-				}).then(() =>{
-				    clearInterval(timer);
-						this.loadProgress = 0;
-				    this.$mHelper.toast('恭喜您, 资料修改成功!');
-				    setTimeout(() => {
-					    this.$mRouter.back();
-				    }, 1 * 1000);
-				}).catch(() => {
+					birthday: this.date,
+					method : "put"
+				}).then((r) =>{
+					console.log(r)
+					clearInterval(timer);
+					this.loadProgress = 0;
+					if (r.status == 1){
+						this.$mHelper.toast(r.msg); 
+					}else{
+						this.$mHelper.toast(r.msg);
+						setTimeout(() => {
+							this.$mRouter.back();
+						}, 1 * 3000);
+					} 
+				    this.btnLoading = false;
+				}).catch((r) => {
+					console.log(r)
 					this.btnLoading = false;
 				});
 			}
@@ -271,7 +273,7 @@
 					margin-bottom: 0;
 				}
 				.tit{
-					width: 90upx;
+					width: 100upx;
 					font-size: $font-sm+2upx;
 					color: $font-color-base;
 				}
@@ -280,6 +282,7 @@
 					line-height: 80upx;
 					font-size: $font-base + 2upx;
 					color: $font-color-dark;
+					width: 300upx;
 				}
 				.date {
 					height: 80upx;
@@ -287,9 +290,9 @@
 					font-size: $font-base + 2upx;
 					color: $font-color-dark;
 				}
-				.gender-item {
+				.sex-item {
 					margin-right: 20upx;
-					.gender-item-text {
+					.sex-item-text {
 						padding: 0 5upx;
 					}
 					radio .wx-radio-input.wx-radio-input-checked {

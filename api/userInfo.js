@@ -27,10 +27,15 @@ export const queryCityList = (params) => http.get('/area/get_city_list',params)
 export const queryCountyList = (params) => http.get('/area/get_county_list/',params)
 
 // 个人信息
-const memberInfo = '/tiny-shop/v1/member/member/index';
+const memberInfo = '/users/list/?mine=';
 // 个人信息修改
-const memberUpdate = '/tiny-shop/v1/member/member/update';
+const memberUpdate = '/users/list/';
 
+// 上传图片
+const uploadImage = '/users/list/';
+// 收货地址列表
+//const addressList = '/tiny-shop/v1/member/address/index';
+const addressList = '/address/addresses/';
 // 默认收货地址
 const addressDefault = '/tiny-shop/v1/member/address/default';
 // 默认收货地址
@@ -53,7 +58,8 @@ const couponReceive = '/tiny-shop/v1/marketing/coupon-type/create';
 const couponClear = '/tiny-shop/v1/member/coupon/clear';
 
 // 获取我的订单
-const orderList = '/tiny-shop/v1/member/order/index';
+//const orderList = '/tiny-shop/v1/member/order/index';
+const orderList = '/bill/bills/';
 // 订单确认收货
 const orderTakeDelivery = '/tiny-shop/v1/member/order/take-delivery';
 // 退货/退款申请
@@ -65,7 +71,8 @@ const closeOrderRefundApply = '/tiny-shop/v1/member/order-product/refund-close';
 // 获取订单详情
 const orderDetail = '/tiny-shop/v1/member/order/view';
 // 删除已关闭订单
-const orderDelete = '/tiny-shop/v1/member/order/delete';
+//const orderDelete = '/tiny-shop/v1/member/order/delete';
+const orderDelete = '/bill/bills/'
 
 // 获取我的足迹
 const footPrintList = '/tiny-shop/v1/member/footprint/index';
@@ -123,8 +130,6 @@ const orderCustomerSalesReturn = '/tiny-shop/v1/member/order-customer/sales-retu
 // 退款/退货关闭申请
 const orderCustomerRefundClose = '/tiny-shop/v1/member/order-customer/close';
 
-// 上传图片
-const uploadImage = '/tiny-shop/v1/common/file/images';
 
 export {
 	memberInfo,

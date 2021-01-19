@@ -50,6 +50,7 @@
 			if (this.$mPayment.isWechat()) {
 				this.isAuthLoginShow = true;
 			}
+			console.log("in login type")
 			/*  #endif  */
 			/*  #ifdef MP-WEIXIN */
 			this.isAuthLoginShow = true;
@@ -107,6 +108,7 @@
 					this.$mHelper.toast('请阅读并同意协议', 1.5 * 1000);
 					return;
 				}
+				console.log(route)
 				this.$mRouter.redirectTo({
 					route
 				});
