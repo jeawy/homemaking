@@ -6,7 +6,7 @@
 				<!-- <swiper indicator-dots circular=true duration="400"> -->
 				<!-- <swiper-item class="swiper-item"> -->
 					<view class="image-wrapper">
-						<image :src="productDetail.imgsrc" class="loaded" mode="aspectFill"></image>
+						<image :src="baseurl+productDetail.thumbnail_portait" class="loaded" mode="aspectFill"></image>
 					</view>
 					<view class="card_text">
 						<view class="name">{{productDetail.username}}</view>
@@ -319,7 +319,8 @@
 						<echone-sku
 						  :combinations="combinations"
 						  :specifications="specifications"
-						  :cbName = "cbName"
+						  :cbName="cbName"
+						  :cbProductImage="cbProductImage"
 						  @closePopup="closePopup"
 						></echone-sku>
 					</uni-popup>
@@ -452,27 +453,13 @@
 				imgsrc:'http://47.95.239.228:8091/',
 				specifications: [
 				  {
-				    name: '规格',
-				    id: '123',
-				    list: ['月付', '时薪'],
+				    name: '雇佣方式',
+				    id: null,
+				    list: [],
 				  }
 				],
-				combinations: [
-				  {
-				    id: '',
-				    value: '月付',
-				    image:'',
-				    price: 0,
-				    stock: 1000,
-				  },
-				  {
-				    id: '',
-				    value: '时薪',
-				    image:'',
-				    price: 0,
-				    stock: 500,
-				  }
-				],
+				combinations: [ ],
+				baseurl:"",
 				serviceClass: 'none', //服务弹窗css类，控制开关动画
 				ladderPreferentialClass: 'none', //服务弹窗css类，控制开关动画
 				attributeValueClass: 'none', //scss类，控制开关动画
@@ -481,17 +468,7 @@
 				cartType: null,
 				maskState: 0, //优惠券面板显示状态
 				couponList: [],
-				productDetail: {
-					id:1,
-					name:'张三',
-					imgsrc:"/static/people.svg",
-					age:27,
-					sex:"women",
-					position:'澳大利亚',
-					time:"2",
-					language:['普通话','英语'],
-					type:"包月小时工",
-				},
+				productDetail: { },
 				styleObject: {},
 				showTypeImage: null,
 				specSelected: [],
@@ -513,19 +490,11 @@
 				loveTimes:0,//收藏次数
 			};
 		},
-		// computed: {
-		// 	buyBtnDisabled() {
-		// 		return parseInt(this.currentStock || this.productDetail.stock, 10) === 0;
-		// 	},
-		// 	addCartBtnDisabled() {
-		// 		return this.productDetail.point_exchange_type == 2 ||
-		// 			this.productDetail.point_exchange_type == 4 ||
-		// 			(this.currentStock || this.productDetail.stock) == 0 ||
-		// 			this.productDetail.is_virtual == 1;
-		// 	}
-		// },
+ 
 		async onLoad(options) {
 			this.initData(options.id);
+			this.baseurl = this.$mStore.state.BaseUrl
+			console.log(this.baseurl)
 			// //规格 默认选中第一条
 			// this.specList.forEach(item => {
 			// 	for (let cItem of this.specChildList) {
@@ -636,21 +605,18 @@
 				await this.$http.get(`${categoryList}`, {
 					productid
 				}).then(async r => {
-					console.log(r);
 					this.loading = false;
+					console.log(r)
 					this.productDetail = r.msg;
 					this.cbName = r.msg.productname;
-					for(var i=0;i<r.msg.rules.length;i++){
-						if(r.msg.rules[i].name ==="月付"){
-							this.combinations[0].id = r.msg.rules[i].id;
-							this.combinations[0].price = r.msg.rules[i].price;
-							this.combinations[0].image = r.msg.rules[i].thumbnail_portait;
-						}
-						if(r.msg.rules[i].name ==="时薪"){
-							this.combinations[1].id = r.msg.rules[i].id;
-							this.combinations[1].price = r.msg.rules[i].price;
-							this.combinations[1].image = r.msg.rules[i].thumbnail_portait;
-						}
+					this.cbProductImage = this.baseurl + r.msg.thumbnail_portait
+					for(var i=0;i<r.msg.rules.length;i++){ 
+						let data = {}
+						data.value = r.msg.rules[i].name
+						data.id = r.msg.rules[i].id;
+						data.price = r.msg.rules[i].price; 
+						this.combinations.push(data)
+						this.specifications[0].list.push(data.value)
 					}
 					// console.log(r)
 					// this.evaluateList = await r.data.evaluate;
@@ -715,7 +681,7 @@
 						return;
 					}
 					if (this.cartType === 'cart') {
-						this.handleCartItemCreate(sku_id);
+						 
 					} else if (this.cartType === 'buy') {
 						this.buy(sku_id);
 					}
@@ -734,23 +700,7 @@
 					this.specClass = 'none';
 				}, 250);
 			},
-			// 添加商品至购物车
-			async handleCartItemCreate(sku_id) {
-				await this.$http.post(`${cartItemCreate}`, {
-					sku_id,
-					num: this.cartCount
-				}).then(async () => {
-					await this.$http.get(`${cartItemCount}`).then(async r => {
-						uni.setStorageSync('cartNum', r.data);
-						this.cartNum = r.data;
-						await uni.setTabBarBadge({
-							index: this.$mConstDataConfig.cartIndex,
-							text: r.data
-						});
-					});
-					this.$mHelper.toast('添加成功，在购物车等');
-				})
-			},
+			 
 			//选择规格
 			selectSpec(index, pid, type) {
 				let list = this.specChildList;
