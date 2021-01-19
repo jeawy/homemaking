@@ -14,8 +14,7 @@
 			<view class="middle" @tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login')">
 				<!--用户头像-->
 				<view class="portrait_bg">
-					<image class="portrait"
-						:src="baseurl+userInfo.portrait || headImg"></image>
+					<image class="portrait" :src="baseurl+userInfo.portrait || headImg"></image>
 				</view>
 				 
 				<!--账户信息-->
@@ -24,8 +23,7 @@
 						<text>
 							{{ userInfo.username || userInfo.phone||'请先登录'}}
 						</text>
-						<image class="sign"
-							:src="account_sign"></image>
+						<image class="sign" :src="account_sign"></image>
 					</view>
 					<text class="account">
 						账号：{{ userInfo.phone  }} 
@@ -92,7 +90,7 @@
 						<image class="payment-img" src="../../static/my/payment.svg"></image>
 						<view class="fct-content">付款方式</view>
 					</view>
-					<view class="fct-center-three fct-center-all">
+					<view class="fct-center-three fct-center-all" @tap="navTo('/pages/set/set')">
 						<image class="setting-img" src="../../static/my/settings.svg"></image>
 						<view class="fct-content">基本设置</view>
 					</view>

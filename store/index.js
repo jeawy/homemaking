@@ -53,9 +53,11 @@ const store = new Vuex.Store({
             state.accessToken = '';
             // state.refreshToken = '';
             state.userInfo = {};
+            console.log("logout")
             uni.removeStorageSync('accessToken');
             // uni.removeStorageSync('refreshToken');
             uni.removeStorageSync('userInfo');
+            uni.removeStorageSync('user')
         },
         setReferrer(state, referrer) {
             state.referrer = referrer;
