@@ -525,8 +525,7 @@ import listCell from '@/components/rf-list-cell';
 		}
 		/*常用功能*/
 		.common-function{
-			width: 690rpx;
-			height: 434rpx;
+			width: 690rpx; 
 			margin-top: 30rpx;
 			background: #FFFFFF;
 			box-shadow: 0px 4rpx 8rpx rgba(142, 142, 142, 0.1);
