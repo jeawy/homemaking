@@ -504,10 +504,13 @@ export default {
       this.searchCate(this.searchParams);
     },
     // 搜索阿姨列表
-    async searchCate(data) {
-      await this.$http.get(`${categoryList}`, data).then((r) => {
-          this.infolst_recommend = r.msg;
-          this.infolst_new = r.msg;
+    searchCate(data) {
+      this.$http.get(`${categoryList}`, data).then(({status,msg}) => {
+        if(status===0){
+          this.visible = false
+        }
+          this.infolst_recommend = msg;
+          this.infolst_new = msg;
         })
         .catch(() => {});
     },
