@@ -18,7 +18,7 @@ export const queryAddressList = () => http.get(ADDRESS_PATH)
 // 添加地址
 export const addAddress = data => http.post(ADDRESS_PATH, data)
 // 删除地址
-export const deleteAddress = data => http.delete(ADDRESS_PATH, data)
+export const deleteAddress = data => http.delete(ADDRESS_PATH+'?delete', data)
 // 获取省份列表
 export const queryProvinceList = () => http.get('/area/get_provice_list/')
 // 获取省份下城市列表

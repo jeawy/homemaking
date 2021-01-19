@@ -2,19 +2,19 @@
 	<view class="address-list">
 		<view class="rf-list" v-if="addressList.length > 0">
 			<view class="rf-list-item" v-for="(item, index) in addressList" :key="index" @tap="checkAddress(item)">
-				<view class="mid" @touchstart="goTouchStart(item.id)" @touchmove="goTouchMove" @touchend="goTouchEnd">
+				<view class="mid" @longtap="goTouchStart(item.id)">
 					<view class="address-box">
-						<text v-if="parseInt(item.is_default, 10) === 1" class="tag">默认</text>
-						<text class="address in1line">{{item.address_name}} {{item.address_details}}</text>
+						<text v-if="parseInt(item.default, 10) === 1" class="tag">默认</text>
+						<text class="address in1line">{{item.detail}}</text>
 					</view>
 					<view class="u-box">
-						<text class="name">{{item.realname}}</text>
-						<text class="mobile">{{item.mobile}}</text>
+						<text class="name">{{item.receiver}}</text>
+						<text class="mobile">{{item.phone}}</text>
 					</view>
 				</view>
-				<view class="right">
+				<!-- <view class="right">
 					<text class="iconfont iconbianji" @tap.stop="addAddress('edit', item.id)"></text>
-				</view>
+				</view> -->
 			</view>
 			<text v-if="addressList.length > 0" class="tips">
 				提示：长按可删除当前收货地址。最多只能存在一个默认地址。
@@ -40,7 +40,8 @@
 	 */
 	import {
 		addressDelete,
-		queryAddressList
+		queryAddressList,
+		deleteAddress
 	} from "@/api/userInfo";
 
 	import rfLoadMore from '@/components/rf-load-more/rf-load-more';
@@ -78,35 +79,25 @@
 		},
 		methods: {
 			goTouchStart(id) {
-				clearTimeout(this.timeOutEvent); //清除定时器
-				this.timeOutEvent = 0;
-				this.timeOutEvent = setTimeout(() => {
-					uni.showModal({
-						content: '确定要删除该收货地址吗',
-						success: (e) => {
-							if (e.confirm) {
-								this.handleAddressDelete(id);
-							}
+				uni.showModal({
+					content: '确定要删除该收货地址吗',
+					success: (e) => {
+						if (e.confirm) {
+							this.handleAddressDelete(id);
 						}
-					});
-				}, 0.5 * 1000); //这里设置定时
+					}
+				});
 			},
 			// 删除地址
-			async handleAddressDelete(id) {
-				await this.$http.delete(`${addressDelete}?id=${id}`).then(() => {
-					this.page = 1;
-					this.addressList.length = 0;
-					this.getAddressList();
+			handleAddressDelete(id) {
+				deleteAddress({ids:id}).then(({status,msg}) => {
+					this.$mHelper.toast(msg);
+					if(status===0){
+						this.page = 1
+						this.addressList = []
+						this.getAddressList()
+					}
 				})
-			},
-			//手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
-			goTouchEnd() {
-				clearTimeout(this.timeOutEvent);
-			},
-			//如果手指有移动，则取消所有事件，此时说明用户只是要移动而不是长按
-			goTouchMove() {
-				clearTimeout(this.timeOutEvent); //清除定时器
-				this.timeOutEvent = 0;
 			},
 			// 数据初始化
 			initData() {
@@ -117,13 +108,19 @@
 			// 获取收货地址列表
 			getAddressList(type) {
 				this.loading = true;
-				queryAddressList().then(r => {
-					this.loading = false;
-					if (type === 'refresh') {
-						uni.stopPullDownRefresh();
+				queryAddressList().then(({
+					status,
+					msg
+				}) => {
+
+					if (status === 0) {
+						this.loading = false;
+						if (type === 'refresh') {
+							uni.stopPullDownRefresh();
+						}
+						this.loadingType = msg === 10 ? 'more' : 'nomore';
+						this.addressList = [...this.addressList, ...msg];
 					}
-					this.loadingType = r.data.length === 10 ? 'more' : 'nomore';
-					this.addressList = [...this.addressList, ...r.data];
 				}).catch(() => {
 					this.loading = false;
 					if (type === 'refresh') {

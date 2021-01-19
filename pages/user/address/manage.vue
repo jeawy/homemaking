@@ -8,7 +8,7 @@
 		</view>
 		<view class="row b-b">
 			<text class="tit">手机号</text>
-			<input class="input" type="number" v-model="addressData.phone" @blur="handleMobileChange" placeholder="收货人手机号码"
+			<input class="input" type="number" v-model="addressData.phone" placeholder="收货人手机号码"
 			 placeholder-class="placeholder" />
 		</view>
 		<view class="row b-b">

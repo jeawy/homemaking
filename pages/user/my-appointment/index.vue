@@ -1,7 +1,11 @@
 <template>
 	<!-- 我的预约 -->
 	<view class="my-appointment">
+
+		<!-- 日历组件 -->
 		<uni-calendar ref="calendar" :insert="true" :lunar="true" :selected="selectedData" @change="dateChangeHandler"></uni-calendar>
+
+		<!-- 预约详情展示 -->
 		<view class="my-appointment_detail" v-if="detailData!=null">
 			<view class="detail_title">
 				{{detailData.date}}
@@ -11,15 +15,12 @@
 					{{item.time}}
 				</view>
 				<view class="content_event">
-
 					{{item.content}}
 				</view>
 			</view>
 			
 		</view>
-		<button class="synchroniz-btn" :disabled="detailData==null" type="primary" @click="synchronizeToPhone">同步到手机日程</button>
-
-
+		<button class="synchroniz-btn" :disabled="detailData==null" type="primary" @click="syncToPhone">同步到手机日程</button>
 	</view>
 </template>
 
@@ -35,12 +36,14 @@
 		},
 		data() {
 			return {
+				// 预约详情
 				detailData: null,
+				// 预约列表
 				selectedData: [],
 			};
 		},
 		methods: {
-			// 日历切换
+			// 日历切换展示选择日期下的预约
 			dateChangeHandler({
 				extraInfo
 			}) {
@@ -51,7 +54,7 @@
 				this.detailData = extraInfo
 			},
 			// 同步到手机
-			synchronizeToPhone() {
+			syncToPhone() {
 				// pass
 			},
 			// 请求预约列表
@@ -61,13 +64,13 @@
 					msg
 				}) => {
 					if (status === 0) {
-						const arr = msg.map(e => {
+						const ARR = msg.map(e => {
 							return {
 								date: dayjs(e.book_time * 1000).format('YYYY-MM-DD'),
 								info: '预约',
 								data: {
 									id: e.id,
-									name: e.aunty, //阿姨名称
+									name: e.aunty,
 									content: e.comment,
 									time: dayjs(e.book_time * 1000).format('HH:mm'),
 									phone: e.phone,
@@ -76,17 +79,19 @@
 								}
 							}
 						})
-						for (let ae of arr) {
+						// 日历组件同一天只显示列表中的一项，所以要将同一天的预约合并到一项数据的data列表中
+						for (let item of ARR) {
 							// 如果同一日期已经添加过
-							if (this.selectedData.findIndex((el) => ae.date == el.date) > -1) {
+							if (this.selectedData.findIndex((el) => item.date == el.date) > -1) {
 								continue
 							}
 							// 否则  相同日期的添加到一个data下面
-							const SAME = arr.filter(el => {
-								return el.date === ae.date
+							const SAME = ARR.filter(el => {
+								return el.date === item.date
 							})
+							// 组合成预约列表
 							this.selectedData.push({
-								...ae,
+								...item,
 								data: SAME.map(s => s.data)
 							})
 						}
@@ -97,6 +102,7 @@
 		},
 		async onReady () {
 			await this.queryList()
+			// 初始化获取当天的预约详情
 			const today = dayjs(new Date()).format('YYYY-MM-DD')
 			this.detailData = this.selectedData.find((e)=>e.date==today) 
 		}
