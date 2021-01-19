@@ -101,6 +101,7 @@ export default {
     };
   },
   onLoad() {
+    console.log("login")
     const time =
       moment().valueOf() / 1000 - uni.getStorageSync("loginSmsCodeTime");
     if (time < 60) {

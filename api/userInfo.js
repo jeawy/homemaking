@@ -19,10 +19,12 @@ export function queryScheduleList(){
 
 
 // 个人信息
-const memberInfo = '/tiny-shop/v1/member/member/index';
+const memberInfo = '/users/list/?mine=';
 // 个人信息修改
-const memberUpdate = '/tiny-shop/v1/member/member/update';
+const memberUpdate = '/users/list/';
 
+// 上传图片
+const uploadImage = '/users/list/';
 // 收货地址列表
 //const addressList = '/tiny-shop/v1/member/address/index';
 const addressList = '/address/addresses/';
@@ -120,8 +122,6 @@ const orderCustomerSalesReturn = '/tiny-shop/v1/member/order-customer/sales-retu
 // 退款/退货关闭申请
 const orderCustomerRefundClose = '/tiny-shop/v1/member/order-customer/close';
 
-// 上传图片
-const uploadImage = '/tiny-shop/v1/common/file/images';
 
 export {
     memberInfo,
