@@ -48,7 +48,7 @@
 				  
 				<view class="yt-list-cell desc-cell">
 					<text class="cell-tit clamp">备注</text>
-					<input class="desc" type="text" v-model="buyerMessage" placeholder="请填写备注信息" placeholder-class="placeholder" />
+					<input class="desc" type="text" v-model="remark" placeholder="请填写备注信息" placeholder-class="placeholder" />
 				</view>
 			</view>
 			<!-- 底部 -->
@@ -112,6 +112,7 @@
 				loading: true,
 				errorInfo: '',
 				buyerMessage: '',
+				remark : "",
 				products : [
 					{
 						"product_picture":"http://47.95.239.228:8091/media/portrait/51611055969.0.png",
@@ -191,17 +192,28 @@
 			// 确定选择自提点
 			async onPickupPointConfirm(e) {
 				e.value = e.value[0]
-       	this.currentPickupPoint = e;
-				if (this.currentPickupPoint) {
-					this.shippingMoney = parseFloat(this.orderDetail.pickup_point_config.pickup_point_fee) || 0;
-					return;
-				}
-      },
+					this.currentPickupPoint = e;
+							if (this.currentPickupPoint) {
+								this.shippingMoney = parseFloat(this.orderDetail.pickup_point_config.pickup_point_fee) || 0;
+								return;
+							}
+				},
 			 
 			// 数据初始化
 			async initData(options) {
-				console.log(options)
+				
 				this.data = await JSON.parse(options.data);
+				console.log(this.data)
+				this.products = []
+				 this.products.push(
+					{
+						"product_picture":this.data.product_picture,
+						"product_name" :this.data.product_name,
+						"rulename" : this.data.rulename,
+						"ruleid" :this.data.ruleid,
+						"num" : this.data.num,
+						"product_money" : this.data.product_money,
+				})
                 this.userInfo = uni.getStorageSync('userInfo');
 				this.loading = false; 
 			}, 
@@ -229,40 +241,33 @@
 			    this.$mHelper.toast('请选择收货地址');
 					return;
 				}
-				if (this.couponItem && this.couponItem.id) {
-					params.coupon_id = this.couponItem.id;
-				}
-				 
-				if (this.currentCompany && this.currentCompany.value) {
-					params.company_id = this.currentCompany.value;
-				}
-				if (this.currentPickupPoint && this.currentPickupPoint.value) {
-					params.pickup_id = this.currentPickupPoint.value;
-				}
-				if (this.currentShippingType && this.currentShippingType.value) {
-					params.shipping_type = this.currentShippingType.value;
-				}
-				if (this.use_point) {
-					params.use_point = this.use_point;
-				}
+				params.address_id = this.addressData.id
+				params.remark =  this.remark 
+				params.items = []
+				params.items.push(
+					{"ruleid":this.data.ruleid,"num":this.data.num 	}
+				)
+				params.items = JSON.stringify(params.items)
+				console.log(JSON.stringify(params))
 				this.btnLoading = true;
 				await this.$http.post(`${orderCreate}`, {
-					...params,
-					...this.data
+					address_id:params.address_id,
+					remark:params.remark, 
+					items: JSON.stringify([{"ruleid":this.data.ruleid,"num":this.data.num 	}])
 				}).then(r => {
-					const data = {}
-					data.order_id = parseInt(r.data.id, 10);
-				 
-					if (parseInt(r.data.pay_status, 10) === 1) {
-            uni.redirectTo({
-				  url: '/pages/user/money/success'
-				});
-			  } else {
-				uni.redirectTo({
-						  url: `/pages/user/money/pay?id=${r.data.id}`
-						})
-					  }
-					}).catch(() => {
+						const data = {}
+						if (parseInt(r.status, 10) === 1) {
+							uni.redirectTo({
+								url: '/pages/user/money/success'
+								});
+							} 
+						else {
+							uni.redirectTo({
+								url: `/pages/user/money/pay?id=${r.no}`
+								})
+						}
+					}).catch((r) => {
+						console.log(r)
 						this.btnLoading = false;
 					})
 				},

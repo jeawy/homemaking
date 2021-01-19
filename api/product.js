@@ -41,7 +41,7 @@ const cartItemUpdateNum = '/tiny-shop/v1/member/cart-item/update-num';
 const cartItemUpdateSku = '/tiny-shop/v1/member/cart-item/update-sku';
 
 // 订单创建
-const orderCreate = '/tiny-shop/v1/order/order/create';
+const orderCreate = '/bill/bills/';
 // 订单预览
 const orderPreview = '/tiny-shop/v1/order/order/preview';
 
