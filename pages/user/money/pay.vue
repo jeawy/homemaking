@@ -5,7 +5,7 @@
 			<text class="price">{{ money }}</text>
 		</view>
 		<view class="pay-type-list">
-			<view class="type-item b-b" @tap="changePayType(1)" v-if="parseInt(payTypeList.order_wechat_pay, 10) === 1">
+			<view class="type-item b-b" @tap="changePayType(1)"  >
 				<i class="iconfont icon iconweixinzhifu"></i>
 				<view class="con">
 					<text class="tit">微信支付</text>
@@ -15,7 +15,7 @@
 					<radio value="" color="#fa436a" :checked='payType == 1'/>
 				</label>
 			</view>
-			<view class="type-item b-b" @tap="changePayType(2)" v-if="parseInt(payTypeList.order_ali_pay, 10) === 1">
+			<view class="type-item b-b" @tap="changePayType(2)" >
 				<i class="iconfont icon iconalipay"></i>
 				<view class="con">
 					<text class="tit">支付宝支付</text>
@@ -64,7 +64,7 @@
             // 数据初始化
             async initData(options) {
                 this.orderInfo.order_id = parseInt(options.id, 10);
-                this.getPayTypeList();
+                 
                 this.getOrderDetail(options.id);
                 this.userInfo = uni.getStorageSync('userInfo') || undefined;
                 // #ifdef H5
@@ -78,18 +78,11 @@
             // 获取订单费用
             async getOrderDetail(id) {
                 await this.$http.get(`${orderDetail}`, {
-                    id, // 订单id
+                    id:this.orderInfo.order_id, // 订单id
                     simplify: 1 // 获取简化订单详情
                 }).then(r => {
-                    this.money = r.data.pay_money
-                });
-            },
-            // 获取支付类型列表
-            async getPayTypeList() {
-                await this.$http.get(`${configList}`, {
-                    field: 'order_balance_pay,order_wechat_pay,order_ali_pay'
-                }).then(r => {
-                    this.payTypeList = r.data
+					console.log(r)
+                    this.money = r.msg.money
                 });
             },
             //确认支付
