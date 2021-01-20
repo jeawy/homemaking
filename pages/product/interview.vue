@@ -66,7 +66,14 @@
 				this.form[key] = e.detail.value
 			},
 			formSubmit: function(e){
-				
+				if(this.form.date === ''){
+					this.$mHelper.toast('请选择日期');
+					return;
+				}
+				if(this.form.time === ''){
+					this.$mHelper.toast('请选择时间');
+					return;
+				}
 				this.isLoading = true
 				const data = {
 					comment:this.form.comment,
