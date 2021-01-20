@@ -81,7 +81,7 @@
 			},
 			themeColor: {
 				type: String,
-				default: '#1ac792'
+				default: '#FF8D0E'
 			},
 			combinations: {
 				type: Array,
