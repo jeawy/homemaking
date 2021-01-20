@@ -310,11 +310,9 @@
 					<view class="love">收藏</view>
 					<view>({{loveTimes}})</view>
 				</view>
-				<view class="action-btn" @tap="toInterview('/pages/product/interview?id='+productDetail)">
-					<button type="primary" class="action-btn no-border buy-now-btn">预约</button>
-				</view>
-				<view class="action-btn">
-					<button type="primary" class="action-btn no-border buy-now-btn" @click="openPopup()">下单</button>
+				<view class="action-btn" >
+					<button type="primary" class="no-border buy-now-btn" @tap="toInterview('/pages/product/interview?id='+productDetail)">预约</button>
+					<button type="primary" class=" no-border order-now-btn" @click="openPopup()">下单</button>
 					<uni-popup ref = "popup" type = "bottom" class="popup">
 						<echone-sku
 						  :combinations="combinations"
@@ -1363,12 +1361,21 @@
 		}
 		.action-btn{
 			height:100%;
-			width: 32%;
+			width:65%;
 			display: flex;			
 			overflow: hidden;
 			align-items: center;
 			justify-content: center;
-			background: #FF8D0E;
+			.buy-now-btn,
+			.order-now-btn{
+				height:100%;
+				width:45%;
+				background: #FF8D0E;
+				display: flex;			
+				overflow: hidden;
+				align-items: center;
+				justify-content: center;
+			}
 		}
 	}
 	/* 底部操作菜单 */
