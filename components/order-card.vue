@@ -9,18 +9,9 @@
                     class="order-item"
                     v-for="(item, index) in orderList"
                     :key="index"
-                >
-					<!--
-                    <image class="order-item-img" :src="productList[index].product_picture"></image>
-					-->
-					<image class="order-item-img" :src="imgsrc+item.rules[0].thumbnail_portait"></image>
-					<!--
-                    <view class="order-item-name">{{productList[index].product_name}}</view>
-					-->
-					<view class="order-item-name">{{item.rules[0].username}}</view>
-					<!--
-                    <view class="order-item-content">{{item.content}}</view>
-					-->
+                > 
+					<image class="order-item-img" :src="imgsrc+item.rules[0].thumbnail_portait"></image> 
+					<view class="order-item-name">{{item.rules[0].username}}</view> 
 					<view class="order-item-content">{{item.rules[0].rule_title}}*{{item.rules[0].num}}</view>
 					<!--
                     <view class="order-item-ispay" 
@@ -115,6 +106,7 @@ export default{
 		},
 	},
     onLoad() {
+		console.log(this.orderList)
     }
 }
 </script>

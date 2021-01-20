@@ -222,10 +222,8 @@
 				result.count = this.buyCount*1
 				console.log(this.selectSkuInfo);
 				this.$emit("closePopup");
-				this.$emit('confirm', result);
- 
-				const data = {}; 
-				 
+				this.$emit('confirm', result); 
+				const data = {};  
 				data.num = result.count ;
 				data.product_picture = this.cbProductImage
 				data.product_name = this.cbName

@@ -32,7 +32,7 @@
 						<text class="title clamp in2line">{{ item.product_name }}</text>
 						<text class="spec">{{ item.rulename  }} * {{ item.num }}</text>
 						<view class="price-box">
-							<text class="price base-color">￥ {{item.product_money}}</text>
+							<text class="price base-color">$ {{item.product_money}}</text>
 							<text class="number"></text>
 						</view>
 					</view>
@@ -43,7 +43,7 @@
 			<view class="yt-list">
 				<view class="yt-list-cell b-b">
 					<text class="cell-tit clamp">总金额</text>
-					<text class="cell-tip red">￥{{ amountGoods }}</text>
+					<text class="cell-tip red">${{ totalmoney }}</text>
 				</view>
 				  
 				<view class="yt-list-cell desc-cell">
@@ -55,8 +55,8 @@
 			<view class="footer">
 				<view class="price-content in1line">
 					<text>实付款</text>
-					<text class="price-tip">￥</text>
-					<text class="price">{{ `${realAmount} ${ maxUsePoint > 0 && (isUsePoint ? ` + ${maxUsePoint} 积分` : '') || (orderDetail.preview && orderDetail.preview.point ? ` + ${orderDetail.preview && orderDetail.preview.point} 积分` : '') }` }}</text>
+					<text class="price-tip">$</text>
+					<text class="price">{{totalmoney}}</text>
 				</view>
 	<!--			orderDetail.preview.point-->
 				<button class="submit" @tap="submit" :disabled="btnLoading" :loading="btnLoading" >
@@ -84,6 +84,7 @@
 		},
 		data() {
 			return {
+				totalmoney: 0, //总金额
 				maskState: 0, //优惠券面板显示状态
 				desc: '', //备注
 				payType: 1, //1微信 2支付宝
@@ -113,15 +114,7 @@
 				errorInfo: '',
 				buyerMessage: '',
 				remark : "",
-				products : [
-					{
-						"product_picture":"http://47.95.239.228:8091/media/portrait/51611055969.0.png",
-						"product_name" : "李阿姨",
-						"rulename" : "按月",
-						"ruleid" : "按月",
-						"num" : 2,
-						"product_money" : 2000,
-				}]
+				products : [ ]
 			}
 		},
 		computed: {
@@ -203,9 +196,8 @@
 			async initData(options) {
 				
 				this.data = await JSON.parse(options.data);
-				console.log(this.data)
 				this.products = []
-				 this.products.push(
+				this.products.push(
 					{
 						"product_picture":this.data.product_picture,
 						"product_name" :this.data.product_name,
@@ -215,7 +207,8 @@
 						"product_money" : this.data.product_money,
 				})
                 this.userInfo = uni.getStorageSync('userInfo');
-				this.loading = false; 
+				this.loading = false;
+				this.totalmoney =  this.data.num * this.data.product_money
 			}, 
 			// 显示优惠券面板
 			toggleMask(type){
@@ -238,7 +231,7 @@
 				if (this.addressData && this.addressData.id) {
 					params.address_id = this.addressData.id;
 				} else {
-			    this.$mHelper.toast('请选择收货地址');
+			    this.$mHelper.toast('请选择服务地址');
 					return;
 				}
 				params.address_id = this.addressData.id
@@ -263,8 +256,8 @@
 							} 
 						else {
 							uni.redirectTo({
-								url: `/pages/user/money/pay?id=${r.no}`
-								})
+								url: `/pages/user/money/pay?id=${r.id}`
+							})
 						}
 					}).catch((r) => {
 						console.log(r)

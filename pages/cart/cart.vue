@@ -217,6 +217,7 @@
 					if (type === 'refresh') {
 						uni.stopPullDownRefresh();
 					}
+					 
 					//this.loadingType  = r.data.length === 10 ? 'more' : 'nomore';
 					this.orderList = [ ...r.msg];
 					/*
