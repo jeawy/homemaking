@@ -63,6 +63,20 @@
 						placeholder="请输入您的邮箱"
 					/>
 				</view>
+				<view class="input-item">
+					<text class="tit">工作年限</text>
+					<input
+						v-model="profileInfo.workyears"
+						placeholder="请输入您的工作年限"
+					/>
+				</view>
+				<view class="input-item">
+					<text class="tit">语　言</text>
+					<input
+						v-model="profileInfo.language"
+						placeholder="请输入您的语言"
+					/>
+				</view>
 				<button class="confirm-btn" :disabled="btnLoading" :loading="btnLoading" @tap="toUpdateInfo">修改资料</button>
 		</view>
 
@@ -273,7 +287,7 @@
 					margin-bottom: 0;
 				}
 				.tit{
-					width: 100upx;
+					width: 110upx;
 					font-size: $font-sm+2upx;
 					color: $font-color-base;
 				}
