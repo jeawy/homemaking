@@ -97,10 +97,7 @@
 						<image class="setting-img" src="../../static/my/settings.svg"></image>
 						<view class="fct-content">基本设置</view>
 					</view>
-					<view class="fct-center-four fct-center-all">
-						<image class="vip-img" src="../../static/my/vip.svg"></image>
-						<view class="fct-content">会员专区</view>
-					</view>
+					
 					<view class="fct-center-five fct-center-all">
 						<image class="share-img" src="../../static/my/share.svg"></image>
 						<view class="fct-content">分享有礼</view>
