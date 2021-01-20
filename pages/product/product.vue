@@ -1369,12 +1369,16 @@
 			.buy-now-btn,
 			.order-now-btn{
 				height:100%;
-				width:45%;
+				width:50%;
 				background: #FF8D0E;
 				display: flex;			
 				overflow: hidden;
+				border-radius: 0px;
 				align-items: center;
 				justify-content: center;
+			}
+			.order-now-btn{
+				border-left:1px solid white;
 			}
 		}
 	}
