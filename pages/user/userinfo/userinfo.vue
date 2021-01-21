@@ -50,6 +50,13 @@
 					</radio-group>
 				</view>
 				<view class="input-item">
+					<text class="tit">年　龄</text>
+					<input
+						v-model="profileInfo.age"
+						placeholder="请输入您的年龄"
+					/>
+				</view>
+				<view class="input-item">
 					<text class="tit">生　日</text>
 					<picker mode="date" v-model="date" @change="bindDateChange">
 						<view class="date" style="background: none;">{{ date || '请选择日期' }}</view>
