@@ -145,8 +145,12 @@ export default {
 		mHelper.toast('微信小程序不支持支付宝充值');
 		return;
 		// #endif
-		await http.post(`${payCreate}`, {
-			order_group,
+		console.log(data)
+		console.log(data.no)
+		await http.get('http://47.95.239.228:8091/api/bill/bills/', {
+			payed : "",
+			billno:data.no,
+			payway:'zhifubao',
 			pay_type: 2,
 			// #ifdef H5
 			trade_type: 'wap',
@@ -154,15 +158,15 @@ export default {
 			// #ifdef APP-PLUS
 			trade_type: 'app',
 			// #endif
-			data
+			 
 		}).then(r => {
 			// #ifdef H5
-			window.location.href = r.data.config.config;
+			window.location.href = r.orderInfo;
 			// #endif
 			// #ifdef APP-PLUS
 			uni.requestPayment({
 				provider: 'alipay',
-				orderInfo: r.data.config.config, //微信、支付宝订单数据
+				orderInfo: r.msg, //微信、支付宝订单数据
 				success: function() {
 					mHelper.toast('支付成功');
 					mRouter.push({ route: '/pages/user/money/success' });
@@ -172,6 +176,9 @@ export default {
 				}
 			});
 			// #endif
+		}).catch((r) => {
+			console.log(r)
+			this.btnLoading = false;
 		});
 	},
 

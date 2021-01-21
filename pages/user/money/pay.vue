@@ -52,7 +52,8 @@
                 money: 0,
                 userInfo: {},
                 orderDetail: {},
-                orderInfo: {},
+				orderInfo: {},
+				billinfo: {},
                 btnLoading: false
             };
         },
@@ -82,21 +83,23 @@
                     simplify: 1 // 获取简化订单详情
                 }).then(r => {
 					console.log(r)
+					this.billinfo = r.msg
                     this.money = r.msg.money
                 });
             },
             //确认支付
             async confirm() {
                 this.btnLoading = true;
+				console.log(this.payType)
                 switch (parseInt(this.payType)) {
                   case 1:
-                    this.$mPayment.weixinPay('order', JSON.stringify(this.orderInfo));
+                    this.$mPayment.weixinPay('order', JSON.stringify(this.billinfo));
                     break;
                   case 2:
-                    this.$mPayment.aliPay('order', JSON.stringify(this.orderInfo));
+                    this.$mPayment.aliPay('order',  this.billinfo);
                     break;
                   case 5:
-                    this.$mPayment.balancePay(JSON.stringify(this.orderInfo));
+                    this.$mPayment.balancePay(JSON.stringify(this.billinfo));
                     break;
                 }
                 setTimeout(() => {

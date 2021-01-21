@@ -22,8 +22,8 @@ const advList = '/tiny-shop/v1/common/adv/index';
 // 配置
 const configList = '/tiny-shop/v1/common/config/index';
 
-// 充值
-const payCreate = '/tiny-shop/v1/common/pay/create';
+// 支付
+const payCreate = '/bill/bills/';
 
 // 充值配置
 const wechatConfig = '/tiny-shop/v1/third-party/wechat-js-sdk';
