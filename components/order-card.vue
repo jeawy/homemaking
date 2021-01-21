@@ -12,6 +12,7 @@
                 > 
 					<image class="order-item-img" :src="imgsrc+item.rules[0].thumbnail_portait"></image> 
 					<view class="order-item-name">{{item.rules[0].username}}</view> 
+					<view class="order-item-time">{{dateTimeFormat(item.date)}}</view>
 					<view class="order-item-content">{{item.rules[0].rule_title}}*{{item.rules[0].num}}</view>
 					<!--
                     <view class="order-item-ispay" 
@@ -51,6 +52,7 @@
 
 <script>
 import {orderDelete} from '@/api/userInfo';
+import dayjs from "dayjs";
 export default{
 	/*
     props:[
@@ -66,6 +68,14 @@ export default{
         }
     },
     methods:{
+		dateTimeFormat(date){
+			if (date) {
+					date *= 1000
+					return dayjs(date).format("YYYY/MM/DD HH:mm:ss")
+				} else {
+					return ''
+			}
+		},
 		deleteOrder(id) {
 			uni.showModal({
 				content: '确定要删除该订单吗',
@@ -145,6 +155,14 @@ export default{
 			position: absolute;
 			margin-left: 150rpx;
 			margin-top: 24rpx;
+			height: 28rpx;
+			font-size: 24rpx;
+			color: #515151;
+		}
+		.order-item-time{
+			position: absolute;
+			margin-top: 24rpx;
+			right: 44rpx;
 			height: 28rpx;
 			font-size: 24rpx;
 			color: #515151;
