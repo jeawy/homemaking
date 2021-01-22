@@ -36,6 +36,7 @@
 					<input
 						type="text"
 						v-model="profileInfo.username"
+						disabled
 						placeholder="请输入您的昵称"
 					/>
 				</view>
