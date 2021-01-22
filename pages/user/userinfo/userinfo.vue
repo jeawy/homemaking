@@ -203,6 +203,7 @@
 				const timer = setInterval(() => {
 						this.loadProgress = this.loadProgress + 6;
 				}, 50);
+				this.profileInfo.languages = this.profileInfo.languages.join(" ")
 				await this.$http.post(`${memberUpdate}?userid=${this.profileInfo.userid}`, {
 					...this.profileInfo,
 					birthday: this.date,
