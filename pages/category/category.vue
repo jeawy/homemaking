@@ -271,51 +271,7 @@ export default {
           time: "2",
           language: ["普通话", "英语"],
           type: "包月小时工",
-        },
-        {
-          id: 3,
-          name: "张三",
-          imgsrc: "/static/people.svg",
-          age: 27,
-          sex: "women",
-          position: "澳大利亚",
-          time: "2",
-          language: ["普通话", "英语"],
-          type: "包月小时工",
-        },
-        {
-          id: 4,
-          name: "爱丽丝",
-          imgsrc: "/static/people.svg",
-          age: 27,
-          sex: "women",
-          position: "澳大利亚",
-          time: "2",
-          language: ["普通话", "英语"],
-          type: "包月小时工",
-        },
-        {
-          id: 5,
-          name: "爱丽丝",
-          imgsrc: "/static/people.svg",
-          age: 27,
-          sex: "women",
-          position: "澳大利亚",
-          time: "2",
-          language: ["普通话", "英语"],
-          type: "包月小时工",
-        },
-        {
-          id: 6,
-          name: "张三",
-          imgsrc: "/static/people.svg",
-          age: 27,
-          sex: "women",
-          position: "澳大利亚",
-          time: "2",
-          language: ["普通话", "英语"],
-          type: "包月小时工",
-        },
+        } 
       ],
       infolst_new: [
         {
@@ -328,40 +284,7 @@ export default {
           time: "2",
           language: ["普通话", "英语"],
           type: "包月小时工",
-        },
-        {
-          id: 2,
-          name: "汤姆",
-          imgsrc: "/static/people.svg",
-          age: 27,
-          sex: "women",
-          position: "澳大利亚",
-          time: "2",
-          language: ["普通话", "英语"],
-          type: "包月小时工",
-        },
-        {
-          id: 3,
-          name: "张三",
-          imgsrc: "/static/people.svg",
-          age: 27,
-          sex: "women",
-          position: "澳大利亚",
-          time: "2",
-          language: ["普通话", "英语"],
-          type: "包月小时工",
-        },
-        {
-          id: 4,
-          name: "爱丽丝",
-          imgsrc: "/static/people.svg",
-          age: 27,
-          sex: "women",
-          position: "澳大利亚",
-          time: "2",
-          language: ["普通话", "英语"],
-          type: "包月小时工",
-        },
+        } 
       ],
       infolst_nearby: [],
       experienceLst: [
@@ -593,16 +516,7 @@ export default {
         })
         .catch(() => {});
     },
-    // 获取广告列表
-    async getAdvList() {
-      await this.$http
-        .get(`${advList}`, {
-          location: "cate_top",
-        })
-        .then((r) => {
-          this.cateTop = r.data.cate_top[0];
-        });
-    },
+    
     //分类切换显示
     showCategory(index) {
       this.showCategoryIndex = index;
@@ -616,35 +530,7 @@ export default {
       this.$mRouter.push({
         route: `/pages/index/search/search?data=${JSON.stringify(this.search)}`,
       });
-    },
-    // 跳转至分类页
-    toIndex() {
-      this.$mRouter.switchTab({ route: "/pages/index/index" });
-    },
-    // 跳至广告图指定页面
-    indexTopToDetailPage(type, url) {
-      if (!type || !url) return;
-      switch (type) {
-        case "product_view":
-          url = `/pages/product/product?id=${url}`;
-          break;
-        case "article_view":
-          this.$mHelper.toast("article_view");
-          break;
-        case "coupon_view":
-          url = `/pages/user/coupon/detail?id=${url}`;
-          break;
-        case "helper_view":
-          this.$mHelper.toast("helper_view");
-          break;
-        case "product_list_for_cate":
-          url = `/pages/product/list?cate_id=${url}`;
-          break;
-        default:
-          break;
-      }
-      this.$mRouter.push({ route: url });
-    },
+    } 
   },
 };
 </script>
