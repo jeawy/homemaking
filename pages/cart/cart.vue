@@ -134,6 +134,7 @@
 			// #ifdef H5 || APP-PLUS
 			if(uni.getStorageSync ( "tab" )){
 				this.tabCurrentIndex = uni.getStorageSync ( "tab" );
+				uni.removeStorageSync('tab');
 			}
 			this.page = 1;
 			this.orderList.length = 0;
