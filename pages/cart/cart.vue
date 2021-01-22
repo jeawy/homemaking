@@ -132,13 +132,15 @@
 		},
 		onShow(){
 			// #ifdef H5 || APP-PLUS
+			if(uni.getStorageSync ( "tab" )){
+				this.tabCurrentIndex = uni.getStorageSync ( "tab" );
+			}
 			this.page = 1;
 			this.orderList.length = 0;
 			this.initData();
 			// #endif
 		},
 		onLoad(options){
-
 		},
 		methods: {
 			// 监听swiper切换

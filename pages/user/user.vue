@@ -60,7 +60,7 @@
 				</view>
 				<view class="order-center">
 					<view v-for="(item,index) in orderList" :key="index">
-						<view class="order-center-item" @tap="target('/pages/cart/cart?tab='+item.index)">
+						<view class="order-center-item" @tap="target('/pages/cart/cart',index)">
 							<image class="nopay-img" :src="item.image"></image>
 							<view class="order-content">{{item.value}}</view>
 						</view>
@@ -334,7 +334,8 @@ import listCell from '@/components/rf-list-cell';
 				})
 			},
 			// tabbar页面跳转（查看更多）
-			target(url){
+			target(url,index){
+				uni.setStorageSync ( "tab" , index+1 ) ;//赋值
 				uni.switchTab({
 					url
 				})				
