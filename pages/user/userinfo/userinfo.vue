@@ -81,7 +81,7 @@
 				<view class="input-item">
 					<text class="tit">语　言</text>
 					<input
-						v-model="profileInfo.language"
+						v-model="profileInfo.languages"
 						placeholder="请输入您的语言"
 					/>
 				</view>
@@ -107,6 +107,7 @@
 	import {memberInfo, memberUpdate, uploadImage} from '@/api/userInfo';
 	import avatar from '@/components/rf-avatar/rf-avatar';
 	import moment from '@/common/moment';
+	import dayjs from "dayjs";
 	export default {
 		components: { avatar },
 		data() {
@@ -142,6 +143,14 @@
 			this.baseurl = this.$mStore.state.BaseUrl
 		},
 		methods: {
+			dateTimeFormat(date){
+				if (date) {
+						date *= 1000
+						return dayjs(date).format("YYYY-MM-DD")
+					} else {
+						return ''
+				}
+			},
 			// 上传头像
 			uploadImage () {
 				// 从相册选择图片
@@ -187,7 +196,8 @@
 					console.log(r)
 			    this.loading = false;
 					this.profileInfo = r.msg;
-					this.date = this.profileInfo.birthday;
+					this.profileInfo.languages = this.profileInfo.languages.join(' ')
+					this.date = this.dateTimeFormat(this.profileInfo.birthday);
 				}).catch(() => {
 			    this.loading = false;
 				})
@@ -203,7 +213,9 @@
 				const timer = setInterval(() => {
 						this.loadProgress = this.loadProgress + 6;
 				}, 50);
-				this.profileInfo.languages = this.profileInfo.languages.join(" ")
+				//this.profileInfo.languages = this.profileInfo.languages.join(" ")
+				console.log("语言")
+				console.log(this.profileInfo.languages)
 				await this.$http.post(`${memberUpdate}?userid=${this.profileInfo.userid}`, {
 					...this.profileInfo,
 					birthday: this.date,
