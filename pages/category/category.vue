@@ -435,6 +435,8 @@ export default {
        
           this.infolst_recommend = msg;
           this.infolst_new = msg;
+		  this.languagesToString(this.infolst_recommend);
+		  this.languagesToString(this.infolst_new);
         })
         .catch(() => {});
     },
@@ -514,12 +516,18 @@ export default {
         .then((r) => {
           this.infolst_recommend = r.msg;
           this.infolst_new = r.msg;
-		  for(var i=0;i<this.infolst_new.length;i++){
-			  this.infolst_new[i].languages = this.infolst_new[i].languages.join(' ');
-		  }
+		  this.languagesToString(this.infolst_recommend);
+		  this.languagesToString(this.infolst_new);
         })
         .catch(() => {});
     },
+	
+	//将语言数组转换为字符串形式
+	languagesToString(info){
+		for(var i=0;i<info.length;i++){
+			info[i].languages = info[i].languages.join(' ')
+		}
+	},
     
     //分类切换显示
     showCategory(index) {
