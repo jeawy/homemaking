@@ -514,6 +514,9 @@ export default {
         .then((r) => {
           this.infolst_recommend = r.msg;
           this.infolst_new = r.msg;
+		  for(var i=0;i<this.infolst_new.length;i++){
+			  this.infolst_new[i].languages = this.infolst_new[i].languages.join(' ');
+		  }
         })
         .catch(() => {});
     },
