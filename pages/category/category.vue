@@ -432,6 +432,7 @@ export default {
         if(status===0){
           this.visible = false
         }
+       
           this.infolst_recommend = msg;
           this.infolst_new = msg;
         })

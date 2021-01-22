@@ -1,14 +1,10 @@
 <template>
 	<!-- 卡片 -->	
-	<!-- <view> -->
-		<!-- <view class="card_contant" > -->
+	<!-- <view> --> 
 			<view class="card"  @tap="navTo(`/pages/product/product?id=${info.id}`)">
-				<!-- <view class="card_top" v-if="info.thumbnail_portait != null">
-					<image class="card_img" :src="baseurl+info.thumbnail_portait?info.thumbnail_portait:imgsrc"></image>
-				</view>				 -->
 				<view class="card_top" >
-					<image class="card_img" :src="imgsrc"></image>
-				</view>				
+					<image class="card_img" :src="info.thumbnail_portait?baseurl+info.thumbnail_portait:imgsrc"></image>
+				</view>	 	
 				<view class="card_text">
 					<view class="name">{{info.username}}</view>
 					<view class="text_middle">
@@ -30,8 +26,7 @@
 						<text class="button_text">预约面试</text>
 					</view>
 				</view>
-			</view>
-		<!-- </view> -->
+			</view> 
 </template>
 
 <script>
@@ -51,8 +46,11 @@
 				this.$mRouter.push({ route });
 			},
 		},
-		onLoad() {
-			this.baseurl = this.$mStore.state.BaseUrl
+		created() {
+			if (this.baseurl == ""){
+		    this.baseurl = this.$mStore.state.BaseUrl}
+			console.log(this.info.thumbnail_portait )
+			console.log(this.info.id )
 		}
 	}
 </script>
@@ -65,12 +63,7 @@
 		font-weight: 400;
 		line-height: 24rpx;
 		letter-spacing: 0em;
-	}
-	// .card_contant{
-	// 	display: flex;
-	// 	align-items: center;
-	// 	width: 50%;
-	// }
+	} 
 	.card{
 		border: 2rpx solid #FFC107;
 		box-sizing: border-box;
