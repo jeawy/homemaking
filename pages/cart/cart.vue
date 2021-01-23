@@ -39,6 +39,7 @@
 			</swiper-item>
 			<!--进行中订单页面-->
 			<swiper-item class="process-order">
+				<orderCard v-if="orderList" :orderList="orderList" @getOrderList="getOrderList"/>
 				<image class="process-img" src="../../static/order/order.svg"></image>
 				<view class="process-text">您还没有相关的订单哦</view>
 				<view class="process-tip">猜您想找的人和服务</view>
