@@ -48,9 +48,7 @@
 		},
 		created() {
 			if (this.baseurl == ""){
-		    this.baseurl = this.$mStore.state.BaseUrl}
-			console.log(this.info.thumbnail_portait )
-			console.log(this.info.id )
+		    this.baseurl = this.$mStore.state.BaseUrl} 
 		}
 	}
 </script>

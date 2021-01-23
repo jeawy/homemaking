@@ -33,17 +33,17 @@
 			</view>
 			<!-- 分类列表 -->
 			<view class="category-list">
-				<view class="cate">
-					<image class="cate_image_one" src="../../static/home/maternity.svg" mode="aspectFill"></image>
-					<image class="cate_image_two" src="../../static/home/babymeal.svg" mode="aspectFill"></image>
-					<image class="cate_image_three" src="../../static/home/kids.svg" mode="aspectFill"></image>
-					<image class="cate_image_four" src="../../static/home/elderly.svg" mode="aspectFill"></image>
-					<image class="cate_image_five" src="../../static/home/housekeeping.svg" mode="aspectFill"></image>
-					<image class="cate_image_six" src="../../static/home/hoursworker.svg" mode="aspectFill"></image>
-					<image class="cate_image_seven" src="../../static/home/repairworker.svg" mode="aspectFill"></image>
-					<image class="cate_image_eight" src="../../static/home/painworker.svg" mode="aspectFill"></image>
-					<image class="cate_image_nine" src="../../static/home/moveworker.svg" mode="aspectFill"></image>
-					<image class="cate_image_ten" src="../../static/home/lawnmaintainance.svg" mode="aspectFill"></image>
+				<view class="cate"> 
+					<image  @tap="target('/pages/category/category', 27)"  class="cate_image_one" src="../../static/home/maternity.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 39)" class="cate_image_two" src="../../static/home/babymeal.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 38)" class="cate_image_three" src="../../static/home/kids.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 40)" class="cate_image_four" src="../../static/home/elderly.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 41)" class="cate_image_five" src="../../static/home/housekeeping.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 42)" class="cate_image_six" src="../../static/home/hoursworker.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 43)" class="cate_image_seven" src="../../static/home/repairworker.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 44)" class="cate_image_eight" src="../../static/home/painworker.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 45)" class="cate_image_nine" src="../../static/home/moveworker.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 46)" class="cate_image_ten" src="../../static/home/lawnmaintainance.svg" mode="aspectFill"></image>
 				</view>		
 			</view>
 			
@@ -178,6 +178,10 @@
             this.getIndexList('refresh');
         },
         methods: {
+			navTo(route) {
+				console.log(route)
+			      this.$mRouter.push({ route });
+			},
 			// 定位搜索
 			positionSearch(){
 				this.cityVisiable = !this.cityVisiable
@@ -200,7 +204,10 @@
 				
 			},
 			// 页面跳转（查看更多）
-			target(url){
+			target(url, id=0){
+				if (id > 0){
+                     uni.setStorageSync('categoryid',id);
+				}
 				uni.switchTab({
 					url
 				})				
@@ -210,10 +217,7 @@
 				this.swiperCurrent = e.detail.current;
             },
           
-            // 通用跳转
-            navTo(route) {
-                this.$mRouter.push({route});
-            },
+            
         
         }
 	}

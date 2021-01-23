@@ -490,9 +490,9 @@
 		},
  
 		async onLoad(options) {
-			this.initData(options.id);
+			this.initData(options.id); 
 			this.baseurl = this.$mStore.state.BaseUrl
-			console.log(this.baseurl)
+			
 			// //规格 默认选中第一条
 			// this.specList.forEach(item => {
 			// 	for (let cItem of this.specChildList) {
@@ -603,8 +603,7 @@
 				await this.$http.get(`${categoryList}`, {
 					productid
 				}).then(async r => {
-					this.loading = false;
-					console.log(r)
+					this.loading = false; 
 					this.productDetail = r.msg;
 					this.cbName = r.msg.productname;
 					this.cbProductImage = this.baseurl + r.msg.thumbnail_portait

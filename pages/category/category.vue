@@ -360,10 +360,10 @@ export default {
       },
     };
   },
-  // 每次页面显示 执行该方法
-  onLoad(options) {
-    this.initData();
-  },
+  onShow(options) { 
+      console.log("ddds232323")
+        this.initData( );  
+		}, 
   methods: {
     // 通用跳转
     navTo(route) {
@@ -484,13 +484,14 @@ export default {
       this.searchParams.tools = item.value;
     },
     // 数据初始化
-    async initData() {
+    async initData(categoryid = 0) {
       this.search = uni.getStorageSync("search") || {};
       this.hotSearchDefault =
         "请输入关键字 " +
         (this.search.hot_search_default
           ? "如: " + this.search.hot_search_default
           : "");
+      console.log("q11111111111ddds232323")
       this.getProductCate();
       //   this.initCartItemCount();
     },
@@ -511,15 +512,23 @@ export default {
     },
     // 获取商品分类列表
     async getProductCate() {
+      let categoryid_param = 0;
+      let categoryid =  uni.getStorageSync("categoryid")
+	    console.log(categoryid + "dddd")
+      if (categoryid) {
+        if (categoryid > 0 ){
+           categoryid_param = categoryid
+        }
+      } 
       await this.$http
-        .get(`${categoryList}`)
-        .then((r) => {
-          this.infolst_recommend = r.msg;
-          this.infolst_new = r.msg;
-		  this.languagesToString(this.infolst_recommend);
-		  this.languagesToString(this.infolst_new);
-        })
-        .catch(() => {});
+            .get(`${categoryList}` ,{categoryid:categoryid_param} )
+            .then((r) => {
+              this.infolst_recommend = r.msg;
+              this.infolst_new = r.msg;
+                this.languagesToString(this.infolst_recommend);
+                this.languagesToString(this.infolst_new);
+            })
+            .catch(() => {});
     },
 	
 	//将语言数组转换为字符串形式
