@@ -360,8 +360,7 @@ export default {
       },
     };
   },
-  onShow(options) { 
-      console.log("ddds232323")
+  onShow(options) {  
         this.initData( );  
 		}, 
   methods: {
@@ -490,8 +489,7 @@ export default {
         "请输入关键字 " +
         (this.search.hot_search_default
           ? "如: " + this.search.hot_search_default
-          : "");
-      console.log("q11111111111ddds232323")
+          : ""); 
       this.getProductCate();
       //   this.initCartItemCount();
     },
@@ -513,8 +511,7 @@ export default {
     // 获取商品分类列表
     async getProductCate() {
       let categoryid_param = 0;
-      let categoryid =  uni.getStorageSync("categoryid")
-	    console.log(categoryid + "dddd")
+      let categoryid =  uni.getStorageSync("categoryid") 
       if (categoryid) {
         if (categoryid > 0 ){
            categoryid_param = categoryid
