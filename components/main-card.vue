@@ -14,9 +14,7 @@
 						<span class="line">|</span>
 						<text class="middle-text">从业{{info.workyears}}年</text>
 					</view>
-					<view class="language">
-						<text class="language-text">{{info.languages}}</text>
-						<span class="line">|</span>
+					<view class="language"> 
 						<text class="language-text">{{info.languages}}</text>
 					</view>
 				</view>

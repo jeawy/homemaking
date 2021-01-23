@@ -82,7 +82,7 @@
 			<view class="new_bottom" >
 				<view class="new_top"><text class="bottom_text">新人推荐</text></view>
 				<view class="bottom" >
-					<mainCard class="main_card" :info="item" v-for="(item,index) in infolst" :key="index"/>
+					<mainCard class="main_card" :info="item" v-for="(item,index) in newbee_infolst" :key="index"/>
 				</view>
 			</view>	
 			<view class="search" @tap="target('/pages/category/category')">
@@ -112,7 +112,8 @@
 	</view>
 </template>
 <script>
-    import { speadList } from '@/api/spread';
+	import { speadList } from '@/api/spread';
+	import {categoryList} from '@/api/product';
 	import mainCard from '@/components/main-card.vue';
 	import sPopup from '@/components/s-popup/index.vue';
 	import citySearch from '@/components/city-search.vue';
@@ -121,8 +122,6 @@
             return {
 				cityVisiable:false,
 				swiperImg: [// 轮播图图片
-					'../../static/home/Swiper.svg',
-					'../../static/home/Swiper.svg',
 					'../../static/home/Swiper.svg',
 				],
 				baseurl:"",
@@ -146,6 +145,7 @@
 					language:['普通话','英语'],
 					type:"包月小时工"
 				}],
+				newbee_infolst:[]
 
                 // config: {}, // 商户配置
                 // announceList: [], // 公告列表
@@ -187,6 +187,68 @@
 				this.cityVisiable = !this.cityVisiable
 			},
 			async initData() { 
+				// 获取新人推荐 
+				await this.$http.get(`${categoryList}`, {newbee_recommend:1}).then(r => { 
+					console.log(r.msg)
+						if (r.status == 0){
+							
+                             if (r.msg.length > 0){
+								 this.newbee_infolst = []
+								 let thumbnail_portait = null;
+								 for (let i =0; i < r.msg.length; i++){
+									 thumbnail_portait = r.msg[i].thumbnail_portait
+									  
+									 console.log(thumbnail_portait)
+									 this.newbee_infolst.push({
+										name:r.msg[i].productname,
+										thumbnail_portait:thumbnail_portait,
+										age:r.msg[i].age?r.msg[i].age:'-',
+										sex: r.msg[i].sex,
+										position:r.msg[i].nation,
+										time:"2",
+										languages:r.msg[i].languages.join("  "),
+										type:r.msg[i].rules[0].name,
+										id:r.msg[i].id,
+										category:r.msg[i].category,
+										workyears:r.msg[i].workyears?r.msg[i].workyears:'-', 
+									}) 
+								 }
+							 }
+						}
+						 
+					}).catch((r) => {
+						console.log(r) 
+					})
+				// 获取推荐阿姨
+				await this.$http.get(`${categoryList}`, {recommend:1}).then(r => { 
+						if (r.status == 0){
+							console.log(r.msg)
+                             if (r.msg.length > 0){
+								 this.infolst = []
+								 let thumbnail_portait = null;
+								 for (let i =0; i < r.msg.length; i++){
+									 thumbnail_portait = r.msg[i].thumbnail_portait
+									  
+									 this.infolst.push({
+										name:r.msg[i].productname,
+										thumbnail_portait:thumbnail_portait,
+										age:r.msg[i].age?r.msg[i].age:'-',
+										sex: r.msg[i].sex,
+										position:r.msg[i].nation,
+										time:"2",
+										languages:r.msg[i].languages.join("  "),
+										type:r.msg[i].rules[0].name,
+										id:r.msg[i].id,
+										category:r.msg[i].category,
+										workyears:r.msg[i].workyears?r.msg[i].workyears:'-', 
+									}) 
+								 }
+							 }
+						}
+						 
+					}).catch((r) => {
+						console.log(r) 
+					})
 				await this.$http.get(`${speadList}`, {}).then(r => {
 						 
 						if (r.status == 0){
