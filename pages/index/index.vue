@@ -34,7 +34,7 @@
 			<!-- 分类列表 -->
 			<view class="category-list">
 				<view class="cate"> 
-					<image  @tap="target('/pages/category/category', 27)"  class="cate_image_one" src="../../static/home/maternity.svg" mode="aspectFill"></image>
+					<image @tap="target('/pages/category/category', 27)"  class="cate_image_one" src="../../static/home/maternity.svg" mode="aspectFill"></image>
 					<image @tap="target('/pages/category/category', 39)" class="cate_image_two" src="../../static/home/babymeal.svg" mode="aspectFill"></image>
 					<image @tap="target('/pages/category/category', 38)" class="cate_image_three" src="../../static/home/kids.svg" mode="aspectFill"></image>
 					<image @tap="target('/pages/category/category', 40)" class="cate_image_four" src="../../static/home/elderly.svg" mode="aspectFill"></image>

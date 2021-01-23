@@ -147,7 +147,7 @@ export default {
 		// #endif
 		console.log(data)
 		console.log(data.no)
-		await http.get('http://47.95.239.228:8091/api/bill/bills/', {
+		await http.get('/bill/bills/', {
 			payed : "",
 			billno:data.no,
 			payway:'zhifubao',
@@ -167,9 +167,21 @@ export default {
 			uni.requestPayment({
 				provider: 'alipay',
 				orderInfo: r.msg, //微信、支付宝订单数据
-				success: function() {
+				success: function(r) {
+					console.log(r)
 					mHelper.toast('支付成功');
-					mRouter.push({ route: '/pages/user/money/success' });
+					// 更新订单状态
+					http.post('/bill/bills/', { 
+						billno:data.no,
+						payway:'zhifubao',
+						method : "put",
+						paymsg:r.rawdata,
+						status: 1
+					}).then(r => {
+						mRouter.push({ route: '/pages/user/money/success' });   
+					}).catch((r) => {
+						console.log(r) 
+					}); 
 				},
 				fail: function(err) {
 					console.log('fail:' + JSON.stringify(err));

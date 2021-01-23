@@ -26,7 +26,8 @@
                         总价
                     <span style="color:#FF8D0E;font-size:20rpx">${{item.rules[0].price * item.rules[0].num}}</span>
                     </view>
-                    <view class="order-item-side">
+                    <view class="order-item-side">  
+						<view class="btn" v-if="item.status == 0" @tap="target( `/pages/user/money/pay?id=${item.id}`)">支付</view>
                         <view class="btn" @tap="deleteOrder(item.id)">删除订单</view>
                         <view class="btn">申请单据</view>
 						<!--
@@ -114,6 +115,13 @@ export default{
 				this.$mRouter.push({route});
 		    }
 		},
+		// 页面跳转（查看更多）
+			target(url ){
+				 uni.redirectTo({
+								url: url
+							})
+							
+			},
 	},
     onLoad() {
 		console.log(this.orderList)
