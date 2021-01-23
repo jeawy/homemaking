@@ -87,8 +87,8 @@
 				    	if(e.confirm){
 							this.$mStore.commit('logout');
 							uni.reLaunch({
-										url: '/pages/user/userinfo/userinfo'
-									})
+										url: '/pages/user/user'
+							})
 								/*
 				    		this.$http.post(`${logout}`).then(() => {
 									//this.$mStore.commit('logout');
