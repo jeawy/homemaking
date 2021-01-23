@@ -112,6 +112,7 @@
 	</view>
 </template>
 <script>
+    import { speadList } from '@/api/spread';
 	import mainCard from '@/components/main-card.vue';
 	import sPopup from '@/components/s-popup/index.vue';
 	import citySearch from '@/components/city-search.vue';
@@ -124,6 +125,7 @@
 					'../../static/home/Swiper.svg',
 					'../../static/home/Swiper.svg',
 				],
+				baseurl:"",
 				swiperCurrent: 0, // 轮播图index 
 				infolst:[{
 					name:'张三',
@@ -162,34 +164,13 @@
             // this.initData();
         },
 		onLoad() {
-		},
-        computed: {
-            // 计算倒计时时间
-            second() {
-                return function (val) {
-                    return Math.floor(15 * 60 - (new Date() / 1000 - val))
-                }
-            }
-        },
+			this.baseurl = this.$mStore.state.BaseUrl 
+			this.initData()
+		}, 
         onShareAppMessage() {
             return {
                 title: '欢迎来到XXX家政',
                 path: '/pages/index/index'
-            }
-        },
-        filters: {
-            filterDiscountPrice(val) {
-                const price = val.product && val.product.price * val.discount / 100;
-                switch (val.decimal_reservation_number) {
-                    case 0:
-                        return (Math.floor(price * 100) / 100).toFixed(2);
-                    case 1:
-                        return (Math.floor(price * 100) / 100).toFixed(0);
-                    case 2:
-                        return (Math.floor(price * 100) / 100).toFixed(1);
-                    default:
-                        return (Math.floor(price * 100) / 100).toFixed(2);
-                }
             }
         },
         //下拉刷新
@@ -201,6 +182,23 @@
 			positionSearch(){
 				this.cityVisiable = !this.cityVisiable
 			},
+			async initData() { 
+				await this.$http.get(`${speadList}`, {}).then(r => {
+						 
+						if (r.status == 0){
+                             if (r.msg.length > 0){
+								 this.swiperImg = []
+								 for (let i =0; i < r.msg.length; i++){
+									 this.swiperImg.push(this.baseurl + r.msg[i].image)  
+								 }
+							 }
+						}
+						 
+					}).catch((r) => {
+						console.log(r) 
+					})
+				
+			},
 			// 页面跳转（查看更多）
 			target(url){
 				uni.switchTab({
@@ -211,125 +209,14 @@
             handleDotChange(e) {
 				this.swiperCurrent = e.detail.current;
             },
-            // // 数据初始化
-            // initData() {
-            //   // 设置购物车数量角标
-            //   this.getIndexList();
-            //   this.initCartItemCount();
-            // },
-       //      // 设置购物车数量角标
-       //      async initCartItemCount() {
-							// if (this.$mStore.getters.hasLogin && parseInt(uni.getStorageSync('cartNum'), 10) > 0) {
-       //          await uni.setTabBarBadge({
-       //            index: this.$mConstDataConfig.cartIndex,
-       //            text: uni.getStorageSync('cartNum').toString()
-       //          });
-							// } else {
-       //          uni.removeStorageSync('cartNum');
-       //          uni.removeTabBarBadge({index: this.$mConstDataConfig.cartIndex});
-							// }
-       //      },
+          
             // 通用跳转
             navTo(route) {
                 this.$mRouter.push({route});
             },
-       //      // 通用跳转
-       //      navToSearch() {
-       //          this.$mRouter.push({route: `/pages/index/search/search?data=${JSON.stringify(this.search)}`});
-       //      },
-       //      // 跳至广告图指定页面
-       //      indexTopToDetailPage(data, link) {
-       //          if (isNaN(parseInt(data.id, 10))) {
-       //              // #ifdef  APP-PLUS
-		     //            window.location.href = data.id;
-							// 			// #endif
-       //          }
-       //          let url;
-       //          let type;
-       //          let id;
-       //          if (!link) {
-       //              type = data.type;
-       //              id = data.id;
-       //          } else {
-       //              id = link;
-       //              type = data;
-       //          }
-       //          switch (type) {
-       //              case 'product_view':  // 产品详情
-       //                  url = `/pages/product/product?id=${id}`;
-       //                  break;
-       //              case 'article_view':  // 文章详情
-       //                  this.$mHelper.toast('article_view');
-       //                  break;
-       //              case 'coupon_view': // 优惠券详情
-       //                  url = `/pages/user/coupon/detail?id=${id}`;
-       //                  break;
-       //              case 'helper_view': //   站点帮助详情
-       //                  this.$mHelper.toast('helper_view');
-       //                  break;
-       //              case 'product_list_for_cate': // 某分类下产品列表
-       //                  url = `/pages/product/list?cate_id=${id}`;
-       //                  break;
-       //              default:
-       //                  break;
-       //          }
-       //          if (url) {
-			    //           this.$mRouter.push({route: url});
-       //          }
-       //      },
-            // // 获取主页数据
-            // async getIndexList(type) {
-            //     await this.$http.get(`${indexList}`, {}).then(async r => {
-            //         this.loading = false;
-            //         if (type === 'refresh') {
-            //             uni.stopPullDownRefresh();
-            //         }
-            //         // 获取公告列表
-            //         await this.getNotifyAnnounceIndex();
-            //         // 首页参数赋值
-            //         this.initIndexData(r.data);
-            //     }).catch(() => {
-            //         this.loading = false;
-            //         if (type === 'refresh') {
-            //             uni.stopPullDownRefresh();
-            //         }
-            //     })
-            // },
-            // // 首页参数赋值
-            // initIndexData(data) {
-            //     this.productCateList = data.cate;
-            //     this.carouselList = data.adv;
-            //     this.search = data.search;
-            //     uni.setStorageSync('search', this.search);
-            //     this.hotSearchDefault = '请输入关键字' + (data.search.hot_search_default ? `如: ${data.search.hot_search_default}` : '');
-            //     uni.setStorage({
-            //         key: 'hotSearchDefault',
-            //         data: data.search.hot_search_default
-            //     });
-            //     this.hotProductList = data.product_hot;
-            //     this.recommendProductList = data.product_recommend;
-            //     this.guessYouLikeProductList = data.guess_you_like;
-            //     this.newProductList = data.product_new;
-            //     this.config = data.config;
-            // },
-            // // 获取通知列表
-            // async getNotifyAnnounceIndex() {
-            //     await this.$http.get(`${notifyAnnounceIndex}`).then(r => {
-            //         this.announceList = r.data
-            //     })
-            // },
-            // // 跳转至商品详情页
-            // navToDetailPage(data) {
-            //     const {id} = data;
-            //     if (!id) return;
-            //     this.$mRouter.push({route: `/pages/product/product?id=${id}`});
-            // },
-            // // 跳转至分类页
-            // toCategory() {
-            //     this.$mRouter.switchTab({route: '/pages/category/category'});
-            // }
+        
         }
-    }
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -393,8 +280,8 @@
 				height: 400rpx;
 				swiper-item {
 					border-radius: 18rpx;
-					image {
-						width: 670rpx;
+					image { 
+						width: 100%;
 						height: 400rpx;						
 					}
 				}
