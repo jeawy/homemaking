@@ -20,7 +20,7 @@
 				<swiper @change="handleDotChange" :Lautoplay="true" :current="swiperCurrent" :circular='true'>
 					<swiper-item v-for="(item,index) in swiperImg" :key="index">
 						<view class="swiper-item">
-							<image :src="item" mode="aspectFit"/>
+							<image :src="item" mode="aspectFill"/>
 						</view>
 					</swiper-item>					
 				</swiper>
@@ -328,19 +328,18 @@
 		}
 		/*轮播图*/		
 		.swiper {
-			
 			padding-top: 20rpx;
 			margin: 0 40rpx 0 40rpx;
-			height: 468rpx;		
+			height: 468rpx;
 			swiper {					
 				width: 100%;
 				height: 400rpx;
 				.swiper-item {
-					//border-radius: 48rpx;
+					border-radius: 28rpx;
 					image { 
 						width: 100%;
 						height: 400rpx;
-						border-radius: 40rpx;
+						border-radius: 28rpx;
 					}
 				}
 			}
