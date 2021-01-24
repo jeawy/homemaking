@@ -212,20 +212,7 @@
     </s-popup>
 	<!--分类-->
 	<s-popup custom-class="demo-popup" position="center" v-model="classVisiable">
-		<view class="category-list">
-			<view class="cate"> 
-				<image @tap="target('/pages/category/category', 27)"  class="cate_image_one" src="../../static/home/maternity.svg" mode="aspectFill"></image>
-				<image @tap="target('/pages/category/category', 39)" class="cate_image_two" src="../../static/home/babymeal.svg" mode="aspectFill"></image>
-				<image @tap="target('/pages/category/category', 38)" class="cate_image_three" src="../../static/home/kids.svg" mode="aspectFill"></image>
-				<image @tap="target('/pages/category/category', 40)" class="cate_image_four" src="../../static/home/elderly.svg" mode="aspectFill"></image>
-				<image @tap="target('/pages/category/category', 41)" class="cate_image_five" src="../../static/home/housekeeping.svg" mode="aspectFill"></image>
-				<image @tap="target('/pages/category/category', 42)" class="cate_image_six" src="../../static/home/hoursworker.svg" mode="aspectFill"></image>
-				<image @tap="target('/pages/category/category', 43)" class="cate_image_seven" src="../../static/home/repairworker.svg" mode="aspectFill"></image>
-				<image @tap="target('/pages/category/category', 44)" class="cate_image_eight" src="../../static/home/painworker.svg" mode="aspectFill"></image>
-				<image @tap="target('/pages/category/category', 45)" class="cate_image_nine" src="../../static/home/moveworker.svg" mode="aspectFill"></image>
-				<image @tap="target('/pages/category/category', 46)" class="cate_image_ten" src="../../static/home/lawnmaintainance.svg" mode="aspectFill"></image>
-			</view>		
-		</view>
+		<categoryLists />
 	</s-popup>
     <!-- 城市定位 -->
     <s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
@@ -237,6 +224,7 @@
 import mainCard from "@/components/main-card.vue";
 import sPopup from "@/components/s-popup/index.vue";
 import citySearch from "@/components/city-search.vue";
+import categoryLists from '@/components/category-lists.vue';
 /**
  * @des 分类
  *
@@ -253,6 +241,7 @@ export default {
     mainCard,
     sPopup,
     citySearch,
+	categoryLists
   },
   data() {
     return {
@@ -556,15 +545,6 @@ export default {
 		}
 	},
 	
-	// 页面跳转（查看更多）
-	target(url, id=0){
-		if (id > 0){
-	         uni.setStorageSync('categoryid',id);
-		}
-		uni.switchTab({
-			url
-		})				
-	},
     
     //分类切换显示
     showCategory(index) {
@@ -844,50 +824,9 @@ page {
       text-align: center;
     }
   }
-  /*模块分类*/
   .category-list {
-  	height: 300rpx;
-	width: 720rpx;
-  	display: flex;
-  	flex-wrap: wrap;
-  	justify-content: space-around;
-  	background-color: #FFE8CD;
-  	border-radius: 16rpx;
-  	filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
-  	.cate{
-  		padding: 28rpx 30rpx 30rpx 54rpx;
-  		width: 100%;
-  		height: 300rpx;
-  		display: flex;
-  		flex-wrap: wrap;
-  			.cate_image_one{
-  				width: 100rpx;
-  				height: 102rpx;
-  			}
-  			.cate_image_two,
-  			.cate_image_three,.cate_image_four,
-  			.cate_image_five{
-  				width: 100rpx;
-  				height: 102rpx;
-  				margin-left: 24rpx;
-  			}
-  			.cate_image_seven,
-  			.cate_image_eight,.cate_image_nine,
-  			.cate_image_ten{
-  				width: 100rpx;
-  				height: 108rpx;
-  				margin-top: 32rpx;
-  				margin-left: 24rpx;
-  			}
-  			.cate_image_six{
-  				width: 100rpx;
-  				height: 108rpx;
-  				margin-top: 32rpx;
-  			}
-  			.cate_image_nine{
-  				height: 110rpx;
-  			}
-  	}
+	  width: 680rpx;
+	  margin: 0;
   }
 }
 </style>
