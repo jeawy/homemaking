@@ -61,7 +61,7 @@
 			</view>
 			<rf-load-more :status="loadingType" v-if="goodsList.length > 0"></rf-load-more>
 		</view>
-		<rf-empty :info="errorInfo || '该分类暂无商品'" v-if="goodsList.length === 0 && !loading"></rf-empty>
+		<rf-empty :info="errorInfo || '该分类暂无阿姨'" v-if="goodsList.length === 0 && !loading"></rf-empty>
 		<!--分类遮盖层-->
 		<view class="cate-mask"
 		      :class="cateMaskState===0 ? 'none' : cateMaskState===1 ? 'show' : ''"

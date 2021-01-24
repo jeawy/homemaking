@@ -75,7 +75,7 @@ export default {
 				newContent = newContent.replace(/<br[^>]*\/>/gi, '');
 				return newContent;
 	    } else {
-	        return '暂无商品详情'
+	        return '暂无阿姨详情'
 	    }
 		},
 	},
