@@ -208,14 +208,19 @@
 			},
 			// 更新用户信息
 			async handleUpdateInfo () {
+				if(!(/(^[1-9]\d*$)/.test(this.profileInfo.age))){
+					this.$mHelper.toast('年龄必须为正整数');
+					return;
+				}
+				if(!(/(^[1-9]\d*$)/.test(this.profileInfo.workyears))){
+					this.$mHelper.toast('工作年限必须为正整数');
+					return;
+				}
 				this.btnLoading = true;
 				this.loadProgress = this.loadProgress + 6;
 				const timer = setInterval(() => {
 						this.loadProgress = this.loadProgress + 6;
 				}, 50);
-				//this.profileInfo.languages = this.profileInfo.languages.join(" ")
-				console.log("语言")
-				console.log(this.profileInfo.languages)
 				await this.$http.post(`${memberUpdate}?userid=${this.profileInfo.userid}`, {
 					...this.profileInfo,
 					birthday: this.date,
