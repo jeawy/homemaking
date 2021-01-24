@@ -210,6 +210,23 @@
         </form>
       </view>
     </s-popup>
+	<!--分类-->
+	<s-popup custom-class="demo-popup" position="center" v-model="classVisiable">
+		<view class="category-list">
+			<view class="cate"> 
+				<image @tap="target('/pages/category/category', 27)"  class="cate_image_one" src="../../static/home/maternity.svg" mode="aspectFill"></image>
+				<image @tap="target('/pages/category/category', 39)" class="cate_image_two" src="../../static/home/babymeal.svg" mode="aspectFill"></image>
+				<image @tap="target('/pages/category/category', 38)" class="cate_image_three" src="../../static/home/kids.svg" mode="aspectFill"></image>
+				<image @tap="target('/pages/category/category', 40)" class="cate_image_four" src="../../static/home/elderly.svg" mode="aspectFill"></image>
+				<image @tap="target('/pages/category/category', 41)" class="cate_image_five" src="../../static/home/housekeeping.svg" mode="aspectFill"></image>
+				<image @tap="target('/pages/category/category', 42)" class="cate_image_six" src="../../static/home/hoursworker.svg" mode="aspectFill"></image>
+				<image @tap="target('/pages/category/category', 43)" class="cate_image_seven" src="../../static/home/repairworker.svg" mode="aspectFill"></image>
+				<image @tap="target('/pages/category/category', 44)" class="cate_image_eight" src="../../static/home/painworker.svg" mode="aspectFill"></image>
+				<image @tap="target('/pages/category/category', 45)" class="cate_image_nine" src="../../static/home/moveworker.svg" mode="aspectFill"></image>
+				<image @tap="target('/pages/category/category', 46)" class="cate_image_ten" src="../../static/home/lawnmaintainance.svg" mode="aspectFill"></image>
+			</view>		
+		</view>
+	</s-popup>
     <!-- 城市定位 -->
     <s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
       <citySearch />
@@ -249,6 +266,7 @@ export default {
       tabIndex: "",
       visible: false,
       cityVisiable: false,
+	  classVisiable: false,
       infolst_recommend: [
         {
           id: 1,
@@ -381,6 +399,9 @@ export default {
       if (index == "screen") {
         this.visible = !this.visible;
       }
+	  if (index == "classify"){
+		  this.classVisiable = !this.classVisiable;
+	  }
     },
     // 点击筛选框中的取消按钮
     clear() {
@@ -533,6 +554,16 @@ export default {
 		for(var i=0;i<info.length;i++){
 			info[i].languages = info[i].languages.join(' ')
 		}
+	},
+	
+	// 页面跳转（查看更多）
+	target(url, id=0){
+		if (id > 0){
+	         uni.setStorageSync('categoryid',id);
+		}
+		uni.switchTab({
+			url
+		})				
 	},
     
     //分类切换显示
@@ -815,131 +846,48 @@ page {
   }
   /*模块分类*/
   .category-list {
-    width: 100%;
-    background-color: #fff;
-    display: flex;
-
-    .left,
-    .right {
-      position: absolute;
-      top: 100upx;
-      /*  #ifdef  APP-PLUS  */
-      top: calc(100upx + var(--status-bar-height));
-      /*  #endif  */
-      bottom: 0upx;
-    }
-
-    .left {
-      width: 24%;
-      left: 0upx;
-      background-color: #f2f2f2;
-
-      .row {
-        width: 100%;
-        height: 90upx;
-        display: flex;
-        align-items: center;
-
-        .text {
-          width: 100%;
-          position: relative;
-          font-size: 28upx;
-          display: flex;
-          justify-content: center;
-          color: #3c3c3c;
-
-          .block {
-            position: absolute;
-            width: 0upx;
-            left: 0;
-          }
-        }
-
-        &.on {
-          height: 100upx;
-          background-color: #fff;
-
-          .text {
-            font-size: 30upx;
-            font-weight: 600;
-            color: #2d2d2d;
-
-            .block {
-              width: 10upx;
-              height: 80%;
-              top: 10%;
-              background-color: #f06c7a;
-            }
-          }
-        }
-      }
-    }
-
-    .right {
-      width: 76%;
-      left: 24%;
-      background-color: #fff;
-      .category {
-        width: calc(100%);
-        padding: 20upx 15upx;
-
-        .banner {
-          width: 96%;
-          margin: 0 auto 20upx;
-          height: 24.262vw;
-          border-radius: 10upx;
-          overflow: hidden;
-          box-shadow: 0upx 5upx 20upx rgba(0, 0, 0, 0.3);
-
-          image {
-            width: 100%;
-            height: 24.262vw;
-          }
-        }
-
-        .list {
-          margin-top: 40upx;
-          width: 100%;
-          display: flex;
-          flex-wrap: wrap;
-
-          .box {
-            width: calc(71.44vw / 3);
-            margin-bottom: 30upx;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-
-            image {
-              width: 64%;
-              height: calc(71.44vw / 3 * 0.64);
-            }
-
-            .text {
-              margin-top: 8upx;
-              width: 100%;
-              display: flex;
-              justify-content: center;
-              font-size: 26upx;
-            }
-          }
-        }
-
-        .no-data {
-          margin: 48upx 0;
-          color: $font-color-light;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          .iconfont {
-            margin-right: 20upx;
-            font-size: $font-lg + 16upx;
-          }
-        }
-      }
-    }
+  	height: 300rpx;
+	width: 720rpx;
+  	display: flex;
+  	flex-wrap: wrap;
+  	justify-content: space-around;
+  	background-color: #FFE8CD;
+  	border-radius: 16rpx;
+  	filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
+  	.cate{
+  		padding: 28rpx 30rpx 30rpx 54rpx;
+  		width: 100%;
+  		height: 300rpx;
+  		display: flex;
+  		flex-wrap: wrap;
+  			.cate_image_one{
+  				width: 100rpx;
+  				height: 102rpx;
+  			}
+  			.cate_image_two,
+  			.cate_image_three,.cate_image_four,
+  			.cate_image_five{
+  				width: 100rpx;
+  				height: 102rpx;
+  				margin-left: 24rpx;
+  			}
+  			.cate_image_seven,
+  			.cate_image_eight,.cate_image_nine,
+  			.cate_image_ten{
+  				width: 100rpx;
+  				height: 108rpx;
+  				margin-top: 32rpx;
+  				margin-left: 24rpx;
+  			}
+  			.cate_image_six{
+  				width: 100rpx;
+  				height: 108rpx;
+  				margin-top: 32rpx;
+  			}
+  			.cate_image_nine{
+  				height: 110rpx;
+  			}
+  	}
   }
 }
 </style>
