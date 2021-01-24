@@ -344,11 +344,12 @@
 			swiper {					
 				width: 100%;
 				height: 400rpx;
-				swiper-item {
-					border-radius: 18rpx;
+				.swiper-item {
+					//border-radius: 48rpx;
 					image { 
 						width: 100%;
-						height: 400rpx;						
+						height: 400rpx;
+						border-radius: 40rpx;
 					}
 				}
 			}
