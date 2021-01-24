@@ -8,14 +8,14 @@
 				<view class="card_text">
 					<view class="name">{{info.username}}</view>
 					<view class="text_middle">
-						<text class="middle-text">{{info.age}}岁</text>
+						<text class="middle-text">{{info.age?info.age:'-'}}岁</text>
 						<image class="sex_img" src="../static/women.svg"></image>
-						<text class="middle-text">{{info.nation}}</text>
+						<text class="middle-text">{{info.nation?info.nation:'-'}}</text>
 						<span class="line">|</span>
-						<text class="middle-text">从业{{info.workyears}}年</text>
+						<text class="middle-text">从业{{info.workyears?info.workyears:'-'}}年</text>
 					</view>
 					<view class="language"> 
-						<text class="language-text">{{info.languages}}</text>
+						<text class="language-text">{{info.languages?info.languages:'-'}}</text>
 					</view>
 				</view>
 				<view class="card_bottom">
