@@ -307,8 +307,8 @@
 				</navigator> -->
 				<view class="bottom_btn" :class="{active: favorite}" @tap="toFavorite">
 					<view><i class="iconfont iconshoucang"></i></view>
-					<view class="love">收藏</view>
-					<view>({{loveTimes}})</view>
+					<view class="love ">收藏</view>
+					<view> </view>
 				</view>
 				<view class="action-btn" >
 					<button type="primary" class="no-border buy-now-btn" @tap="toInterview('/pages/product/interview?id='+productDetail)">预约</button>
@@ -378,6 +378,7 @@
 	import {
 		couponReceive
 	} from '@/api/userInfo';
+	import {productLikes} from '@/api/likes';
 	import rfRate from '@/components/rf-rate/rf-rate';
 	import rfBadge from '@/components/rf-badge/rf-badge'
 	import uniTag from '@/components/uni-tag/uni-tag'
@@ -447,8 +448,9 @@
 		},
 		data() {
 			return {
+				likes :0,
 				cbName:'',
-				imgsrc:'http://47.95.239.228:8091/',
+				imgsrc:'',
 				specifications: [
 				  {
 				    name: '雇佣方式',
@@ -490,8 +492,28 @@
 		},
  
 		async onLoad(options) {
+			this.$http.get(`${productLikes}`, {
+				liketype: 0, // 收藏固定传0
+				entity: 1, // 阿姨固定传1
+				instanceid: options.id
+			}).then((r) => {
+				console.log(r)
+				 if (r.status == 0){
+					 var length = r.msg.length
+					 console.log(length)
+					 if (length > 0){
+						 this.favorite = true
+					 }
+					 else{
+						 this.favorite = false
+					 }
+				 }
+			}) 
 			this.initData(options.id); 
 			this.baseurl = this.$mStore.state.BaseUrl
+			this.imgsrc = this.baseurl
+
+			
 			
 			// //规格 默认选中第一条
 			// this.specList.forEach(item => {
@@ -597,6 +619,7 @@
 				this.cartNum = uni.getStorageSync('cartNum');
 				this.productDetail.id = productid;
 				await this.getProductDetail(productid);
+				this.toFavorite(1) // 足迹
 			},
 			// 获取产品详情
 			async getProductDetail(productid) {
@@ -741,15 +764,31 @@
 				});
 			},
 			// 收藏
-			async toFavorite() {
-				this.loveTimes ++
-				if (!this.productDetail.id) return;
-				if (!this.$mStore.getters.hasLogin) {
-					this.specClass = 'none';
-					this.$mHelper.backToLogin();
-				} else {
-					this.favorite ? this.handleCollectDel() : this.handleCollectCreate();
-				}
+			async toFavorite(liketype = 0) { 
+				this.$http.post(`${productLikes}`, {
+					liketype: liketype, // 收藏固定传0
+					entity: 1, // 阿姨固定传1
+					instanceid: this.productDetail.id 
+				}).then((r) => {
+					console.log(r)
+					if (liketype == 0){
+						// 收藏
+						if (r.status == 0){
+							var likeid = parseInt( r.id) 
+							if (likeid > 0){
+								this.favorite = true
+							}
+							else{
+								this.favorite = false
+							}
+							
+						}
+					}
+					else{
+						// 足迹
+					}
+				})
+				
 			},
 			// 收藏商品
 			async handleCollectCreate() {
