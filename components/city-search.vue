@@ -5,10 +5,10 @@
             <view class="titlename">当前城市</view>
             <view class="box_image">
                 <view class="box_title">
-                    <view class="box_name">悉尼</view>
+                    <view class="box_name">{{city}}</view>
                     <image class="position_img" src="/static/home/Position.svg"></image>
                 </view>
-                <image class="refresh_img" src="/static/home/Refresh.svg"></image>
+                <image class="refresh_img" src="/static/home/Refresh.svg" @click="refresh()"></image>
             </view>
         </view>
         <view class="value">
@@ -22,6 +22,7 @@
 </template>
 <script>
     export default{
+		props:['city'],
 		data(){
 			return{
 				cityVisiable:false,
@@ -39,6 +40,11 @@
 					{value:'达尔文'},
 					{value:'洛坎普顿'},		
 					]
+			}
+		},
+		methods:{
+			refresh(){
+				this.$emit("doGetLocation");
 			}
 		}
 	}

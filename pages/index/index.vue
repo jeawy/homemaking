@@ -4,7 +4,7 @@
 		<view class="header">
 			<!--位置信息-->
 			<view class="location" @tap="positionSearch">
-				<view class="location_text">西安</view>
+				<view class="location_text">{{city}}</view>
 				<image class="location_img" src="../../static/home/City.svg"></image>		
 			</view>
 			<view class="notice" @tap="navTo('/pages/user/notice/notice')">
@@ -93,7 +93,7 @@
 			</view>
 		</scroll-view>	
 		<s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
-			<citySearch />
+			<citySearch :city="city" @doGetLocation="doGetLocation"/>
 		</s-popup>
 	</view>
 </template>
@@ -107,6 +107,7 @@
     export default {
         data() {
             return {
+				city:'',//当前所在的城市名称
 				cityVisiable:false,
 				swiperImg: [// 轮播图图片
 					'../../static/home/Swiper.svg',
@@ -153,8 +154,9 @@
         },
 		onLoad() {
 			this.baseurl = this.$mStore.state.BaseUrl 
+			this.doGetLocation()
 			this.initData()
-		}, 
+		},
         onShareAppMessage() {
             return {
                 title: '欢迎来到XXX家政',
@@ -166,6 +168,16 @@
             this.getIndexList('refresh');
         },
         methods: {
+			//获取当前的位置
+			doGetLocation(){
+				uni.getLocation({
+				    type: 'gcj02',
+					geocode: true,
+				    success: ((res) => {
+				    	this.city = res.address.city;
+				    })
+				});
+			},
 			navTo(route) {
 				console.log(route)
 			      this.$mRouter.push({ route });
