@@ -1,0 +1,17 @@
+.main{
+    width: 37.5rem;/* 设计图宽375px,所以是375/10=37.5rem */
+    padding: .5rem 1rem;
+    font-size: 1.2rem;
+}
+.map-wrap{
+    height: 23rem;
+    width: 100%;
+    border-radius: .2rem;
+}
+body,html{
+    margin: 0;
+    padding: 0;
+}
+*{
+    box-sizing: border-box;
+}

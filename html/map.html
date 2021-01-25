@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+  <link rel="stylesheet" href="./style.css">
+  <title>GMAP</title>
+  <!-- 引入谷歌地图 -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJW4jsPlNKgv6jFm3B5Edp5ywgdqLWdmc&sensor=false">
+  </script>
+</head>
+
+<body>
+  <div class="main">
+    <div class="map-wrap" id="googleMap">
+    </div>
+    <!-- 添加其他元素 -->
+  </div>
+</body>
+<script>
+  // 移动端适配
+  // css 单位使用rem(style.css中有实例)
+  // rem = 设计图的标示尺寸 ÷ 10
+  // 例：设计图中某尺寸是 20px,   那么在CSS中尺寸 = 20÷10 = 2rem
+  var docEl = document.documentElement
+  var resizeEvt = "orientationchange" in window ? "orientationchange" : "resize"
+  function recalc() {
+    var clientWidth = docEl.clientWidth;
+    if (!clientWidth) return;
+    docEl.style.fontSize = clientWidth / 37.5 + "px";
+  };
+  (function () {
+    window.addEventListener(resizeEvt, recalc, false);
+    document.addEventListener("DOMContentLoaded", recalc, false);
+  })()
+
+  /* 谷歌地图 */
+  function initialize() {
+    var mapProp = {
+      center: new google.maps.LatLng(51.508742, -0.120850),
+      zoom: 5,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
+</html>
