@@ -212,7 +212,7 @@
     </s-popup>
 	<!--分类-->
 	<s-popup custom-class="demo-popup" position="center" v-model="classVisiable">
-		<categoryLists />
+		<categoryLists @target="target" />
 	</s-popup>
     <!-- 城市定位 -->
     <s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
@@ -371,6 +371,10 @@ export default {
         this.initData( );  
 		}, 
   methods: {
+	  target(url){
+		this.getProductCate();
+		this.classVisiable = !this.classVisiable;
+	  },
     // 通用跳转
     navTo(route) {
       this.$mRouter.push({ route });
@@ -437,6 +441,7 @@ export default {
     },
     // 搜索阿姨列表
     searchCate(data) {
+      console.log(data);
       this.$http.get(`${categoryList}`, data).then(({status,msg}) => {
         if(status===0){
           this.visible = false

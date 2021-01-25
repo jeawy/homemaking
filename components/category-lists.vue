@@ -26,9 +26,7 @@
 				if (id > 0){
 			         uni.setStorageSync('categoryid',id);
 				}
-				uni.switchTab({
-					url
-				})				
+				this.$emit('target',url);				
 			}
 		}
 	}

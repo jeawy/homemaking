@@ -32,7 +32,7 @@
 				</view>
 			</view>
 			<!-- 分类列表 -->
-			<categoryLists/>
+			<categoryLists @target="target" />
 			<view class="middle">
 				<!--广告-->
 				<view class="ads">
@@ -168,6 +168,11 @@
             this.getIndexList('refresh');
         },
         methods: {
+			target(url){
+				uni.switchTab({
+					url
+				})		
+			},
 			//获取当前的位置
 			doGetLocation(){
 				uni.getLocation({
