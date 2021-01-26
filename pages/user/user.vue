@@ -133,8 +133,8 @@
 					<scroll-view scroll-x class="h-list" v-if="footPrintList.length > 0">
 						<view class="h-item" v-for="item in footPrintList" :key="item.id">
 							<image class="h-item-img" @tap.stop="navTo(`/pages/product/product?id=${item.product.id}`)"
-							       :src="item.product.picture" mode="aspectFill"></image>
-						<view class="h-item-text in2line">{{ item.product.name }}</view>
+							       :src="item.product.thumbnail_portait?baseurl+item.product.thumbnail_portait:headImg" mode="aspectFill"></image>
+						<view class="h-item-text in2line">{{ item.product.username }}</view>
 						</view>
 					</scroll-view>
 					<view class="no-foot-print" v-else-if="footPrintList.length === 0" @tap="navTo('/pages/product/list')">
@@ -152,6 +152,7 @@
 </template>
 <script>
 import {footPrintList, memberInfo} from '@/api/userInfo';
+import {productLikes} from '@/api/likes';
 import userinfoVue from './userinfo/userinfo.vue';
 import listCell from '@/components/rf-list-cell';
     export default {
@@ -285,7 +286,7 @@ import listCell from '@/components/rf-list-cell';
 					
                     //await uni.setStorageSync('cartNum', r.data.cart_num);
                     // 获取足迹列表
-                    //await this.getFootPrintList();
+                    await this.getFootPrintList();
 					//await this.setSectionData(r.msg);
                 }).catch(() => { 
                 	  this.hasLogin = false;
@@ -323,9 +324,13 @@ import listCell from '@/components/rf-list-cell';
             },
 			// 获取足迹列表
             async getFootPrintList() {
-                await this.$http.get(`${footPrintList}`).then(r => {
-					//console.log(r.data)
-                    this.footPrintList = r.data
+                await this.$http.get(`${productLikes}`, {
+					likestype: 1, // 足迹传1
+					entity: 1, // 阿姨固定传1 
+				}).then(r => {
+					console.log(r) 
+					this.footPrintList = r.msg
+					this.attentList[2].num = r.msg.length
                 });
             },
 			navTochat(url){
