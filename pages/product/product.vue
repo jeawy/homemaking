@@ -305,7 +305,7 @@
 					<text>购物车</text>
 					<rf-badge v-if="hasLogin && cartNum && cartNum > 0" type="error" size="small" class="badge" :text="cartNum"></rf-badge>
 				</navigator> -->
-				<view class="bottom_btn" :class="{active: favorite}" @tap="toFavorite">
+				<view class="bottom_btn" :class="{active: favorite}" @tap="toFavorite(0)">
 					<view><i class="iconfont iconshoucang"></i></view>
 					<view class="love ">收藏</view>
 					<view> </view>
@@ -493,7 +493,7 @@
  
 		async onLoad(options) {
 			this.$http.get(`${productLikes}`, {
-				liketype: 0, // 收藏固定传0
+				likestype: 0, // 收藏固定传0
 				entity: 1, // 阿姨固定传1
 				instanceid: options.id
 			}).then((r) => {
