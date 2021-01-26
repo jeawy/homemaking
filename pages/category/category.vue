@@ -138,8 +138,8 @@
             <view class="django_button">
               <view
                 class="django_text"
-                @tap="selectOne(index, item,'search')"
-                :class="{ django_active: item.checked == true }"
+                @tap="selectOne(index, item)"
+                :class="{ django_active: selectone == index }"
                 v-for="(item, index) in experienceLst"
                 :key="index"
                 >{{ item.label }}
@@ -362,8 +362,6 @@ export default {
       clearButton: "",
       confirmButton: "",
       searchParams: {
-        workyears:'',
-        language:'',
       },
     };
   },
@@ -401,16 +399,18 @@ export default {
       this.clearButton = "clear";
       this.confirmButton = "";
       this.searchParams = {}
+	  /*
       this.experienceLst.forEach((item,index) =>{
         if(index == 0){
           this.selectOne(index,item,"clear")
         }        
-      })
+      })*/
       this.languageLst.forEach((item,index) =>{
         if(index == 0){
           this.selectTwo(index,item,"clear")
         }        
       })
+	  this.selectone = 0
       this.selectthree = 0
       this.selectfour = 0
     },
@@ -418,30 +418,35 @@ export default {
     confirm() {
       this.confirmButton = "confirm";
       this.clearButton = "";
-      this.searchParams.workyears = ''
+      //this.searchParams.workyears = ''
       this.searchParams.language = ''
       for(var i in this.searchParams){
         if(this.searchParams[i] == '不限'){
           this.$delete(this.searchParams,i)
         }        
       }
+	  /*
       this.experienceLst.forEach(element => {
         if(element.checked == true){
           this.searchParams.workyears += element.value+','
         }
       });
       this.searchParams.workyears = this.searchParams.workyears.substring(0,this.searchParams.workyears.lastIndexOf(','))
-      this.languageLst.forEach(element => {
+      */
+	  this.languageLst.forEach(element => {
         if(element.checked == true){
+			console.log(this.searchParams.language);
           this.searchParams.language += element.value+','
         }
       });
       this.searchParams.language = this.searchParams.language.substring(0,this.searchParams.language.lastIndexOf(','))
-      this.searchCate(this.searchParams);
+	  this.searchCate(this.searchParams);
     },
     // 搜索阿姨列表
     searchCate(data) {
-      console.log(data);
+	  if(data.language === '不限'){
+		  this.$delete(data,'language');
+	  }
       this.$http.get(`${categoryList}`, data).then(({status,msg}) => {
         if(status===0){
           this.visible = false
@@ -455,7 +460,10 @@ export default {
         .catch(() => {});
     },
     // 选择经验要求
-    selectOne(index, item,type) {
+    selectOne(index, item) {
+		this.selectone = index;
+		this.searchParams.workyears = item.value;
+	/*
       if(index == 0){
         if(type == 'search'){
           item.checked = !item.checked
@@ -468,7 +476,7 @@ export default {
       }else{
         this.experienceLst[0].checked = false
         item.checked = !item.checked
-      }
+      }*/
     },
     // 选择语言要求
     selectTwo(index, item,type) {
