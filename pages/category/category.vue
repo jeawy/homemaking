@@ -641,7 +641,7 @@ page {
     // height: 40rpx;
     .search_box {
       margin-left: 20rpx;
-      width: 525rpx;
+      width: 500rpx;
       background: rgba(118, 118, 128, 0.12);
       border-radius: 10px;
       .search_img {
