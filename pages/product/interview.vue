@@ -49,7 +49,7 @@
 		data(){
 			return{
 				personInfo:{},
-				form:{date:'',time:''},
+				form:{date:'',time:'', comment:'预约面试'},
 				isLoading:false,
 				deptarray:['清洁工', '洗碗工'],
 				deptindex:0,
