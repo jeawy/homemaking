@@ -4,12 +4,13 @@
     <view class="nev">
       <view class="search">
 		<citySearch :city="city" @doGetLocation="doGetLocation"/>
-        <view class="search_box" @tap="toSearch">
+        <view class="search_box">
           <image
             class="search_img"
             src="/static/houseKeeping/search.svg"
+			@tap="toSearch"
           ></image>
-          <input class="search_input" placeholder="搜索关键字" />
+          <input class="search_input" placeholder="搜索关键字" v-model="title"/>
           <image
             class="search_talk"
             src="/static/houseKeeping/microphone.svg"
@@ -356,7 +357,9 @@ export default {
       clearButton: "",
       confirmButton: "",
       searchParams: {
+		language:''
       },
+	  title:''
     };
   },
   onShow(options) {  
@@ -445,10 +448,17 @@ export default {
     },
     // 搜索阿姨列表
     searchCate(data) {
-	  if(data.language === '不限'){
-		  this.$delete(data,'language');
+		let params = {}
+		params = {
+			...data
+		}
+	  if(params.language === '不限' || !params.language){
+		  this.$delete(params,'language');
 	  }
-      this.$http.get(`${categoryList}`, data).then(({status,msg}) => {
+	  if(this.title){
+		  params.title = this.title;
+	  }
+      this.$http.get(`${categoryList}`, params).then(({status,msg}) => {
         if(status===0){
           this.visible = false
         }
@@ -570,9 +580,12 @@ export default {
     },
     // 跳转至搜索详情页
     toSearch() {
+		this.searchCate(this.searchParams);
+	  /*
       this.$mRouter.push({
         route: `/pages/index/search/search?data=${JSON.stringify(this.search)}`,
       });
+	  */
     } 
   },
 };
