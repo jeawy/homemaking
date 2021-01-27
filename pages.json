@@ -283,6 +283,13 @@
 	  "style": {
 	    "navigationBarTitleText": "消息"
 	  }
+  },
+  //视频面试
+  {
+	  "path": "pages/public/vedio",
+	  "style": {
+	    "navigationBarTitleText": "视频面试"
+	  }
 	},
 	// 个人中心 => 我的预约
 	{

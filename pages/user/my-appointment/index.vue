@@ -14,6 +14,9 @@
 				<view class="content_time">
 					{{item.time}}
 				</view>
+				<view class="view_vedio" @tap="navTo('/pages/public/vedio')" >
+					<image class="sex_img" src="/static/vedio.svg"></image>
+				</view>
 				<view class="content_event">
 					{{item.content}}
 				</view>
@@ -57,6 +60,17 @@
 			syncToPhone() {
 				// pass
 			},
+			// 统一跳转接口,拦截未登录路由
+            navTo(route) {
+				//console.log(route)
+                if (!route) {
+                    return;
+				}
+				console.log(route)
+                
+                this.$mRouter.push({route});
+                
+            },
 			// 请求预约列表
 			queryList() {
 				return queryScheduleList().then(({
@@ -109,12 +123,14 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
 	.my-appointment {
 		display: flex;
 		flex-flow: column nowrap;
 		min-height: calc(100vh - 88upx);
-
+	
+        
 		// .my-appointment_detail__nothing {
 		// 	padding: 16upx 32upx;
 		// 	color: #666;
@@ -139,11 +155,22 @@
 				display: flex;
 				align-items: center;
 				border-bottom: 2upx solid #DDDDDD;
-
-				.content_time {
+                .sex_img{
+					height: 40px;
+					width: 80px; 
 					border-right: 4upx solid #FFAB4E;
+					margin-top:7px;
+				}
+				.view_vedio{
+					width: 100px; 
 					margin-right: 16upx;
 					padding: 8upx 16upx 8upx 0;
+				}
+				.content_time {
+					height: 40px;
+					border-right: 4upx solid #FFAB4E;
+					margin-right: 16upx;
+					padding: 16upx 16upx 8upx 0;
 				}
 			}
 		}
