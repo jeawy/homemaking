@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<!-- 地图 -->
-       <web-view id="mapContainer" :src="url" @message="message"></web-view>
+       <web-view id="mapContainer" :src="url"  ></web-view>
 	</view>
 </template>
 
@@ -68,37 +68,7 @@
 			};
 		},
 		onLoad(res) {
-			search_users({
-				userid: this.UserInfo.id
-			}).then(({
-				data
-			}) => {
-				this.images = this.baseurl + data.msg[0].thumbnail_portait
-				this.id = res.id
-				this.uuid = res.uuid
-				uni.getSystemInfo({
-					success: (res) => {
-						this.width = res.windowWidth 
-						this.height = res.windowHeight
-					}
-				})
-				this.url = '/hybrid/html/detail.html?id='+this.id+'&img='+this.images+'&scale=11&from=singlemessage&isappinstalled=0'
-				// this.url = this.baseurl + 'appshare/map.html?id='+this.id+'&scale=11&from=singlemessage&isappinstalled=0'
-				let w = null;
-				if (uni.getSystemInfoSync().platform =='ios'){
-					// ios的全屏要特殊设置
-					   w=plus.webview.create(this.url,'id',{
-						  top:uni.getSystemInfoSync().statusBarHeight - 95,
-						   height:uni.getSystemInfoSync().windowHeight + 65
-					 },{preload:'preload webview'});
-				}
-				else{
-					   w=plus.webview.create(this.url,'id',{   },{preload:'preload webview'});
-				}
-				let currentWebview = this.$mp.page.$getAppWebview(); 
-				console.log(currentWebview);
-				currentWebview.append(w);
-			})
+			 
 		},
 	};
 </script>

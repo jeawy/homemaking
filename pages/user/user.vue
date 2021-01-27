@@ -329,7 +329,7 @@ import listCell from '@/components/rf-list-cell';
 			// 获取足迹列表
             async getFootPrintList() {
                 await this.$http.get(`${productLikes}`, {
-					likestype: 1, // 足迹传1
+					likestype: 1, // 足迹传1，收藏传0
 					entity: 1, // 阿姨固定传1 
 				}).then(r => {
 					console.log(r) 
