@@ -1,26 +1,35 @@
 <template>
-    <view class="position_search">				
-        <view class="position_box">
-            <view class="position_title">请选择服务地址</view>
-            <view class="titlename">当前城市</view>
-            <view class="box_image">
-                <view class="box_title">
-                    <view class="box_name">{{city}}</view>
-                    <image class="position_img" src="/static/home/Position.svg"></image>
-                </view>
-                <image class="refresh_img" src="/static/home/Refresh.svg" @click="refresh()"></image>
-            </view>
-        </view>
-        <view class="value">
-            <view class="value_name">热门城市</view>
-            <view class="cityList">
-                <view class="city_text" v-for="(item,index) in citylist" 
-                :key="index">{{item.value}}</view>
-            </view>
-        </view>
-    </view>
+	<view>
+		<view class="location" @tap="positionSearch">
+			<view class="location_text">{{city}}</view>
+			<image class="location_img" src="/static/home/City.svg"></image>		
+		</view>
+		<s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
+			<view class="position_search">
+			    <view class="position_box">
+			        <view class="position_title">请选择服务地址</view>
+			        <view class="titlename">当前城市</view>
+			        <view class="box_image">
+			            <view class="box_title">
+			                <view class="box_name">{{city}}</view>
+			                <image class="position_img" src="/static/home/Position.svg"></image>
+			            </view>
+			            <image class="refresh_img" src="/static/home/Refresh.svg" @click="refresh()"></image>
+			        </view>
+			    </view>
+			    <view class="value">
+			        <view class="value_name">热门城市</view>
+			        <view class="cityList">
+			            <view class="city_text" v-for="(item,index) in citylist" 
+			            :key="index">{{item.value}}</view>
+			        </view>
+			    </view>
+			</view>
+		</s-popup>
+	</view>
 </template>
 <script>
+	import sPopup from '@/components/s-popup/index.vue';
     export default{
 		props:['city'],
 		data(){
@@ -42,14 +51,37 @@
 					]
 			}
 		},
+		components:{
+			sPopup
+		},
 		methods:{
 			refresh(){
 				this.$emit("doGetLocation");
+				this.cityVisiable = !this.cityVisiable;
+			},
+			positionSearch(){
+				this.cityVisiable = !this.cityVisiable;
 			}
 		}
 	}
 </script>
-<style lang="less" scoped>
+<style lang="less">
+	// 定位
+	.location{	
+		display: flex;
+		align-items: center;
+		.location_text{
+			margin-left: 40rpx;
+			font-family: Tensentype MingSongJ-W2;
+			font-size: 24rpx;
+			line-height: 28rpx;
+		}
+		.location_img{
+			margin-left: 4rpx;
+			width: 16rpx;
+			height: 24rpx;
+		}
+	}
     .position_search{
         width: 560rpx;		
         .box_image{
@@ -138,4 +170,9 @@
             }
         }
     }
+	.demo-popup{
+		.s-popup-wrap{
+			height: 316rpx;
+		}
+	}
 </style>

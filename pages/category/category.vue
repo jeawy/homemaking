@@ -3,10 +3,7 @@
     <!--顶部搜索导航栏-->
     <view class="nev">
       <view class="search">
-        <view class="search_position" @tap="positionSearch">
-          <view class="left_text">西安</view>
-          <image class="location_img" src="/static/home/City.svg"></image>
-        </view>
+		<citySearch :city="city" @doGetLocation="doGetLocation"/>
         <view class="search_box" @tap="toSearch">
           <image
             class="search_img"
@@ -214,10 +211,6 @@
 	<s-popup custom-class="demo-popup" position="center" v-model="classVisiable">
 		<categoryLists @target="target" />
 	</s-popup>
-    <!-- 城市定位 -->
-    <s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
-      <citySearch />
-    </s-popup>
   </view>
 </template>
 <script>
@@ -251,10 +244,11 @@ export default {
       // cateTop: {}, // 分类通用广告图
       // animation: 'animation-slide-right',
       // errorImage: this.$mAssetsPath.errorImage,
+	  city:'',
       currentIndex: "recommend",
       tabIndex: "",
       visible: false,
-      cityVisiable: false,
+      //cityVisiable: false,
 	  classVisiable: false,
       infolst_recommend: [
         {
@@ -367,8 +361,19 @@ export default {
   },
   onShow(options) {  
         this.initData( );  
+		this.doGetLocation();
 		}, 
   methods: {
+	  //获取当前的位置
+	  doGetLocation(){
+	  	uni.getLocation({
+	  	    type: 'gcj02',
+	  		geocode: true,
+	  	    success: ((res) => {
+	  	    	this.city = res.address.city;
+	  	    })
+	  	});
+	  },
 	  target(url){
 		this.getProductCate();
 		this.classVisiable = !this.classVisiable;
@@ -376,10 +381,6 @@ export default {
     // 通用跳转
     navTo(route) {
       this.$mRouter.push({ route });
-    },
-    // 定位搜索
-    positionSearch() {
-      this.cityVisiable = !this.cityVisiable;
     },
     // 顶部tab点击
     tabClick(index) {
@@ -623,19 +624,11 @@ page {
     letter-spacing: 0em;
   }
   .search {
-    margin: 0 40rpx 10rpx 40rpx;
+    margin: 0 40rpx 10rpx 0;
     // height: 40rpx;
-
-    .search_position {
-      .location_img {
-        margin-left: 4rpx;
-        width: 16rpx;
-        height: 24rpx;
-      }
-    }
     .search_box {
-      margin-left: 30rpx;
-      width: 520rpx;
+      margin-left: 20rpx;
+      width: 525rpx;
       background: rgba(118, 118, 128, 0.12);
       border-radius: 10px;
       .search_img {
@@ -654,7 +647,7 @@ page {
     }
     .notice {
       .notice_img {
-        margin-left: 30rpx;
+        margin-left: 20rpx;
         width: 22rpx;
         height: 21.54rpx;
       }

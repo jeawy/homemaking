@@ -2,11 +2,7 @@
 	<view class="rf-index">
 		<!-- 顶部信息 -->
 		<view class="header">
-			<!--位置信息-->
-			<view class="location" @tap="positionSearch">
-				<view class="location_text">{{city}}</view>
-				<image class="location_img" src="../../static/home/City.svg"></image>		
-			</view>
+			<citySearch :city="city" @doGetLocation="doGetLocation"/>
 			<view class="notice" @tap="navTo('/pages/user/notice/notice')">
 				<image class="notice_img" src="../../static/home/Notification.svg"></image>
 			</view>
@@ -91,10 +87,7 @@
 						height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
 				</view>
 			</view>
-		</scroll-view>	
-		<s-popup custom-class="demo-popup" position="center" v-model="cityVisiable">
-			<citySearch :city="city" @doGetLocation="doGetLocation"/>
-		</s-popup>
+		</scroll-view>
 	</view>
 </template>
 <script>
@@ -108,7 +101,7 @@
         data() {
             return {
 				city:'',//当前所在的城市名称
-				cityVisiable:false,
+				//cityVisiable:false,
 				swiperImg: [// 轮播图图片
 					'../../static/home/Swiper.svg',
 				],
@@ -304,20 +297,6 @@
 			font-style: normal;
 			font-weight: 400;
 			letter-spacing: 0em;
-		}
-		// 定位
-		.location{	
-			.location_text{
-				margin-left: 40rpx;
-				font-family: Tensentype MingSongJ-W2;
-				font-size: 24rpx;
-				line-height: 28rpx;
-			}
-			.location_img{
-				margin-left: 4rpx;
-				width: 16rpx;
-				height: 24rpx;
-			}
 		}
 		.notice{
 			.notice_img{
