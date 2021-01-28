@@ -44,7 +44,7 @@
 						<view class="num">
 							{{ item.num }}
 						</view>
-						<view class="content">{{item.text}}</view>
+						<text class="content">{{item.text}}</text>
 					</view>
 				</view>
 			</view>		 
@@ -181,22 +181,22 @@ import listCell from '@/components/rf-list-cell';
 					{
 						num:2,
 						text:"我的收藏",
-						path:"pages/user/collection/collection"
+						path:"/pages/user/collection/collection",
 					},
 					{
 						num:8,
 						text:"关注服务",
-						path:""
+						path:" ",
 					},
 					{
 						num:35,
 						text:"足迹",
-						path:""
+						path:" ",
 					},
 					{
 						num:4,
 						text:"红包卡券",
-						path:""
+						path:" ",
 					}
 				],
 				orderList:[
@@ -241,7 +241,6 @@ import listCell from '@/components/rf-list-cell';
 		},
 		async onShow() {
 			// 初始化数据
-			console.log(this.$mStore.state.userInfo)
             this.initData();
         },
         methods: {
