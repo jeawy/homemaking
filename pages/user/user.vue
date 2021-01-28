@@ -40,11 +40,11 @@
 			<!--关注的人-->
 			<view class="bottom">
 				<view v-for="(item,index) in attentList" :key="index">
-					<view class="tj-item">
+					<view class="tj-item" @tap="navTo(item.path)">
 						<view class="num">
 							{{ item.num }}
 						</view>
-						<view class="content">{{item.text}}</view>
+						<text class="content">{{item.text}}</text>
 					</view>
 				</view>
 			</view>		 
@@ -180,19 +180,23 @@ import listCell from '@/components/rf-list-cell';
 				attentList:[
 					{
 						num:2,
-						text:"关注的人"
+						text:"我的收藏",
+						path:"/pages/user/collection/collection",
 					},
 					{
 						num:8,
-						text:"关注服务"
+						text:"关注服务",
+						path:" ",
 					},
 					{
 						num:35,
-						text:"足迹"
+						text:"足迹",
+						path:" ",
 					},
 					{
 						num:4,
-						text:"红包卡券"
+						text:"红包卡券",
+						path:" ",
 					}
 				],
 				orderList:[
@@ -237,7 +241,6 @@ import listCell from '@/components/rf-list-cell';
 		},
 		async onShow() {
 			// 初始化数据
-			console.log(this.$mStore.state.userInfo)
             this.initData();
         },
         methods: {
@@ -347,6 +350,7 @@ import listCell from '@/components/rf-list-cell';
 			},
 			// 统一跳转接口,拦截未登录路由
             navTo(route) {
+				
 				//console.log(route)
                 if (!route) {
                     return;
@@ -361,6 +365,7 @@ import listCell from '@/components/rf-list-cell';
                         }
                     });
                 } else {
+					console.log(route)
                     this.$mRouter.push({route});
                 }
             },
