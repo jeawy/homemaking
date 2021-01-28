@@ -93,7 +93,9 @@ export default {
         password: "",
       },
       btnLoading: false,
-      reqBody: {},
+      reqBody: {
+		  usertype:1
+	  },
       codeSeconds: 0, // 验证码发送时间间隔
       loginByPass: true,
       smsCodeBtnDisabled: true,
@@ -207,7 +209,6 @@ export default {
     },
     // 登录
     handleLogin(params, loginApi) {
-      // console.log(params)
       this.btnLoading = true;
       this.$http
         .post(loginApi, params)
