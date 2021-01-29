@@ -81,9 +81,20 @@
 					productid:this.personInfo.id
 				}
 				postSchedule(data).then(({status,msg})=>{
-					this.$mHelper.toast(msg);
+					 
 					if(status == 0){
-						uni.navigateBack()
+						uni.showModal({
+							content: '预约成功！',
+							cancelText: "返回", // 取消按钮的文字  
+                            confirmText: "查看", // 确认按钮文字  
+							success: (confirmRes) => {
+								if (confirmRes.confirm) {
+									this.$mRouter.push({route: '/pages/user/my-appointment/index'});
+								}else{
+									uni.navigateBack() 
+								}
+							}
+						});
 					}
 				})
 				.catch((err)=>{
@@ -146,8 +157,7 @@
 		line-height: 24rpx;
 		letter-spacing: 0em;
 		color: #000000;
-		margin-right: 20rpx;
-		
+		margin-right: 20rpx; 
 	}
 	.list_textarea{
 		margin: 0 20rpx;

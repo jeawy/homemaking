@@ -23,7 +23,9 @@
 			</view>
 			
 		</view>
+		<!--
 		<button class="synchroniz-btn" :disabled="detailData==null" type="primary" @click="syncToPhone">同步到手机日程</button>
+		-->
 	</view>
 </template>
 
