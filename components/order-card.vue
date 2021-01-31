@@ -29,7 +29,7 @@
                     <view class="order-item-side">  
 						<view class="btn" v-if="item.status == 0" @tap="navTo( `/pages/user/money/pay?id=${item.id}`)">支付</view>
                         <view class="btn" @tap="deleteOrder(item.id)">删除订单</view>
-                        <view class="btn">申请单据</view>
+                        
 						<!--
 						<view @tap="navTo('/pages/order/evaluation/evaluation')">
 							<view v-if="item.is_evaluate==0">
