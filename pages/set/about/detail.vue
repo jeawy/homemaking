@@ -19,7 +19,7 @@
 				<rich-text :nodes="detail.protocol_privacy | formatRichText"></rich-text>
 			</view>
 			<rf-empty :info="`暂无${title}`" v-if="!detail.protocol_privacy"></rf-empty>
-		</view>
+		</view><web-view src="../../../hybrid/html/privacy.html"></web-view>
 		<view class="shop-info" v-if="title === '充值协议'">
 			<view v-if="detail.protocol_recharge">
 				<rich-text :nodes="detail.protocol_recharge | formatRichText"></rich-text>

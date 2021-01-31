@@ -318,6 +318,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/user/privacy-agreement/privacy-agreement",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "隐私协议",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"subPackages": [
 		// 设置
