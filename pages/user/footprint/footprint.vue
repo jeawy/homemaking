@@ -1,8 +1,16 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-01-30 16:09:07
+ * @LastEditTime: 2021-01-31 12:44:09
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \homemaking\pages\user\footprint\footprint.vue
+-->
 <template>
   <view class="footprint">
     <view class="list-wrap">
       <mainCard
-        :info="item"
+        :info="item.product"
         v-for="(item, index) in collectionList"
         :key="index"
         class="main_card"

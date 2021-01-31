@@ -2,8 +2,8 @@
   <view class="collection">
     <view class="list-wrap">
       <mainCard
-        :info="item"
         v-for="(item, index) in collectionList"
+        :info="item.product"
         :key="index"
         class="main_card"
       />
