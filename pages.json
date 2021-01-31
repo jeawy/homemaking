@@ -309,6 +309,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/user/user-agreement/user-agreement",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "用户协议",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"subPackages": [
 		// 设置

@@ -1,15 +1,8 @@
-/*
- * @Author: your name
- * @Date: 2021-01-31 11:27:28
- * @LastEditTime: 2021-01-31 11:28:36
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \homemaking\html\index.js
- */
 /**
  * @author: sivan
  * @description: 移动端适配JS
  */
+
 
 // 移动端适配
 // css 单位使用rem(style.css中有实例)

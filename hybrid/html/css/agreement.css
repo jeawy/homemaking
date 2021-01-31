@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #fff;
+    color: black;
+    font: 1.4rem/1.5 Helvetica, sans-serif;
+}
+
+.agreement {
+    margin: 1.5rem;
+}
+
+.agreement p {
+    text-indent: 2em;
+}
+
+.agreement li>p {
+    text-indent: 0;
+}
+
+.agreement h1 {
+    font-size: 1.6rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.agreement h3 {
+    font-size: 1.4rem;
+    padding: 1rem 0;
+}
+
+.agreement ol {
+    padding-left: 1.5rem;
+}

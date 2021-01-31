@@ -226,7 +226,7 @@ export default {
         },
         {
           name: "用户协议",
-          path: "",
+          path: "/pages/user/user-agreement/user-agreement",
           src: "userdocument",
         },
         {
