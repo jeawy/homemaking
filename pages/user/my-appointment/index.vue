@@ -17,6 +17,9 @@
 				<view class="view_vedio" @tap="navTo('/pages/public/vedio')" >
 					<image class="sex_img" src="/static/vedio.svg"></image>
 				</view>
+				<view class="aunty_name">
+					{{item.name}}
+				</view>
 				<view class="content_event">
 					{{item.content}}
 				</view>
@@ -173,6 +176,13 @@
 					border-right: 4upx solid #FFAB4E;
 					margin-right: 16upx;
 					padding: 16upx 16upx 8upx 0;
+				}
+				.aunty_name{
+					height: 40px;
+					border-right: 4upx solid #FFAB4E;
+					margin-right: 16upx;
+					margin-left: -40upx;
+					padding: 20upx 16upx 8upx 0;
 				}
 			}
 		}
