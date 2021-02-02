@@ -175,7 +175,7 @@
 					height: 40px;
 					border-right: 4upx solid #FFAB4E;
 					margin-right: 16upx;
-					padding: 16upx 16upx 8upx 0;
+					padding: 20upx 16upx 8upx 0;
 				}
 				.aunty_name{
 					height: 40px;
