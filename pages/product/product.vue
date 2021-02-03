@@ -13,13 +13,16 @@
 						<view class="text_middle">
 							<text class="middle-text">{{productDetail.age}}岁</text>
 							<image class="sex_img" src="/static/women.svg"></image>
+							<text class="middle-text">{{productDetail.nation}}</text>
 							<span class="line">|</span>
 							<text class="middle-text">从业{{productDetail.workyears}}年</text>
 						</view>
 						<view class="language">
-							<text class="language-text">{{productDetail.language}}</text>
+							<text class="language-text">{{productDetail.languages}}</text>
+							<!--
 							<span class="line">|</span>
 							<text class="language-text">{{productDetail.language}}</text>
+							-->
 						</view>
 					</view>
 				<!-- </swiper-item> -->
@@ -628,6 +631,7 @@
 				}).then(async r => {
 					this.loading = false; 
 					this.productDetail = r.msg;
+					this.productDetail.languages  = this.productDetail.languages.join(' ');
 					this.cbName = r.msg.productname;
 					this.cbProductImage = this.baseurl + r.msg.thumbnail_portait
 					for(var i=0;i<r.msg.rules.length;i++){ 

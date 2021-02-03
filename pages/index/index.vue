@@ -107,25 +107,7 @@
 				],
 				baseurl:"",
 				swiperCurrent: 0, // 轮播图index 
-				infolst:[{
-					name:'张三',
-					imgsrc:"/static/people.svg",
-					age:27,
-					sex:"women",
-					position:'澳大利亚',
-					time:"2",
-					language:['普通话','英语'],
-					type:"包月小时工"
-				},{
-					name:'爱丽丝',
-					imgsrc:"/static/people.svg",
-					age:27,
-					sex:"women",
-					position:'澳大利亚',
-					time:"2",
-					language:['普通话','英语'],
-					type:"包月小时工"
-				}],
+				infolst:[],
 				newbee_infolst:[]
 
                 // config: {}, // 商户配置
@@ -202,7 +184,7 @@
 										thumbnail_portait:thumbnail_portait,
 										age:r.msg[i].age?r.msg[i].age:'-',
 										sex: r.msg[i].sex,
-										position:r.msg[i].nation,
+										nation:r.msg[i].nation,
 										time:"2",
 										languages:r.msg[i].languages.join("  "),
 										type:r.msg[i].rules[0].name,
@@ -232,7 +214,7 @@
 										thumbnail_portait:thumbnail_portait,
 										age:r.msg[i].age?r.msg[i].age:'-',
 										sex: r.msg[i].sex,
-										position:r.msg[i].nation,
+										nation:r.msg[i].nation,
 										time:"2",
 										languages:r.msg[i].languages.join("  "),
 										type:r.msg[i].rules[0].name,
