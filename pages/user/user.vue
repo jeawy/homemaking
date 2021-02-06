@@ -651,6 +651,8 @@ export default {
             align-items: flex-end;
             color: #515151;
             margin-top: 10rpx;
+			margin-left: 1rpx;
+			padding-top: 10rpx;
           }
         }
       }
