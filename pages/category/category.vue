@@ -10,7 +10,7 @@
             src="/static/houseKeeping/search.svg"
 			@tap="toSearch"
           ></image>
-          <input class="search_input" placeholder="搜索关键字" v-model="title"/>
+          <input type="text" class="search_input" placeholder="搜索关键字" v-model="title" confirm-type="search" @confirm="toSearch"/>
           <image
             class="search_talk"
             src="/static/houseKeeping/microphone.svg"
@@ -580,6 +580,7 @@ export default {
     },
     // 跳转至搜索详情页
     toSearch() {
+		uni.hideKeyboard();
 		this.searchCate(this.searchParams);
 	  /*
       this.$mRouter.push({
