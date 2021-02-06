@@ -449,14 +449,14 @@ export default {
     top: 6.9%;
     .setting {
       .setting_img {
-        width: 20.86rpx;
-        height: 22rpx;
+        width: 25.86rpx;
+        height: 27rpx;
       }
     }
     .notice {
       .notice_img {
-        width: 20.52rpx;
-        height: 20.08rpx;
+        width: 25.52rpx;
+        height: 25.08rpx;
         right: 5.26%;
         left: 92%;
       }
