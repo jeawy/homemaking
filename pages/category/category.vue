@@ -616,7 +616,7 @@ page {
     background-color: #ffffff;
   }
   .top_search {
-    padding-top: 114rpx; //设置距离顶部的距离
+    padding-top: 124rpx; //设置距离顶部的距离
     position: fixed;
     width: 100%;
     z-index: 90;
@@ -624,7 +624,7 @@ page {
   }
   .main_content {
     position: relative;
-    padding-top: 164rpx; //设置距离顶部的距离
+    padding-top: 174rpx; //设置距离顶部的距离
     width: 100%;
     background-color: #ffffff;
   }
@@ -646,24 +646,26 @@ page {
       background: rgba(118, 118, 128, 0.12);
       border-radius: 10px;
       .search_img {
-        width: 22rpx;
-        height: 22rpx;
+        width: 32rpx;
+        height: 32rpx;
         margin: 10rpx 12.2rpx 8rpx 12rpx;
       }
       .search_input {
         width: 446rpx;
       }
       .search_talk {
-        width: 14.78rpx;
-        height: 22rpx;
+        width: 24.78rpx;
+        height: 32rpx;
         margin: 10rpx 12.2rpx 8rpx 0;
       }
     }
     .notice {
+		display: flex;
+		align-items: center;
       .notice_img {
         margin-left: 20rpx;
-        width: 22rpx;
-        height: 21.54rpx;
+        width: 27rpx;
+        height: 26.54rpx;
       }
     }
   }
@@ -674,7 +676,7 @@ page {
   .right_one,
   .right_two {
     font-family: Tensentype MingSongJ-W4;
-    font-size: 20rpx;
+    font-size: 24rpx;
     font-style: normal;
     font-weight: 400;
     line-height: 24rpx;

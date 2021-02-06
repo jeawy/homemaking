@@ -281,10 +281,12 @@
 			letter-spacing: 0em;
 		}
 		.notice{
+			display: flex;
+			align-items: center;
 			.notice_img{
 				margin-right: 38rpx;
-				width: 22rpx;
-				height: 21.54rpx;
+				width: 27rpx;
+				height: 26.54rpx;
 			}
 		}
 		.main_content{

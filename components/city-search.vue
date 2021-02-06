@@ -73,13 +73,13 @@
 		.location_text{
 			margin-left: 40rpx;
 			font-family: Tensentype MingSongJ-W2;
-			font-size: 24rpx;
+			font-size: 28rpx;
 			line-height: 28rpx;
 		}
 		.location_img{
 			margin-left: 4rpx;
-			width: 16rpx;
-			height: 24rpx;
+			width: 21rpx;
+			height: 29rpx;
 		}
 	}
     .position_search{
