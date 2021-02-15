@@ -2,7 +2,7 @@
 	<view class="rf-index">
 		<!-- 顶部信息 -->
 		<view class="header">
-			<citySearch :city="city" @doGetLocation="doGetLocation"/>
+			<citySearch v-model="city" @doGetLocation="doGetLocation"/>
 			<view class="notice" @tap="navTo('/pages/user/notice/notice')">
 				<image class="notice_img" src="../../static/home/Notification.svg"></image>
 			</view>
