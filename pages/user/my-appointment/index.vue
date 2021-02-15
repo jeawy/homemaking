@@ -14,7 +14,7 @@
 				<view class="content_time">
 					{{item.time}}
 				</view>
-				<view class="view_vedio" @tap="navTo('/pages/public/vedio')" >
+				<view class="view_vedio" @tap="twilio" >
 					<image class="sex_img" src="/static/vedio.svg"></image>
 				</view>
 				<view class="aunty_name">
@@ -38,6 +38,7 @@
 	import {
 		queryScheduleList
 	} from "@/api/userInfo.js"
+	const frontservice = uni.requireNativePlugin('uniplugin_richalert'); 
 	export default {
 		components: {
 			uniCalendar
@@ -51,6 +52,16 @@
 			};
 		},
 		methods: {
+			twilio(){
+				if(uni.getSystemInfoSync().platform === 'android'){
+					frontservice.show({ 
+						token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzZkYzY1MzY5Yjg3MWQ1MmFkN2ZmNDc1NWM5MTBlZGEyLTE2MTIxNjM0NDciLCJpc3MiOiJTSzZkYzY1MzY5Yjg3MWQ1MmFkN2ZmNDc1NWM5MTBlZGEyIiwic3ViIjoiQUNkNjcyMmZkMWJmNDY0NmNlZDgzNTdhOGMxMDVlZTI4MCIsImV4cCI6MTYxMjE2NzA0NywiZ3JhbnRzIjp7ImlkZW50aXR5IjoiMTExMSIsInZpZGVvIjp7fX19.cRj3aYmi6tDAsuel_MLlQhTjY6Rhd-1_fMlTc8x4DQc",
+						roomname: 'zjw', 
+					}, result => { 
+						console.log(result)
+					}); 	 
+				}
+			},
 			// 日历切换展示选择日期下的预约
 			dateChangeHandler({
 				extraInfo

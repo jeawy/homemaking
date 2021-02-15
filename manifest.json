@@ -1,10 +1,10 @@
 {
-    "name" : "XXX家政",
+    "name" : "au生活家",
     "appid" : "__UNI__6050951",
     // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
-    "description" : "XXX家政",
-    "versionName" : "1.0.0",
-    "versionCode" : 109,
+    "description" : "au生活家",
+    "versionName" : "1.0.1",
+    "versionCode" : 115,
     "transformPx" : false,
     "app-plus" : {
         "compatible" : {
@@ -54,7 +54,15 @@
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ]
             },
-            "ios" : {},
+            "ios" : {
+                "privacyDescription" : {
+                    "NSCameraUsageDescription" : "上传头像",
+                    "NSPhotoLibraryAddUsageDescription" : "",
+                    "NSPhotoLibraryUsageDescription" : "上传头像",
+                    "NSLocationWhenInUseUsageDescription" : "用于推荐附件的阿姨",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "用于推荐附件的阿姨"
+                }
+            },
             /* ios打包配置 */
             "sdkConfigs" : {
                 "ad" : {},
@@ -105,7 +113,8 @@
                 },
                 "androidStyle" : "common"
             }
-        }
+        },
+        "nativePlugins" : {}
     },
     "uni-app" : {
         "scripts" : {
