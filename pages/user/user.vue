@@ -62,11 +62,11 @@
       <view class="my-order">
         <view class="order-top" @tap="target('/pages/cart/cart')">
           <view class="order-name">我的订单</view>
-          <view class="look-order">查看全部订单</view>
-          <image
+          <view class="look-order">查看全部订单<image
             class="order-arrow-img"
             src="../../static/my/arrow_right_orange.svg"
-          ></image>
+          ></image></view>
+          
         </view>
         <view class="order-center">
           <view v-for="(item, index) in orderList" :key="index">
@@ -565,6 +565,7 @@ export default {
       border-radius: 8rpx;
       .order-top {
         display: flex;
+        justify-content: space-between;
         padding-top: 20rpx;
         padding-bottom: 20rpx;
         border-bottom: 2rpx solid #ffab4e;
@@ -575,7 +576,6 @@ export default {
           color: #2d2d2d;
         }
         .look-order {
-          margin-left: 424rpx;
           font-size: 20rpx;
           line-height: 24rpx;
           margin-bottom: 2rpx;
@@ -633,10 +633,11 @@ export default {
         flex-flow: wrap row;
         padding: 30rpx 0 50rpx;
         .common-function__item {
-          flex: 1 1 25%;
+          flex: 0 0 25%;
           display: flex;
           justify-content: center;
-          flex-flow: wrap row;
+          align-items: center;
+          flex-flow: wrap column;
           &:nth-of-type(n + 5) {
             margin-top: 50rpx;
           }
