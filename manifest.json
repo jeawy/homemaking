@@ -4,7 +4,7 @@
     // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
     "description" : "au生活家",
     "versionName" : "1.0.1",
-    "versionCode" : 115,
+    "versionCode" : 117,
     "transformPx" : false,
     "app-plus" : {
         "compatible" : {

@@ -12,6 +12,11 @@ import {
 export function queryScheduleList() {
 	return http.get('/book/books/')
 }
+// 获取token
+export function queryToken(params) {
+	return http.get('/mytwilio/mytwilio/',params)
+}
+
 const ADDRESS_PATH = '/address/addresses/'
 // 查新地址列表
 export const queryAddressList = () => http.get(ADDRESS_PATH)

@@ -14,7 +14,7 @@
 				<view class="content_time">
 					{{item.time}}
 				</view>
-				<view class="view_vedio" @tap="twilio" >
+				<view class="view_vedio"   @tap="twilio(item.id, item.userid, item.token_hirer)" >
 					<image class="sex_img" src="/static/vedio.svg"></image>
 				</view>
 				<view class="aunty_name">
@@ -23,8 +23,7 @@
 				<view class="content_event">
 					{{item.content}}
 				</view>
-			</view>
-			
+			</view> 
 		</view>
 		<!--
 		<button class="synchroniz-btn" :disabled="detailData==null" type="primary" @click="syncToPhone">同步到手机日程</button>
@@ -38,7 +37,7 @@
 	import {
 		queryScheduleList
 	} from "@/api/userInfo.js"
-	const frontservice = uni.requireNativePlugin('uniplugin_richalert'); 
+	const zjw_twilio = uni.requireNativePlugin('DCTestUniPlugin'); 
 	export default {
 		components: {
 			uniCalendar
@@ -46,21 +45,30 @@
 		data() {
 			return {
 				// 预约详情
-				detailData: null,
+				detailData: null, 
 				// 预约列表
 				selectedData: [],
 			};
 		},
 		methods: {
-			twilio(){
+		 twilio(bookid, userid, token){
+				console.log(token)
 				if(uni.getSystemInfoSync().platform === 'android'){
-					frontservice.show({ 
-						token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzZkYzY1MzY5Yjg3MWQ1MmFkN2ZmNDc1NWM5MTBlZGEyLTE2MTIxNjM0NDciLCJpc3MiOiJTSzZkYzY1MzY5Yjg3MWQ1MmFkN2ZmNDc1NWM5MTBlZGEyIiwic3ViIjoiQUNkNjcyMmZkMWJmNDY0NmNlZDgzNTdhOGMxMDVlZTI4MCIsImV4cCI6MTYxMjE2NzA0NywiZ3JhbnRzIjp7ImlkZW50aXR5IjoiMTExMSIsInZpZGVvIjp7fX19.cRj3aYmi6tDAsuel_MLlQhTjY6Rhd-1_fMlTc8x4DQc",
-						roomname: 'zjw', 
-					}, result => { 
-						console.log(result)
-					}); 	 
+					zjw_twilio.testSyncFunc({ 
+						token: token,
+						roomname: userid,
+					}, result => {
+						console.log(result);
+					});
 				}
+				else{ 
+					zjw_twilio.testSyncFunc({ 
+						'roomname': userid,
+						'token': token
+					}, result => {
+						console.log(result);
+					}); 
+				}	  
 			},
 			// 日历切换展示选择日期下的预约
 			dateChangeHandler({
@@ -101,6 +109,8 @@
 								data: {
 									id: e.id,
 									name: e.aunty,
+									userid: e.userid,
+									token_hirer : e.token_hirer,
 									content: e.comment,
 									time: dayjs(e.book_time * 1000).format('HH:mm'),
 									phone: e.phone,
