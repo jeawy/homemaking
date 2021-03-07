@@ -37,7 +37,7 @@
 	import {
 		queryScheduleList
 	} from "@/api/userInfo.js"
-	const zjw_twilio = uni.requireNativePlugin('DCTestUniPlugin'); 
+	const zjw_twilio = uni.requireNativePlugin('MyTwilio'); 
 	export default {
 		components: {
 			uniCalendar
@@ -54,7 +54,7 @@
 		 twilio(bookid, userid, token){
 				console.log(token)
 				if(uni.getSystemInfoSync().platform === 'android'){
-					zjw_twilio.testSyncFunc({ 
+					zjw_twilio.show({ 
 						token: token,
 						roomname: userid,
 					}, result => {
