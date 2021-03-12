@@ -14,7 +14,7 @@
 				<view class="content_time">
 					{{item.time}}
 				</view>
-				<view class="view_vedio"   @tap="twilio(item.id, item.userid, item.token_hirer)" >
+				<view class="view_vedio"   @tap="twilio(item.id, item.userid, item.token)" >
 					<image class="sex_img" src="/static/vedio.svg"></image>
 				</view>
 				<view class="aunty_name">
@@ -37,7 +37,7 @@
 	import {
 		queryScheduleList
 	} from "@/api/userInfo.js"
-	const zjw_twilio = uni.requireNativePlugin('MyTwilio'); 
+	const zjw_twilio = uni.requireNativePlugin('zjw-VideoCallTwilio'); 
 	export default {
 		components: {
 			uniCalendar
@@ -52,23 +52,13 @@
 		},
 		methods: {
 		 twilio(bookid, userid, token){
-				console.log(token)
-				if(uni.getSystemInfoSync().platform === 'android'){
-					zjw_twilio.show({ 
-						token: token,
-						roomname: userid,
-					}, result => {
-						console.log(result);
-					});
-				}
-				else{ 
-					zjw_twilio.testSyncFunc({ 
-						'roomname': userid,
-						'token': token
-					}, result => {
-						console.log(result);
-					}); 
-				}	  
+				console.log(token, bookid) 
+				zjw_twilio.VideoCall({ 
+					token: token,
+					roomname: "autwilio"+bookid,
+				}, result => {
+					console.log(result);
+				}); 
 			},
 			// 日历切换展示选择日期下的预约
 			dateChangeHandler({
@@ -109,8 +99,8 @@
 								data: {
 									id: e.id,
 									name: e.aunty,
-									userid: e.userid,
-									token_hirer : e.token_hirer,
+									userid: e.aunty_id,
+									token : e.token,
 									content: e.comment,
 									time: dayjs(e.book_time * 1000).format('HH:mm'),
 									phone: e.phone,
