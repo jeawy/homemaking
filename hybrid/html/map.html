@@ -22,7 +22,7 @@
 		    console.log(Authorization)
 		    const stripe = Stripe('pk_test_42xi7lAoc2wOsFfmZOq7etPS005IDp2SJJ')
 		     const checkoutBtn = document.querySelector('#checkout-button')
-		        checkoutBtn.addEventListener('click', () => {
+		        /* checkoutBtn.addEventListener('click', () => {
 		           var data = {
 		           	"url": "http://47.95.239.228:8091/api/pay/stripe/?track=12"  ,
 		           	"method": "get",
@@ -38,7 +38,34 @@
 		           }).fail(function(res) {
 						console.log(JSON.stringify(res));
 					});
-		        })/*
+				})*/
+				checkoutBtn.addEventListener('click', () => {
+					fetch('http://47.95.239.228:8091/api/pay/stripe/?track=12', {
+						method: 'GET',
+						headers: {
+							"Authorization": Authorization,
+		           		 	"Content-Type": "application/json"						
+						}
+					})
+					.then(response => {
+						console.log('response: ', response)
+						return response.json()
+					})
+					.then(session => {
+						return stripe.redirectToCheckout({ sessionId: session.id })
+					})
+					.then(result => {
+						if(result.error) {
+							console.log('redirect to checkout failed due to ', result.error.message)
+						}
+					})
+					.catch(error => {
+						console.log('error: ', error)
+					})
+				})
+
+		    
+			/*
 			var data = {
 				"url": "http://47.95.239.228:8091/api/pay/stripe/?track=12"  ,
 				"method": "POST",
