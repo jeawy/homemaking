@@ -90,6 +90,7 @@
 				if (type == 4){
 					//信用卡支付 
 					var token = store.state.estateToken || uni.getStorageSync('estateToken');
+					console.log('login token: ', token)
 					uni.navigateTo({
 					  url: 'stripe?id=' + this.orderInfo.order_id + '&isLogin='+token,
 					  events: {
