@@ -1,16 +1,31 @@
 <template>
 	<view class="content">
 		<!--导航栏-->
+		
+		
+		
+		
 		<view class="top">
+			
 			<view class="navbar-top">
 				<view class="navbar-top-text">我的订单</view>
 				<view class="navbar-top-img">
-					<image class="search-img" @tap="navTo('/pages/index/search/search')" src="/static/order/search.svg"></image>
+						
+					<image class="search-img" v-show="showSearchBar==false" v-on:click="showSearchBar=true"src="/static/order/search.svg"></image>
+					<image class="search-img"  v-if="showSearchBar==true" v-on:click="showSearchBar=false"src="/static/order/search.svg"></image>
 					<image class="erji-img" src="/static/order/erji.svg"></image>
 					<image @tap="navTo('/pages/user/notice/notice')"
 					 class="message-img" src="/static/order/orange_messages.svg"></image>
 				</view>
+					
 			</view>
+			<view v-show="showSearchBar"  class="search">
+				<view class="search_box">
+					<image class="search_img" src="/static/houseKeeping/search.svg" @tap="searchFun"></image>
+					<input type="text" class="search_input" placeholder="搜索关键字"  confirm-type="search" v-model="search" @confirm="searchInput"/>
+				
+				</view>
+				</view>
 			<view class="navbar-bottom">
 				<view
 					v-for="(item, index) in navList" :key="index"
@@ -20,8 +35,11 @@
 				>
 					{{item.value}}
 				</view>
+				
 			</view>
+			
 		</view>
+		
 		<swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
 			<!--全部订单页面-->
 			<swiper-item>
@@ -35,7 +53,7 @@
 				<!--
 				<orderCard :orderList="orderList" :productList="productList" 
 				:orderStatus="orderStatus" @getOrderList="getOrderList"/>-->
-				<orderCard :orderList="orderList" @getOrderList="getOrderList"/>
+				<orderCard :orderList="orderList" @getOrderList="getOrderList" />
 			</swiper-item>
 			<!--进行中订单页面-->
 			<swiper-item class="process-order">
@@ -70,6 +88,7 @@
 	import mainCard from '@/components/main-card.vue';
 	import orderCard from '@/components/order-card.vue';
 	import {orderList} from '@/api/userInfo';
+
 	export default {
 		components: {
 			mainCard,
@@ -77,6 +96,9 @@
         },
 		data() {
 			return {
+				showSearchBar:false,
+				allOrdersListCopy: [],
+				search:'',
 				tabCurrentIndex: 0,
 				loadingType: 'more',
 				navList: [
@@ -94,14 +116,14 @@
 				],
 				// 所有订单
 				allOrderList: [
-					{
+					/* {
 						image:"../../static/order/zhang.svg",
 						name:"张阿姨",
 						content:"包全天家政",
 						ispay:1,
 						money:400,
 						num:3
-					}
+					} */
 				],
 				// 进行中订单
 				processList:[{
@@ -204,6 +226,16 @@
 						return "撤销申请";
 				}
 			},
+			searchInput() {
+				let searchStr = this.search.trim()
+				if(searchStr!==""){
+					const foundOrders = this.allOrdersListCopy.filter(order => order.rules[0].username.indexOf(this.search) > -1)
+					this.orderList = foundOrders
+				}else{
+					this.orderList = this.allOrdersListCopy
+				}
+			},
+					 
 			// 获取订单列表
 			async getOrderList(type) {
 				this.loading = true;
@@ -224,6 +256,7 @@
 					 
 					//this.loadingType  = r.data.length === 10 ? 'more' : 'nomore';
 					this.orderList = [ ...r.msg];
+					this.allOrdersListCopy = [...r.msg]
 					/*
 					this.orderList.map(item=>{
 						this.productList.push(item.rules.thumbnail_portait);
@@ -240,6 +273,33 @@
 					}
 				});
 			},
+		},
+		computed:{
+			//搜索
+				  /*
+				  searchCate() {
+						if(this.searchInput===''){
+							getOrderList();
+						}else{
+							this.$http.get(`${orderList}`).then(({
+									status,
+									msg
+								}) => {
+									if (status === 0) {
+										this.visible = false
+									}
+												  
+								})
+								.catch(() => {});
+						}
+				 
+				  	
+				  },
+				  */
+				 /*
+				 filteredSearch(){
+					 return this.$http.get(`${orderList}`)
+				 }*/
 		}
 	}
 </script>
@@ -257,8 +317,72 @@ page, .content{
 }
 .list-scroll-content{
 	height: 100vh;
-	padding-top: 178rpx;//设置距离顶部的距离
+	padding-top: 178rpx !important;//设置距离顶部的距离
 }
+
+
+/*顶部搜索栏*/
+	.search-bar-overlay{
+		z-index: 100;
+		position: fixed;
+		background: rgba(255, 255, 255, 0.9);
+		height: 100vh;
+		width: 100%;
+	}
+	.search{
+		
+		
+		
+	
+		width: 500rpx;
+		margin:auto;
+		
+		
+	}
+		.search,
+		.search_position,
+		.search_box,
+		 {
+			display: flex;
+			align-items: center;
+			text-align:center;
+			
+		}
+		
+		
+.search {
+
+				
+				.search_box {
+				
+				
+					width: 500rpx;
+					background: rgba(118, 118, 128, 0.12);
+					border-radius: 30rpx;
+					padding: 8rpx 0;
+					margin:auto;
+					
+		  
+					.search_img {
+            display: inline-block;
+						width: 32rpx;
+						height: 32rpx;
+						margin: 0 16rpx;
+					}
+
+					.search_input {
+						width: 446rpx;
+                        height: 44rpx;
+					
+					}
+
+					.search_talk {
+						width: 24.78rpx;
+						height: 32rpx;
+						margin-right: 16rpx;
+					}
+				}
+				}
 /*顶部导航*/
 .top{
 	// height: 212rpx;
@@ -267,7 +391,8 @@ page, .content{
     position: fixed;
 	z-index: 10;
 	padding-top: 70rpx;//设置距离顶部的距离
-	padding-bottom: 20rpx;
+	
+	
 	.navbar-top{
 		display: flex;
 		// margin-top: 108rpx;
