@@ -25,6 +25,16 @@
 					<radio value="" color="#fa436a" :checked='payType == 2'/>
 				</label>
 			</view>
+			<view class="type-item b-b" @tap="changePayType(4)"  >
+				<i class="iconfont icon iconweixinzhifu"></i>
+				<view class="con">
+					<text class="tit">信用卡支付</text>
+					<text>推荐使用MasterCard或Visa</text>
+				</view>
+				<label class="radio">
+					<radio value="" color="#fa436a" :checked='payType == 4'/>
+				</label>
+			</view>
 			<view class="type-item" @tap="changePayType(5)" v-if="parseInt(payTypeList.order_balance_pay, 10) === 1">
 				<i class="iconfont icon iconerjiye-yucunkuan"></i>
 				<view class="con">
@@ -39,10 +49,13 @@
 		<button class="confirm-btn" :disabled="btnLoading" :loading="btnLoading" @tap="confirm">确认支付</button>
 	</view>
 </template>
-
+//<script src="https://js.stripe.com/v3/"></script>
 <script>
+    import {loadStripe} from '@stripe/stripe-js/pure';
+	import store from '@/store'
+	const stripeInit =  loadStripe('pk_test_42xi7lAoc2wOsFfmZOq7etPS005IDp2SJJ')
     import {orderPay} from "@/api/product";
-    import {orderDetail} from "@/api/userInfo";
+    import {orderDetail, paystripe} from "@/api/userInfo";
     import {configList} from "@/api/basic";
     export default {
         data() {
@@ -73,8 +86,37 @@
 				        // #endif
             },
             //选择支付方式
-            changePayType(type) {
-                this.payType = type;
+           changePayType(type) {
+				if (type == 4){
+					//信用卡支付 
+					var token = store.state.estateToken || uni.getStorageSync('estateToken');
+					uni.navigateTo({
+					  url: 'stripe?id=' + this.orderInfo.order_id + '&isLogin='+token,
+					  events: {
+					    // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+					    acceptDataFromOpenedPage: function(data) {
+					      console.log(data)
+					    },
+					    someEvent: function(data) {
+					      console.log(data)
+					    }
+					     
+					  },
+					  success: function(res) {
+					    // 通过eventChannel向被打开页面传送数据
+						console.log("dddd")
+					    res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
+					  },
+					  fail:function(res){
+						  console.log(res)
+					  }
+					})
+					
+					 
+				}
+				else{
+                    this.payType = type;
+				}
             },
             // 获取订单费用
             async getOrderDetail(id) {
@@ -82,6 +124,7 @@
                     id:this.orderInfo.order_id, // 订单id
                     simplify: 1 // 获取简化订单详情
                 }).then(r => {
+					
 					console.log(r)
 					this.billinfo = r.msg
                     this.money = r.msg.money

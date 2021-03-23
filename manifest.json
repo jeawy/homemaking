@@ -1,6 +1,6 @@
 {
     "name" : "生活家",
-    "appid" : "__UNI__247333B",
+    "appid" : "__UNI__6050951",
     // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
     "description" : "au生活家",
     "versionName" : "1.0.1",
@@ -120,8 +120,8 @@
             "zjw-VideoCallTwilio" : {
                 "__plugin_info__" : {
                     "name" : "zjw-VideoCallTwilio",
-                    "description" : "Twilio视频插件",
-                    "platforms" : "Android",
+                    "description" : "Twilio视频通话插件",
+                    "platforms" : "Android,iOS",
                     "url" : "",
                     "android_package_name" : "",
                     "ios_bundle_id" : "",

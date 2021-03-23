@@ -139,6 +139,13 @@
 				"navigationBarTitleText": "修改资料"
 			}
 		},
+		// 信用卡支付
+		{
+			"path": "pages/user/money/stripe",
+			"style": {
+				"navigationBarTitleText": "信用卡支付"
+			}
+		},
 		// 我的收藏
 		{
 			"path": "pages/user/collection/collection",

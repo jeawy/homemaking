@@ -16,6 +16,8 @@ export function queryScheduleList() {
 export function queryToken(params) {
 	return http.get('/mytwilio/mytwilio/',params)
 }
+// stripe信用卡支付
+export const paystripe = data => http.post('/pay/stripe/', data)
 
 const ADDRESS_PATH = '/address/addresses/'
 // 查新地址列表
