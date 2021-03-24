@@ -131,12 +131,13 @@
 				// 记录上一次手指位置
 				this.lastX = this.startX;
 				//初始化非当前滑动消息列的位置
+				if(this.tracks){
 				this.tracks.forEach((item, eq) => {
 					if (eq !== index) {
 						item.slide_x = 0;
 					}
 				});
-
+					};
 			},
 			// 滑动中
 			touchSlideMove(e, index) {
@@ -185,23 +186,23 @@
 					confirmColor: '#ff3b32',
 					success: function(res) {
 						if (res.confirm) {
-							// let track = self.noticelst.splice(index, 1)
-							// const data = {  
-							// 	method: 'delete',
-							// 	id : track[0].id,
-							// }
-							// postLocation(data).then((res)=>{
-							// 	if (res.data.status == 0){
-							// 		self.floterText = "已加载全部，共(" + self.tracks.length + ")条轨迹"
-							// 	}
-							// 	else{console.log(res)}
+							let track = self.noticelst.splice(index, 1)
+							const data = {  
+							method: 'delete',
+							id : track[0].id,
+							}
+							 postLocation(data).then((res)=>{
+								if (res.data.status == 0){
+								self.floterText = "已加载全部，共(" + self.tracks.length + ")条轨迹"
+							 	}
+								else{console.log(res)}
 
-							// });
-							// uni.showToast({
-							// 	icon: "success",
-							// 	title: '删除成功!',
-							// 	duration: 2000
-							// });
+							 });
+							 uni.showToast({
+							 	icon: "success",
+								title: '删除成功!',
+							 	duration: 2000
+							});
 						} else if (res.cancel) {
 							console.log('用户点击取消')
 						}

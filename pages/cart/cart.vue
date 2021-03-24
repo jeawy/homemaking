@@ -319,7 +319,9 @@ page, .content{
 	height: 100vh;
 	padding-top: 178rpx !important;//设置距离顶部的距离
 }
-
+.order-item{
+	padding-top:30rpx; //设置内容块之前的距离
+}
 
 /*顶部搜索栏*/
 	.search-bar-overlay{
