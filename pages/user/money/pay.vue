@@ -12,7 +12,7 @@
 					<text>推荐使用微信支付</text>
 				</view>
 				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 1'/>
+					<radio value="" color="#fe8e2e" :checked='payType == 1'/>
 				</label>
 			</view>
 			<view class="type-item b-b" @tap="changePayType(2)" >
@@ -22,18 +22,18 @@
 					<text>推荐使用支付宝支付</text>
 				</view>
 				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 2'/>
+					<radio value="" color="#fe8e2e" :checked='payType == 2'/>
 				</label>
 			</view>
 			<view class="type-item b-b" @tap="changePayType(4)"  >
 				<!-- <i class="iconfont icon iconweixinzhifu"></i> -->
-				<img src="/static/creditCard.png" width="30" :style="{paddingRight: '40rpx'}" />
+				<img src="static/creditCard.png" width="30" :style="{paddingRight: '40rpx'}" />
 				<view class="con">
 					<text class="tit">信用卡支付</text>
 					<text>推荐使用MasterCard或Visa</text>
 				</view>
 				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType == 4'/>
+					<radio value="" color="#fe8e2e" :checked='payType == 4'/>
 				</label>
 			</view>
 			<view class="type-item" @tap="changePayType(5)" v-if="parseInt(payTypeList.order_balance_pay, 10) === 1">
@@ -43,7 +43,7 @@
 					<text>可用余额 {{ userInfo && userInfo.account && userInfo.account.user_money }}</text>
 				</view>
 				<label class="radio">
-					<radio value="" color="#fa436a" :checked='payType === 5'/>
+					<radio value="" color="#fe8e2e" :checked='payType === 5'/>
 				</label>
 			</view>
 		</view>
@@ -88,7 +88,32 @@
             },
             //选择支付方式
            changePayType(type) {
-				if (type == 4){
+                this.payType = type;
+            },
+            // 获取订单费用
+            async getOrderDetail(id) {
+                await this.$http.get(`${orderDetail}`, {
+                    id:this.orderInfo.order_id, // 订单id
+                    simplify: 1 // 获取简化订单详情
+                }).then(r => {
+					
+					console.log(r)
+					this.billinfo = r.msg
+                    this.money = r.msg.money
+                });
+            },
+            //确认支付
+            confirm() {
+                this.btnLoading = true;
+				console.log(this.payType)
+                switch (parseInt(this.payType)) {
+                  case 1:
+                    this.$mPayment.weixinPay('order', JSON.stringify(this.billinfo));
+                    break;
+                  case 2:
+                    this.$mPayment.aliPay('order',  this.billinfo);
+                    break;
+				  case 4:
 					//信用卡支付 
 					
 					// 这里原来是 store.state.estateToken || uni.getStorageSync('estateToken')
@@ -117,36 +142,7 @@
 						  console.log(res)
 					  }
 					})
-					
-					 
-				}
-				else{
-                    this.payType = type;
-				}
-            },
-            // 获取订单费用
-            async getOrderDetail(id) {
-                await this.$http.get(`${orderDetail}`, {
-                    id:this.orderInfo.order_id, // 订单id
-                    simplify: 1 // 获取简化订单详情
-                }).then(r => {
-					
-					console.log(r)
-					this.billinfo = r.msg
-                    this.money = r.msg.money
-                });
-            },
-            //确认支付
-            async confirm() {
-                this.btnLoading = true;
-				console.log(this.payType)
-                switch (parseInt(this.payType)) {
-                  case 1:
-                    this.$mPayment.weixinPay('order', JSON.stringify(this.billinfo));
-                    break;
-                  case 2:
-                    this.$mPayment.aliPay('order',  this.billinfo);
-                    break;
+					break
                   case 5:
                     this.$mPayment.balancePay(JSON.stringify(this.billinfo));
                     break;
