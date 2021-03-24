@@ -26,7 +26,8 @@
 				</label>
 			</view>
 			<view class="type-item b-b" @tap="changePayType(4)"  >
-				<i class="iconfont icon iconweixinzhifu"></i>
+				<!-- <i class="iconfont icon iconweixinzhifu"></i> -->
+				<img src="/static/creditCard.png" width="30" :style="{paddingRight: '40rpx'}" />
 				<view class="con">
 					<text class="tit">信用卡支付</text>
 					<text>推荐使用MasterCard或Visa</text>

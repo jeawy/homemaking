@@ -222,7 +222,7 @@ export default{
 		.order-item-side{
 			width: 100%;
 			position: absolute;
-			// color: #FF8D0E;
+			color: #FF8D0E;
 			display: flex;
 			// flex-wrap: wrap;
 			margin-top:188rpx;
@@ -230,7 +230,10 @@ export default{
 			// padding-left: 258rpx;
 			// right: 40rpx;
 			align-content: center;
-			font-size: 18rpx;
+			.order-no {
+				font-size: 24rpx;
+				margin-top: 10rpx;
+			}
 			.order-btns {
 				position: absolute;
 				right: 70rpx;
@@ -240,7 +243,6 @@ export default{
 					// float: right;
 					display: inline-block;
 					padding: 8rpx 22rpx;
-					color: #FF8D0E;
 					border: 2rpx solid #FF8D0E;
 					box-sizing: border-box;
 					border-radius: 4rpx;
