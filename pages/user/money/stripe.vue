@@ -15,7 +15,7 @@ import store from '@/store'
         onLoad(options) {
 			// 这里原来是 store.state.estateToken || uni.getStorageSync('estateToken')
 			var token = store.state.accessToken || uni.getStorageSync('accessToken');
-			this.url = '/hybrid/html/map.html?' +'&isLogin='+token
+			this.url = '/hybrid/html/map.html?' +'no='+options.no+'&isLogin='+token
 			// this.url = this.baseurl + 'appshare/map.html?id='+this.id+'&scale=11&from=singlemessage&isappinstalled=0'
 			let w = null;
 			if (uni.getSystemInfoSync().platform =='ios'){

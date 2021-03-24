@@ -102,27 +102,33 @@
 	<script src="./js/jquery.min.js"></script>
 	<script src="https://js.stripe.com/v3/"></script>
 	<script>
-		let url = new URL(window.location.href);
-		console.log(url)
-		let Authorization = url.searchParams.get("isLogin");//用户token
-		
+
 		(function(){
-		    console.log(Authorization)
+
+			let url = new URL(window.location.href);
+			let params = url.searchParams
+			let Authorization = params.get("isLogin");//用户token
+			let billno = params.get("no")
+			console.log({Authorization}, {billno})
+		   
 		    const stripe = Stripe('pk_test_42xi7lAoc2wOsFfmZOq7etPS005IDp2SJJ')
 			//checkoutBtn.addEventListener('click', () => {
-				fetch('http://47.95.239.228:8091/api/pay/stripe/?track=12', {
-					method: 'GET',
+				fetch(`http://47.95.239.228:8091/api/pay/stripe/`, {
+					method: 'POST',
 					headers: {
 						"Authorization": Authorization,
-						"Content-Type": "application/json"						
-					}
+						"Content-Type": "application/x-www-form-urlencoded"				
+					},
+					body: `no=${billno}`
 				})
 				.then(response => {
 					console.log('response: ', response)
 					return response.json()
 				})
-				.then(session => {
-					return stripe.redirectToCheckout({ sessionId: session.id })
+				.then(result => {
+					const sessionId = result.msg
+					console.log({sessionId})
+					return stripe.redirectToCheckout({sessionId})
 				})
 				.then(result => {
 					if(result.error) {
