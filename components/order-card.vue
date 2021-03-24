@@ -142,7 +142,7 @@ export default{
 	margin-left:30rpx;
 	.order-item{
 		margin-bottom:20rpx;
-		height: 240rpx;
+		height: 280rpx;
 		width:690rpx;
 		background-color:#FFFFFF;
 		border-radius: 8rpx;
@@ -226,6 +226,7 @@ export default{
 			display: flex;
 			// flex-wrap: wrap;
 			margin-top:188rpx;
+			padding: 0 10rpx;
 			// padding-left: 258rpx;
 			// right: 40rpx;
 			align-content: center;
