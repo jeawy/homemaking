@@ -26,10 +26,15 @@
                         总价
                     <span style="color:#FF8D0E;font-size:20rpx">${{item.rules[0].price * item.rules[0].num}}</span>
                     </view>
-                    <view class="order-item-side">  
-						<view class="btn" v-if="item.status == 0" @tap="navTo( `/pages/user/money/pay?id=${item.id}`)">支付</view>
-                        <view class="btn" @tap="deleteOrder(item.id)">删除订单</view>
-                        
+					
+                    <view class="order-item-side"> 
+						<view class="order-no">订单号 {{ item.no }}</view> 
+						<view class="order-btns">
+							<view class="btn" 
+								v-if="item.status == 0" 
+								@tap="navTo( `/pages/user/money/pay?id=${item.id}&no=${item.no}`)">支付</view>
+							<view class="btn" @tap="deleteOrder(item.id)">删除订单</view>
+						</view>
 						<!--
 						<view @tap="navTo('/pages/order/evaluation/evaluation')">
 							<view v-if="item.is_evaluate==0">
@@ -215,20 +220,30 @@ export default{
 			color: #515151;
 		}
 		.order-item-side{
+			width: 100%;
 			position: absolute;
-			color: #FF8D0E;
+			// color: #FF8D0E;
 			display: flex;
-			flex-wrap: wrap;
+			// flex-wrap: wrap;
 			margin-top:188rpx;
 			// padding-left: 258rpx;
-			right: 40rpx;
-			.btn{
-				margin-left:20rpx;
-				font-size: 20rpx;
-				padding: 8rpx 22rpx;
-				border: 2rpx solid #FF8D0E;
-				box-sizing: border-box;
-				border-radius: 4rpx;
+			// right: 40rpx;
+			align-content: center;
+			font-size: 18rpx;
+			.order-btns {
+				position: absolute;
+				right: 70rpx;
+				.btn{
+					font-size: 20rpx;
+					margin-left:20rpx;
+					// float: right;
+					display: inline-block;
+					padding: 8rpx 22rpx;
+					color: #FF8D0E;
+					border: 2rpx solid #FF8D0E;
+					box-sizing: border-box;
+					border-radius: 4rpx;
+				}
 			}
 		}
 	}
