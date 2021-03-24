@@ -11,8 +11,8 @@
 				<view class="navbar-top-text">我的订单</view>
 				<view class="navbar-top-img">
 						
-					<image class="search-img" v-show="showSearchBar==false" v-on:click="showSearchBar=true"src="/static/order/search.svg"></image>
-					<image class="search-img"  v-if="showSearchBar==true" v-on:click="showSearchBar=false"src="/static/order/search.svg"></image>
+					<image class="search-img" v-show="showSearchBar==false" @click="() => showSearchBar=true" src="/static/order/search.svg"></image>
+					<image class="search-img"  v-if="showSearchBar==true" @click="() => showSearchBar=false" src="/static/order/search.svg"></image>
 					<image class="erji-img" src="/static/order/erji.svg"></image>
 					<image @tap="navTo('/pages/user/notice/notice')"
 					 class="message-img" src="/static/order/orange_messages.svg"></image>
@@ -21,7 +21,7 @@
 			</view>
 			<view v-show="showSearchBar"  class="search">
 				<view class="search_box">
-					<image class="search_img" src="/static/houseKeeping/search.svg" @tap="searchFun"></image>
+					<image class="search_img" src="/static/houseKeeping/search.svg"></image>
 					<input type="text" class="search_input" placeholder="搜索关键字"  confirm-type="search" v-model="search" @confirm="searchInput"/>
 				
 				</view>
@@ -343,7 +343,7 @@ page, .content{
 	}
 		.search,
 		.search_position,
-		.search_box,
+		.search_box
 		 {
 			display: flex;
 			align-items: center;
