@@ -17,6 +17,8 @@ import store from '@/store'
 			var token = store.state.accessToken || uni.getStorageSync('accessToken');
 			this.url = '/hybrid/html/map.html?' +'no='+options.no+'&isLogin='+token
 			// this.url = this.baseurl + 'appshare/map.html?id='+this.id+'&scale=11&from=singlemessage&isappinstalled=0'
+			
+			/* **********这个block的代码会导致map.html加载两次*********			
 			let w = null;
 			if (uni.getSystemInfoSync().platform =='ios'){
 				// ios的全屏要特殊设置
@@ -26,11 +28,16 @@ import store from '@/store'
 				 },{preload:'preload webview'});
 			}
 			else{
-				   w=plus.webview.create(this.url,'id',{   },{preload:'preload webview'});
+				console.log('created webview')
+				//    w=plus.webview.create(this.url,'id',{   },{preload:'preload webview'});
+				w=plus.webview.create(this.url);
 			}
 			let currentWebview = this.$mp.page.$getAppWebview(); 
-			console.log(this.url);
-			currentWebview.append(w); 
+			console.log('appended web view')
+			currentWebview.append(w);  
+			*/
+
+			this.$scope.$getAppWebview(); //获取当前web-view
         },
         methods: {
             // 数据初始化   
