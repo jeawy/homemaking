@@ -9,6 +9,8 @@
 			
 			<view class="navbar-top">
 				<view class="navbar-top-text">我的订单</view>
+				
+				
 				<view class="navbar-top-img">
 						
 					<image class="search-img" v-show="showSearchBar==false" @click="() => showSearchBar=true" src="/static/order/search.svg"></image>
@@ -425,17 +427,16 @@ page, .content{
 	}
 	.navbar-bottom{
 		display: flex;
+		justify-content: space-around;
 		background: #fff;
-		height: 32rpx;
 		font-size:24rpx;
-		// margin-top:24rpx;
-		// margin-bottom:28rpx;
 		line-height: 46rpx;
+		padding: 0 28rpx;
 		.navitem{
-			margin-left:66rpx;
-			margin-right: 24rpx;
+			flex: 0 0 82rpx;
 			font-size:20rpx;
 			color:#888888;
+			text-align: center;
 		}
 		.current{
 			color: #ff8d0e;
