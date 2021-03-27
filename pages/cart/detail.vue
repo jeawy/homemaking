@@ -1,5 +1,6 @@
 <template>
 	<view class="rf-order-detail">
+		<!-- hm订单详情 -->
 		<view class="order-detail" v-if="orderDetail">
 			<view class="rf-goods-section">
 				<view class="g-header b-b">
