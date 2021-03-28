@@ -30,6 +30,7 @@
                     <view class="order-item-side"> 
 						<view class="order-no">订单号 {{ item.no }}</view> 
 						<view class="order-btns">
+							<view class="btn" @tap="openReview" v-if="item.status===1">评价</view>
 							<view class="btn" 
 								v-if="item.status == 0" 
 								@tap="navTo( `/pages/user/money/pay?id=${item.id}&no=${item.no}`)">支付</view>
@@ -120,6 +121,9 @@ export default{
 				this.$mRouter.push({route});
 		    }
 		},  
+		openReview() {
+			console.log('review button clicked')
+		}
 	},
     onLoad() {
 		console.log(this.orderList)

@@ -334,6 +334,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/review/reviews",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"subPackages": [
 		// 设置
