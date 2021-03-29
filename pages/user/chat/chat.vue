@@ -186,6 +186,7 @@
 	</view>
 </template>
 <script>
+	import store from '@/store'
 	export default {
 		data() {
 			return {
@@ -241,13 +242,21 @@
 					face:null,
 					blessing:null,
 					money:null
+				},
+				lastMsgId: null, // 返回数据中最旧一条消息的id，用来做load history的锚点
+				session: { // 本次聊天进程
+					sender: ""
 				}
 			};
 		},
 		onLoad(option) {
-			this.getMsgList();
+			if(!this.session.sender){
+				// 连接客服...
+			}else{
+				this.getMsgList();
+			}
 			//语音自然播放结束
-			this.AUDIO.onEnded((res)=>{
+			/* this.AUDIO.onEnded((res)=>{
 				this.playMsgid=null;
 			});
 			// #ifndef H5
@@ -258,7 +267,7 @@
 			//录音结束事件
 			this.RECORDER.onStop((e)=>{
 				this.recordEnd(e);
-			})
+			}) */
 			// #endif
 		},
 		onShow(){
@@ -280,6 +289,34 @@
 			});
 		},
 		methods:{
+			// process chat history raw data into usable data
+			processRawData(list, data) {
+				const current_user = record.receiver === store.state.userInfo.username
+				const current_user_profile_icon = store.state.BaseUrl+store.state.userInfo.portrait
+				data.forEach((record, index) => {
+					const new_record = {
+						type: "user",
+						msg: {
+							id: record.id,
+							type: "text",
+							time: record.time,
+							userinfo: {
+								// 0 = current user
+								uid:  current_user ? 0 : 1,
+								username: current_user ? record.receiver : record.sender,
+								face: current_user ? current_user_profile_icon : "/static/img/im/face/face_2.jpg",
+							},
+							content: {
+								text: record.content
+							}
+						}
+					}
+					list.append(new_record)
+				})
+				// 更新锚点
+				this.lastMsgId = data[data.length-1].id
+				return list
+			},
 			// 接受消息(筛选处理)
 			screenMsg(msg){
 				//从长连接处转发给这个方法，进行筛选处理
@@ -333,12 +370,19 @@
 				//本地模拟请求历史记录效果
 				setTimeout(()=>{
 					// 消息列表
-					let list = [
+					/* let list = [
 						{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
 						{type:"user",msg:{id:2,type:"text",time:"12:57",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{text:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}}},
 						{type:"user",msg:{id:3,type:"voice",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{url:"/static/voice/1.mp3",length:"00:06"}}},
 						{type:"user",msg:{id:4,type:"voice",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{url:"/static/voice/2.mp3",length:"00:06"}}},
-					]
+					] */
+					this.$http.get(store.state.BaseUrl+'chat/chat/', {
+								sender: "售后客服008", // 取决于和哪个客服连线
+								receiver: store.state.userinfo.username,
+								lastMsgId: this.lastMsgId
+						      }).then(({data}) => {
+								list = this.processRawData(list, data)
+						  	  })
 					// 获取消息中的图片,并处理显示尺寸
 					for(let i=0;i<list.length;i++){
 						if(list[i].type=='user'&&list[i].msg.type=="img"){
@@ -364,7 +408,7 @@
 			// 加载初始页面消息
 			getMsgList(){
 				// 消息列表
-				let list = [
+				/* let list = [
 					{type:"system",msg:{id:0,type:"text",content:{text:"欢迎进入HM-chat聊天室"}}},
 					{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
 					{type:"user",msg:{id:2,type:"text",time:"12:57",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{text:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}}},
@@ -377,7 +421,17 @@
 					{type:"system",msg:{id:9,type:"redEnvelope",content:{text:"售后客服008领取了你的红包"}}},
 					{type:"user",msg:{id:10,type:"redEnvelope",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{blessing:"恭喜发财，大吉大利，万事如意",rid:0,isReceived:false}}},
 					{type:"user",msg:{id:11,type:"redEnvelope",time:"12:56",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{blessing:"恭喜发财",rid:1,isReceived:false}}},
-				]
+				] */
+
+				// Janice: fetch chat history
+				let list = [{type:"system",msg:{id:-1,type:"text",content:{text:"欢迎咨询家政客服!"}}}]
+
+				this.$http.get(store.state.BaseUrl+'chat/chat/', {
+								sender: "售后客服008", // 取决于和哪个客服连线
+								receiver: store.state.userinfo.username
+						      }).then(({data}) => {
+								list = this.processRawData(list, data)
+						  	  })
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
 					if(list[i].type=='user'&&list[i].msg.type=="img"){
