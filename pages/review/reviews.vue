@@ -106,14 +106,21 @@
 			},
 			publishReview() {
 				console.log(store.state.userInfo)
-				const now = new Date()
-				const YY = now.getFullYear() 
-				const MM = this.leadingZero(now.getMonth()+1)
-				const DD = this.leadingZero(now.getDate())
-				this.review.create_time = `${YY}-${MM}-${DD}`
-				this.listData.push(this.review)
-				this.hasReview = !this.hasReview
-				this.showReviewEditor = false
+				if(!this.review.rate) {
+					uni.showModal({
+						content: "请为本次服务打星。",
+						showCancel: false
+					})
+				}else{
+					const now = new Date()
+					const YY = now.getFullYear() 
+					const MM = this.leadingZero(now.getMonth()+1)
+					const DD = this.leadingZero(now.getDate())
+					this.review.create_time = `${YY}-${MM}-${DD}`
+					this.listData.push(this.review)
+					this.hasReview = !this.hasReview
+					this.showReviewEditor = false
+				}
 			}
 		},
 		onLoad(options) {
