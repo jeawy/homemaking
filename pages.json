@@ -341,7 +341,7 @@
             "path" : "pages/review/reviews",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "订单评价",
                 "enablePullDownRefresh": false
             }
             

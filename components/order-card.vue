@@ -45,7 +45,9 @@
 					<view class="order-item-side">
 						<view class="order-no">订单号 {{ item.no }}</view>
 						<view class="order-btns">
-							<view class="btn" @tap="openReview" v-if="item.status===1">评价</view>
+							<view class="btn" 
+								  @tap="() => openReview(item.no)" 
+								  v-if="item.status===1">评价</view>
 							<view
 								class="btn"
 								v-if="item.status == 0"
@@ -157,6 +159,9 @@ export default {
 				});
 			}
 		},
+		openReview(no) {
+			this.navTo(`/pages/review/reviews?no=${no}`)
+		}
 	},
 };
 </script>
