@@ -3,7 +3,7 @@
 		<view class="content" @touchstart="hideDrawer">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory" upper-threshold="50">
 				<!-- 加载历史数据waitingUI -->
-				<view class="loading">
+				<view class="loading" v-show="isHistoryLoading">
 					<view class="spinner">
 						<view class="rect1"></view>
 						<view class="rect2"></view>
@@ -245,13 +245,23 @@
 				},
 				lastMsgId: null, // 返回数据中最旧一条消息的id，用来做load history的锚点
 				session: { // 本次聊天进程
-					sender: ""
+					sender: null
 				}
 			};
 		},
 		onLoad(option) {
 			if(!this.session.sender){
 				// 连接客服...
+				this.$http.post('/chat/chat/session/', {
+					method: 'create',
+					user: this.curr_username
+				}).then((res) => {
+					console.log('new connection: ', res)
+					if(res.status == 0){
+						this.session.sender = res.msg
+						this.getMsgList();
+					}
+				})
 			}else{
 				this.getMsgList();
 			}
@@ -291,9 +301,9 @@
 		methods:{
 			// process chat history raw data into usable data
 			processRawData(list, data) {
-				const current_user = record.receiver === store.state.userInfo.username
 				const current_user_profile_icon = store.state.BaseUrl+store.state.userInfo.portrait
 				data.forEach((record, index) => {
+					const current_user = record.receiver !== store.state.userInfo.username
 					const new_record = {
 						type: "user",
 						msg: {
@@ -301,7 +311,7 @@
 							type: "text",
 							time: record.time,
 							userinfo: {
-								// 0 = current user
+								// 0 = show msg in receiver style
 								uid:  current_user ? 0 : 1,
 								username: current_user ? record.receiver : record.sender,
 								face: current_user ? current_user_profile_icon : "/static/img/im/face/face_2.jpg",
@@ -311,10 +321,11 @@
 							}
 						}
 					}
-					list.append(new_record)
+					list.push(new_record)
 				})
+				console.log('processRawData list: ', list)
 				// 更新锚点
-				this.lastMsgId = data[data.length-1].id
+				this.lastMsgId = data[0].id
 				return list
 			},
 			// 接受消息(筛选处理)
@@ -366,9 +377,11 @@
 				}
 				this.isHistoryLoading = true;//参数作为进入请求标识，防止重复请求
 				this.scrollAnimation = false;//关闭滑动动画
-				let Viewid = this.msgList[0].msg.id;//记住第一个信息ID
+				// let Viewid = this.msgList[0].msg.id;//记住第一个信息ID
+				console.log('load History msg list...')
 				//本地模拟请求历史记录效果
 				setTimeout(()=>{
+					
 					// 消息列表
 					/* let list = [
 						{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
@@ -376,34 +389,38 @@
 						{type:"user",msg:{id:3,type:"voice",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{url:"/static/voice/1.mp3",length:"00:06"}}},
 						{type:"user",msg:{id:4,type:"voice",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{url:"/static/voice/2.mp3",length:"00:06"}}},
 					] */
-					this.$http.get(store.state.BaseUrl+'chat/chat/', {
-								sender: "售后客服008", // 取决于和哪个客服连线
-								receiver: store.state.userinfo.username,
-								lastMsgId: this.lastMsgId
-						      }).then(({data}) => {
-								list = this.processRawData(list, data)
-						  	  })
-					// 获取消息中的图片,并处理显示尺寸
-					for(let i=0;i<list.length;i++){
-						if(list[i].type=='user'&&list[i].msg.type=="img"){
-							list[i].msg.content = this.setPicSize(list[i].msg.content);
-							this.msgImgList.unshift(list[i].msg.content.url);
+					this.$http.get('/chat/chat/', {
+						sender: this.session.sender, // 取决于和哪个客服连线
+						receiver: store.state.userInfo.username
+					}).then(res => {
+						console.log('load History msg list: ', res.msg)
+
+						if(res.msg.length>0){
+							list = this.processRawData(list, res.msg)
 						}
-						list[i].msg.id = Math.floor(Math.random()*1000+1);
-						this.msgList.unshift(list[i]);
-					}
-					
-					//这段代码很重要，不然每次加载历史数据都会跳到顶部
-					this.$nextTick(function() {
-						this.scrollToView = 'msg'+Viewid;//跳转上次的第一行信息位置
+								
+						// 获取消息中的图片,并处理显示尺寸
+						for(let i=0;i<list.length;i++){
+							if(list[i].type=='user'&&list[i].msg.type=="img"){
+								list[i].msg.content = this.setPicSize(list[i].msg.content);
+								this.msgImgList.unshift(list[i].msg.content.url);
+							}
+							list[i].msg.id = Math.floor(Math.random()*1000+1);
+							this.msgList.unshift(list[i]);
+						}
+
+						//这段代码很重要，不然每次加载历史数据都会跳到顶部
 						this.$nextTick(function() {
-							this.scrollAnimation = true;//恢复滚动动画
+							this.scrollToView = 'msg'+Viewid;//跳转上次的第一行信息位置
+							this.$nextTick(function() {
+								this.scrollAnimation = true;//恢复滚动动画
+							});
+							
 						});
-						
-					});
-					this.isHistoryLoading = false;
-					
-				},1000)
+						this.isHistoryLoading = false;
+					})
+
+				}, 1000)
 			},
 			// 加载初始页面消息
 			getMsgList(){
@@ -424,13 +441,18 @@
 				] */
 
 				// Janice: fetch chat history
-				let list = [{type:"system",msg:{id:-1,type:"text",content:{text:"欢迎咨询家政客服!"}}}]
-
-				this.$http.get(store.state.BaseUrl+'chat/chat/', {
-								sender: "售后客服008", // 取决于和哪个客服连线
-								receiver: store.state.userinfo.username
-						      }).then(({data}) => {
-								list = this.processRawData(list, data)
+				
+				// system message
+				let list = [{type:"system",msg:{id:-1,type:"text",content:{text:`欢迎咨询家政客服。${this.session.sender}将为您服务!`}}}]
+				
+				this.$http.get('/chat/chat/', {
+								sender: this.session.sender, // 取决于和哪个客服连线
+								receiver: store.state.userInfo.username
+						      }).then(res => {
+								console.log('first time get msg list: ', res.msg)
+								if(res.msg.length>0){
+									list = this.processRawData(list, res.msg)
+								}
 						  	  })
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
@@ -549,7 +571,8 @@
 				if(!this.textMsg){
 					return;
 				}
-				let content = this.replaceEmoji(this.textMsg);
+				// let content = this.replaceEmoji(this.textMsg);
+				let content = this.textMsg
 				let msg = {text:content}
 				this.sendMsg(msg,'text');
 				this.textMsg = '';//清空输入框
@@ -578,21 +601,33 @@
 			
 			// 发送消息
 			sendMsg(content,type){
+				const current_user = store.state.userInfo.username
+				const current_user_profile_icon = store.state.BaseUrl+store.state.userInfo.portrait
+
 				//实际应用中，此处应该提交长连接，模板仅做本地处理。
 				var nowDate = new Date();
 				let lastid = this.msgList[this.msgList.length-1].msg.id;
 				lastid++;
-				let msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:content}}
-				// 发送消息
-				this.screenMsg(msg);
+				let msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:0,username:current_user,face: current_user_profile_icon},content:content}}
+				this.$http.post('/chat/chat/', {
+					method: 'create',
+					receiver: this.session.sender,
+					sender: current_user,
+					content: content.text
+				}).then(res => {
+					if(res.status == 0) 
+						// 发送消息
+						this.screenMsg(msg);
+				})
+				
 				// 定时器模拟对方回复,三秒
-				setTimeout(()=>{
+				/* setTimeout(()=>{
 					lastid = this.msgList[this.msgList.length-1].msg.id;
 					lastid++;
 					msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:content}}
 					// 本地模拟发送消息
 					this.screenMsg(msg);
-				},3000)
+				},3000) */
 			},
 			
 			// 添加文字消息到列表
