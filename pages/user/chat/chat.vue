@@ -244,41 +244,24 @@
 					money:null
 				},
 				lastMsgId: null, // 返回数据中最旧一条消息的id，用来做load history的锚点
-				session: { // 本次聊天进程
-					sender: null
-				}
+				session: {
+					id: null,
+					support: null
+				} // 本次聊天进程
 			};
 		},
 		onLoad(option) {
-			if(!this.session.sender){
-				// 连接客服...
-				this.$http.post('/chat/chat/session/', {
-					method: 'create',
-					user: this.curr_username
-				}).then((res) => {
-					console.log('new connection: ', res)
-					if(res.status == 0){
-						this.session.sender = res.msg
-						this.getMsgList();
-					}
-				})
-			}else{
-				this.getMsgList();
-			}
-			//语音自然播放结束
-			/* this.AUDIO.onEnded((res)=>{
-				this.playMsgid=null;
-			});
-			// #ifndef H5
-			//录音开始事件
-			this.RECORDER.onStart((e)=>{
-				this.recordBegin(e);
+			// 连接客服
+			this.$http.post('/chat/chat/session/', {
+				method: 'create',
+				user: store.state.userInfo.username
+			}).then((res) => {
+				console.log('new connection: ', res)
+				if(res.status == 0){
+					this.session = res.msg
+					this.getMsgList();
+				}
 			})
-			//录音结束事件
-			this.RECORDER.onStop((e)=>{
-				this.recordEnd(e);
-			}) */
-			// #endif
 		},
 		onShow(){
 			this.scrollTop = 9999999;
@@ -303,7 +286,8 @@
 			processRawData(list, data) {
 				const current_user_profile_icon = store.state.BaseUrl+store.state.userInfo.portrait
 				data.forEach((record, index) => {
-					const current_user = record.receiver !== store.state.userInfo.username
+					console.log('record sender: ',record.sender)
+					const current_user = record.sender == store.state.userInfo.username
 					const new_record = {
 						type: "user",
 						msg: {
@@ -383,14 +367,8 @@
 				setTimeout(()=>{
 					
 					// 消息列表
-					/* let list = [
-						{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
-						{type:"user",msg:{id:2,type:"text",time:"12:57",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{text:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}}},
-						{type:"user",msg:{id:3,type:"voice",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{url:"/static/voice/1.mp3",length:"00:06"}}},
-						{type:"user",msg:{id:4,type:"voice",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{url:"/static/voice/2.mp3",length:"00:06"}}},
-					] */
 					this.$http.get('/chat/chat/', {
-						sender: this.session.sender, // 取决于和哪个客服连线
+						sender: this.session.support, // 取决于和哪个客服连线
 						receiver: store.state.userInfo.username
 					}).then(res => {
 						console.log('load History msg list: ', res.msg)
@@ -425,29 +403,13 @@
 			// 加载初始页面消息
 			getMsgList(){
 				// 消息列表
-				/* let list = [
-					{type:"system",msg:{id:0,type:"text",content:{text:"欢迎进入HM-chat聊天室"}}},
-					{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
-					{type:"user",msg:{id:2,type:"text",time:"12:57",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{text:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}}},
-					{type:"user",msg:{id:3,type:"voice",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{url:"/static/voice/1.mp3",length:"00:06"}}},
-					{type:"user",msg:{id:4,type:"voice",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{url:"/static/voice/2.mp3",length:"00:06"}}},
-					{type:"user",msg:{id:5,type:"img",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{url:"/static/img/p10.jpg",w:200,h:200}}},
-					{type:"user",msg:{id:6,type:"img",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{url:"/static/img/q.jpg",w:1920,h:1080}}},
-					{type:"system",msg:{id:7,type:"text",content:{text:"欢迎进入HM-chat聊天室"}}},
-					
-					{type:"system",msg:{id:9,type:"redEnvelope",content:{text:"售后客服008领取了你的红包"}}},
-					{type:"user",msg:{id:10,type:"redEnvelope",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{blessing:"恭喜发财，大吉大利，万事如意",rid:0,isReceived:false}}},
-					{type:"user",msg:{id:11,type:"redEnvelope",time:"12:56",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{blessing:"恭喜发财",rid:1,isReceived:false}}},
-				] */
 
-				// Janice: fetch chat history
-				
+				// Fetch chat history
 				// system message
-				let list = [{type:"system",msg:{id:-1,type:"text",content:{text:`欢迎咨询家政客服。${this.session.sender}将为您服务!`}}}]
+				let list = [{type:"system",msg:{id:-1,type:"text",content:{text:`欢迎咨询家政客服。${this.session.support}将为您服务!`}}}]
 				
 				this.$http.get('/chat/chat/', {
-								sender: this.session.sender, // 取决于和哪个客服连线
-								receiver: store.state.userInfo.username
+								session: this.session.id
 						      }).then(res => {
 								console.log('first time get msg list: ', res.msg)
 								if(res.msg.length>0){
@@ -611,7 +573,7 @@
 				let msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:0,username:current_user,face: current_user_profile_icon},content:content}}
 				this.$http.post('/chat/chat/', {
 					method: 'create',
-					receiver: this.session.sender,
+					session: this.session.id,
 					sender: current_user,
 					content: content.text
 				}).then(res => {
