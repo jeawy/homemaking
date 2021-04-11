@@ -3,12 +3,12 @@
 		<!--导航栏-->
 		<view class="top">
 			<view class="navbar-top">
+				<view class="empty"></view>
 				<view class="navbar-top-text">我的订单</view>
 				<view class="navbar-top-img">
-					<image class="search-img" v-show="showSearchBar==false" @click="() => showSearchBar=true" src="/static/order/search.svg"></image>
-					<image class="search-img" v-if="showSearchBar==true" @click="() => showSearchBar=false" src="/static/order/search.svg"></image>
+					<image class="search-img" src="/static/order/search.svg" @tap="() => showSearchBar=true"></image>
 					<image class="erji-img" src="/static/order/erji.svg"></image>
-					<image @tap="navTo('/pages/user/notice/notice')" class="message-img" src="/static/order/orange_messages.svg"></image>
+					<image class="message-img" src="/static/order/orange_messages.svg" @tap="navTo('/pages/user/notice/notice')"></image>
 				</view>
 
 			</view>
@@ -16,7 +16,7 @@
 				<view class="search_box">
 					<image class="search_img" src="/static/houseKeeping/search.svg"></image>
 					<input type="text" class="search_input" placeholder="搜索关键字" confirm-type="search" v-model="search" @confirm="searchInput" />
-
+					<text class="close" @tap="() => showSearchBar=false">X</text>
 				</view>
 			</view>
 			<view class="navbar-bottom">
@@ -305,6 +305,7 @@
 
 	.swiper-box {
 		height: 100%;
+		padding-top: 80rpx;
 	}
 
 	.uni-swiper-item {
@@ -335,7 +336,7 @@
 
 
 		width: 500rpx;
-		margin: auto;
+		margin: 0 auto 50rpx auto;
 
 
 	}
@@ -352,17 +353,18 @@
 
 	.search {
 
-
 		.search_box {
-
-
 			width: 500rpx;
 			background: rgba(118, 118, 128, 0.12);
 			border-radius: 30rpx;
 			padding: 8rpx 0;
 			margin: auto;
 
-
+			.close {
+				font-size: 35rpx;
+				padding: 10rpx;
+				margin-right: 30rpx;
+			}
 			.search_img {
 				display: inline-block;
 				width: 32rpx;
@@ -386,7 +388,6 @@
 
 	/*顶部导航*/
 	.top {
-		// height: 212rpx;
 		width: 100%;
 		background: #FFFFFF;
 		position: fixed;
@@ -396,34 +397,43 @@
 
 		.navbar-top {
 			display: flex;
-			// margin-top: 108rpx;
-			height: 28rpx;
+			width: 100%;
+			padding: 15rpx 40rpx;
 			margin-bottom: 24rpx;
+			justify-content: space-between;
+			align-items: center;
 
+			.empty {
+				flex: 1;
+			}
 			.navbar-top-text {
-				margin-left: 164px;
-				font-size: 24rpx;
+				flex: 1;
+				text-align: center;
+				font-size: 35rpx;
 				color: #515151;
 			}
 
 			.navbar-top-img {
-				margin-left: 182rpx;
-
+				flex: 1;
+				text-align: center;
 				.search-img {
-					width: 21.8rpx;
-					height: 22rpx;
+					width: 60rpx;
+					height: 60rpx;
+					padding: 10rpx;
 				}
 
 				.erji-img {
-					margin-left: 20.2rpx;
-					width: 21.1rpx;
-					height: 22rpx;
+					margin-left: 10rpx;
+					width: 60rpx;
+					height: 60rpx;
+					padding: 10rpx;
 				}
 
 				.message-img {
-					margin-left: 20.9rpx;
-					width: 20.52rpx;
-					height: 20.08rpx;
+					margin-left: 10rpx;
+					width: 60rpx;
+					height: 60rpx;
+					padding: 10rpx;
 				}
 			}
 		}
@@ -438,7 +448,7 @@
 
 			.navitem {
 				flex: 0 0 82rpx;
-				font-size: 20rpx;
+				font-size: 25rpx;
 				color: #888888;
 				text-align: center;
 			}

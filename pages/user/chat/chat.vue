@@ -3,7 +3,7 @@
 		<view class="content" @touchstart="hideDrawer">
 			<scroll-view class="msg-list" scroll-y="true" :scroll-with-animation="scrollAnimation" :scroll-top="scrollTop" :scroll-into-view="scrollToView" @scrolltoupper="loadHistory" upper-threshold="50">
 				<!-- 加载历史数据waitingUI -->
-				<view class="loading">
+				<view class="loading" v-show="isHistoryLoading">
 					<view class="spinner">
 						<view class="rect1"></view>
 						<view class="rect2"></view>
@@ -186,6 +186,7 @@
 	</view>
 </template>
 <script>
+	import store from '@/store'
 	export default {
 		data() {
 			return {
@@ -241,25 +242,26 @@
 					face:null,
 					blessing:null,
 					money:null
-				}
+				},
+				lastMsgId: null, // 返回数据中最旧一条消息的id，用来做load history的锚点
+				session: {
+					id: null,
+					support: null
+				} // 本次聊天进程
 			};
 		},
 		onLoad(option) {
-			this.getMsgList();
-			//语音自然播放结束
-			this.AUDIO.onEnded((res)=>{
-				this.playMsgid=null;
-			});
-			// #ifndef H5
-			//录音开始事件
-			this.RECORDER.onStart((e)=>{
-				this.recordBegin(e);
+			// 连接客服
+			this.$http.post('/chat/chat/session/', {
+				method: 'create',
+				user: store.state.userInfo.username
+			}).then((res) => {
+				console.log('new connection: ', res)
+				if(res.status == 0){
+					this.session = res.msg
+					this.getMsgList();
+				}
 			})
-			//录音结束事件
-			this.RECORDER.onStop((e)=>{
-				this.recordEnd(e);
-			})
-			// #endif
 		},
 		onShow(){
 			this.scrollTop = 9999999;
@@ -280,6 +282,36 @@
 			});
 		},
 		methods:{
+			// process chat history raw data into usable data
+			processRawData(list, data) {
+				const current_user_profile_icon = store.state.BaseUrl+store.state.userInfo.portrait
+				data.forEach((record, index) => {
+					console.log('record sender: ',record.sender)
+					const current_user = record.sender == store.state.userInfo.username
+					const new_record = {
+						type: "user",
+						msg: {
+							id: record.id,
+							type: "text",
+							time: record.time,
+							userinfo: {
+								// 0 = show msg in receiver style
+								uid:  current_user ? 0 : 1,
+								username: current_user ? record.receiver : record.sender,
+								face: current_user ? current_user_profile_icon : "/static/img/im/face/face_2.jpg",
+							},
+							content: {
+								text: record.content
+							}
+						}
+					}
+					list.push(new_record)
+				})
+				console.log('processRawData list: ', list)
+				// 更新锚点
+				this.lastMsgId = data[0].id
+				return list
+			},
 			// 接受消息(筛选处理)
 			screenMsg(msg){
 				//从长连接处转发给这个方法，进行筛选处理
@@ -329,55 +361,61 @@
 				}
 				this.isHistoryLoading = true;//参数作为进入请求标识，防止重复请求
 				this.scrollAnimation = false;//关闭滑动动画
-				let Viewid = this.msgList[0].msg.id;//记住第一个信息ID
+				// let Viewid = this.msgList[0].msg.id;//记住第一个信息ID
+				console.log('load History msg list...')
 				//本地模拟请求历史记录效果
 				setTimeout(()=>{
+					
 					// 消息列表
-					let list = [
-						{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
-						{type:"user",msg:{id:2,type:"text",time:"12:57",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{text:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}}},
-						{type:"user",msg:{id:3,type:"voice",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{url:"/static/voice/1.mp3",length:"00:06"}}},
-						{type:"user",msg:{id:4,type:"voice",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{url:"/static/voice/2.mp3",length:"00:06"}}},
-					]
-					// 获取消息中的图片,并处理显示尺寸
-					for(let i=0;i<list.length;i++){
-						if(list[i].type=='user'&&list[i].msg.type=="img"){
-							list[i].msg.content = this.setPicSize(list[i].msg.content);
-							this.msgImgList.unshift(list[i].msg.content.url);
+					this.$http.get('/chat/chat/', {
+						sender: this.session.support, // 取决于和哪个客服连线
+						receiver: store.state.userInfo.username
+					}).then(res => {
+						console.log('load History msg list: ', res.msg)
+
+						if(res.msg.length>0){
+							list = this.processRawData(list, res.msg)
 						}
-						list[i].msg.id = Math.floor(Math.random()*1000+1);
-						this.msgList.unshift(list[i]);
-					}
-					
-					//这段代码很重要，不然每次加载历史数据都会跳到顶部
-					this.$nextTick(function() {
-						this.scrollToView = 'msg'+Viewid;//跳转上次的第一行信息位置
+								
+						// 获取消息中的图片,并处理显示尺寸
+						for(let i=0;i<list.length;i++){
+							if(list[i].type=='user'&&list[i].msg.type=="img"){
+								list[i].msg.content = this.setPicSize(list[i].msg.content);
+								this.msgImgList.unshift(list[i].msg.content.url);
+							}
+							list[i].msg.id = Math.floor(Math.random()*1000+1);
+							this.msgList.unshift(list[i]);
+						}
+
+						//这段代码很重要，不然每次加载历史数据都会跳到顶部
 						this.$nextTick(function() {
-							this.scrollAnimation = true;//恢复滚动动画
+							this.scrollToView = 'msg'+Viewid;//跳转上次的第一行信息位置
+							this.$nextTick(function() {
+								this.scrollAnimation = true;//恢复滚动动画
+							});
+							
 						});
-						
-					});
-					this.isHistoryLoading = false;
-					
-				},1000)
+						this.isHistoryLoading = false;
+					})
+
+				}, 1000)
 			},
 			// 加载初始页面消息
 			getMsgList(){
 				// 消息列表
-				let list = [
-					{type:"system",msg:{id:0,type:"text",content:{text:"欢迎进入HM-chat聊天室"}}},
-					{type:"user",msg:{id:1,type:"text",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{text:"为什么温度会相差那么大？"}}},
-					{type:"user",msg:{id:2,type:"text",time:"12:57",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{text:"这个是有偏差的，两个温度相差十几二十度是很正常的，如果相差五十度，那即是质量问题了。"}}},
-					{type:"user",msg:{id:3,type:"voice",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{url:"/static/voice/1.mp3",length:"00:06"}}},
-					{type:"user",msg:{id:4,type:"voice",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{url:"/static/voice/2.mp3",length:"00:06"}}},
-					{type:"user",msg:{id:5,type:"img",time:"13:05",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{url:"/static/img/p10.jpg",w:200,h:200}}},
-					{type:"user",msg:{id:6,type:"img",time:"12:59",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{url:"/static/img/q.jpg",w:1920,h:1080}}},
-					{type:"system",msg:{id:7,type:"text",content:{text:"欢迎进入HM-chat聊天室"}}},
-					
-					{type:"system",msg:{id:9,type:"redEnvelope",content:{text:"售后客服008领取了你的红包"}}},
-					{type:"user",msg:{id:10,type:"redEnvelope",time:"12:56",userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:{blessing:"恭喜发财，大吉大利，万事如意",rid:0,isReceived:false}}},
-					{type:"user",msg:{id:11,type:"redEnvelope",time:"12:56",userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:{blessing:"恭喜发财",rid:1,isReceived:false}}},
-				]
+
+				// Fetch chat history
+				// system message
+				let list = [{type:"system",msg:{id:-1,type:"text",content:{text:`欢迎咨询家政客服。${this.session.support}将为您服务!`}}}]
+				
+				this.$http.get('/chat/chat/', {
+								session: this.session.id
+						      }).then(res => {
+								console.log('first time get msg list: ', res.msg)
+								if(res.msg.length>0){
+									list = this.processRawData(list, res.msg)
+								}
+						  	  })
 				// 获取消息中的图片,并处理显示尺寸
 				for(let i=0;i<list.length;i++){
 					if(list[i].type=='user'&&list[i].msg.type=="img"){
@@ -495,7 +533,8 @@
 				if(!this.textMsg){
 					return;
 				}
-				let content = this.replaceEmoji(this.textMsg);
+				// let content = this.replaceEmoji(this.textMsg);
+				let content = this.textMsg
 				let msg = {text:content}
 				this.sendMsg(msg,'text');
 				this.textMsg = '';//清空输入框
@@ -524,21 +563,33 @@
 			
 			// 发送消息
 			sendMsg(content,type){
+				const current_user = store.state.userInfo.username
+				const current_user_profile_icon = store.state.BaseUrl+store.state.userInfo.portrait
+
 				//实际应用中，此处应该提交长连接，模板仅做本地处理。
 				var nowDate = new Date();
 				let lastid = this.msgList[this.msgList.length-1].msg.id;
 				lastid++;
-				let msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:0,username:"大黑哥",face:"/static/img/face.jpg"},content:content}}
-				// 发送消息
-				this.screenMsg(msg);
+				let msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:0,username:current_user,face: current_user_profile_icon},content:content}}
+				this.$http.post('/chat/chat/', {
+					method: 'create',
+					session: this.session.id,
+					sender: current_user,
+					content: content.text
+				}).then(res => {
+					if(res.status == 0) 
+						// 发送消息
+						this.screenMsg(msg);
+				})
+				
 				// 定时器模拟对方回复,三秒
-				setTimeout(()=>{
+				/* setTimeout(()=>{
 					lastid = this.msgList[this.msgList.length-1].msg.id;
 					lastid++;
 					msg = {type:'user',msg:{id:lastid,time:nowDate.getHours()+":"+nowDate.getMinutes(),type:type,userinfo:{uid:1,username:"售后客服008",face:"/static/img/im/face/face_2.jpg"},content:content}}
 					// 本地模拟发送消息
 					this.screenMsg(msg);
-				},3000)
+				},3000) */
 			},
 			
 			// 添加文字消息到列表

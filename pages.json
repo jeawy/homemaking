@@ -337,6 +337,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/review/reviews",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "订单评价",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"subPackages": [
 		// 设置
