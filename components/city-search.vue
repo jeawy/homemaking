@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="location" @tap="positionSearch">
-			<view class="location_text">{{ value }}</view>
 			<image class="location_img" src="/static/home/City.svg"></image>
+			<view class="location_text">{{ value }}</view>
 		</view>
 		<s-popup
 			custom-class="demo-popup"
@@ -80,13 +80,14 @@
 	display: flex;
 	align-items: center;
 	.location_text {
-		margin-left: 40rpx;
+		color:	#FFFFFF;
+		margin-left: 4rpx;
 		font-family: Tensentype MingSongJ-W2;
 		font-size: 28rpx;
 		line-height: 28rpx;
 	}
 	.location_img {
-		margin-left: 4rpx;
+		margin-left: 40rpx;
 		width: 21rpx;
 		height: 29rpx;
 	}

@@ -2,16 +2,27 @@
 	<view class="rf-index">
 		<!-- 顶部信息 -->
 		<view class="header">
-			<citySearch v-model="city" @doGetLocation="doGetLocation"/>
-			<view class="notice" @tap="navTo('/pages/user/notice/notice')">
-				<image class="notice_img" src="../../static/home/Notification.svg"></image>
+			<view class="header-top">
+				<citySearch v-model="city" @doGetLocation="doGetLocation"/>
+				<view class="notice" @tap="navTo('/pages/user/notice/notice')">
+					<image class="notice_img" src="../../static/home/Notification.svg"></image>
+				</view>
+			</view>
+			<view class="header-bottom">
+				<view class="logo">
+					<image class="logo_img" src="../../static/home/logo.png"></image>
+				</view>
 			</view>
 		</view>	
 		 <scroll-view
 		 	class="main_content"
 		 	scroll-y
 		 >
+			<view class="swipe">
+				
+			</view>
 			<!-- 轮播图 -->
+			<!--
 			<view class="swiper">
 				<swiper @change="handleDotChange" :Lautoplay="true" :current="swiperCurrent" :circular='true'>
 					<swiper-item v-for="(item,index) in swiperImg" :key="index">
@@ -20,13 +31,19 @@
 						</view>
 					</swiper-item>					
 				</swiper>
+				-->
 				<!-- 轮播指示点样式修改 -->
+				<!--
 				<view class="dots">
 					<block v-for="(item,index) in swiperImg.length" :key="item">
 					  <view class="dot" :class="index==swiperCurrent ? ' active' : ''"></view>
 					</block>
 				</view>
+				-->
+			<!--
 			</view>
+			-->
+
 			<!-- 分类列表 -->
 			<categoryLists @target="target" />
 			<view class="middle">
@@ -45,8 +62,8 @@
 			<!--分享礼品-->
 			<view class="gift_ads">
 				<view class="gift">
-					<image class="gift_left_img" src="../../static/home/LastLeftShare.png"></image>
-					<image class="gift_img" src="../../static/home/LastRightReturn.png"></image>
+					<image class="gift_left_img" src=""></image>
+					<image class="gift_img" src=" "></image>
 				</view>			
 			</view>
 			<!-- 阿姨推荐 -->
@@ -259,19 +276,35 @@
 <style lang="scss" scoped>
 	.rf-index {
 		background-color: #FFFFFF;
-		// width: 100%;		
+		// width: 100%;	
 		.header,.location{
 			display: flex;
-			align-items: center;
+			
 		}
 		.header{
 			// height: 169rpx;
 			position: fixed;
 			width: 100%;
+			height: 204rpx;
 			z-index: 100;
+			flex-direction: column;
+			padding-top:20rpx;
 			background-color: #ffffff;
-			padding-top: 70rpx;//设置距离顶部的距离
+			background-image: url(../../static/home/header.png);
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
 			justify-content: space-between;
+			padding-bottom: 65rpx;
+		}
+		.header-top{
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+		}
+		.header-bottom{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 		}
 		.fonttext,.location_text,.search_more,.assure_text
 		,.position_title,.titlename,.value_name,.box_name,
@@ -282,17 +315,32 @@
 		}
 		.notice{
 			display: flex;
-			align-items: center;
 			.notice_img{
 				margin-right: 38rpx;
 				width: 27rpx;
 				height: 26.54rpx;
 			}
 		}
+		.logo{
+			display: flex;
+			align-items: center;
+			.logo_img{
+				width: 288rpx;
+				height: 74rpx;
+			}
+		}
 		.main_content{
 			position: relative;
 			top: 100rpx;
 			background-color: #ffffff;
+		}
+		.swipe{
+			display: flex;
+			width: 100%;
+			height: 606rpx;
+			background-image: url(../../static/home/swipe.png);
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
 		}
 		/*轮播图*/		
 		.swiper {
