@@ -580,16 +580,18 @@
 	}
 	.product{
 		background: #FFFFFF;
+		height: 120vh;
 	}
 	.detail {
-		padding-bottom: 160rpx;
+		/* padding-bottom: 160rpx; */
 	}
 	.bottom-example {
 		position: absolute;
+		display: block;
 		left: 0;
 		right: 0;
-		top: 450px;
-		margin: 0 auto 80px auto;
+		top: 400px;
+		margin: 0 auto;
 	}
 	.carousel {
 		/* height: 722rpx; */
@@ -1114,6 +1116,7 @@
 		height: 100rpx;
 		background: rgba(255, 255, 255, .9);
 		box-shadow: 0 0 20upx 0 rgba(0, 0, 0, .5);
+		
 		/* border-radius: 16upx; */
 		.cart {
 			position: relative;
