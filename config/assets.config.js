@@ -33,6 +33,12 @@ export default {
 	// 弧形背景
 	arc: PATH + '/arc.png',
 
+	// 阿姨页面header背景
+	productBg: PATH + '/bgd2.png',
+	
+	// 阿姨页面示例图
+	productBottom: PATH + '/product-bottom.jpg',
+
 	// 500
 	noNetWorkImg: PATH + '/noNetWork.png',
 

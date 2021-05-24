@@ -1,16 +1,14 @@
 <template>
 	<view class="product">
-		<view class="header">
-			<image :src="$mAssetsPath.logo" class="logo" mode="widthFix"></image>
-			<image :src="$mAssetsPath.productBg" class="bg" mode="aspectFill"></image>
-		</view>
 		<view class="detail" v-if="productDetail.username">
-			<!--阿姨头像-->
+			<!--顶部商品轮播图-->
 			<view class="carousel">
+				<!-- <swiper indicator-dots circular=true duration="400"> -->
+				<!-- <swiper-item class="swiper-item"> -->
 					<view class="image-wrapper">
 						<image :src="baseurl+productDetail.thumbnail_portait" class="loaded" mode="aspectFill"></image>
 					</view>
-					<!-- <view class="card_text">
+					<view class="card_text">
 						<view class="name">{{productDetail.username}}</view>
 						<view class="text_middle">
 							<text class="middle-text">{{productDetail.age}}岁</text>
@@ -21,28 +19,295 @@
 						</view>
 						<view class="language">
 							<text class="language-text">{{productDetail.languages}}</text>
+							<!--
+							<span class="line">|</span>
+							<text class="language-text">{{productDetail.language}}</text>
+							-->
 						</view>
-					</view> -->
+					</view>
+				<!-- </swiper-item> -->
+				<!-- </swiper> -->
 			</view>
+			<!--  -->
+			<!--商品信息-->
+			<!-- <view class="introduce-section">
+				<view class="title">
+					{{ productDetail.name || (' 暂无商品详情' + (!!errorInfo ? '[' + errorInfo + ']' : '')) }}
+					<uni-tag v-if="productDetail.sales" class="tag" :inverted="true" type="base" :text="`${productDetail.sales}件已售`"
+					 size="small" />
+					<uni-tag v-if="productDetail.is_virtual == 1" class="tag" :inverted="true" type="base" text="虚拟物品" size="small" />
+				</view>
+				<text class="sketch">{{ productDetail.sketch }}</text>
+				<view class="price-box point-box" v-if="productDetail.point_exchange_type == 4">
+					该商品仅需 <text class="price">{{ productDetail.point_exchange }} 积分</text>
+				</view>
+				<view class="price-box" v-else>
+					<text class="price" v-if="productDetail.price">¥ {{ currentSkuPrice || productDetail.price }}</text>
+					<text class="m-price" v-if="parseFloat(productDetail.market_price) > parseFloat(productDetail.price)">{{ productDetail.market_price }}</text>
+					<text class="coupon-tip" v-if="parseFloat(productDetail.market_price) > parseFloat(productDetail.price)">{{ (currentSkuPrice || productDetail.price) / productDetail.market_price | discountFilter }}折</text>
+				</view>
+				<view class="data" v-if="productDetail">
+					<view class="item"><text class="iconfont icontuandui"></text>推荐 {{ productDetail.collect_num || 0 }}</view>
+					<view class="item"><text class="iconfont iconkechakan"></text>浏览 {{ productDetail.view || 0 }}</view>
+				</view>
+			</view> -->
+			<!--  分享 -->
+			<!-- <view class="share-section" v-if="productDetail.name">
+				<view class="share-icon">
+					<text class="iconfont iconxingxing"></text>
+					返
+				</view>
+				<text open-type="contact" class="tit">分享该商品给你的朋友们</text> -->
+				<!--#ifndef H5-->
+				<!-- <button :disabled="!!productDetail" class="share-btn" open-type="share">
+					立即分享
+					<i class="iconfont iconyou"></i>
+				</button> -->
+				<!--#endif-->
+			<!-- </view> -->
+			<!--商品参数-->
+			<!-- <view class="c-list"> -->
+				<!--商品库存-->
+				<!-- <rf-item-popup title="商品库存" v-if="parseInt(productDetail.is_stock_visible, 10) == 1" :isEmpty="parseInt(currentStock || productDetail.stock, 10) === 0"
+				 empty="库存不足">
+					<view slot="content">{{ currentStock || productDetail.stock || 0 }} 个</view>
+				</rf-item-popup> -->
+				<!--发货地址-->
+				<!-- <rf-item-popup title="发货地址" :isEmpty="!productDetail.address_name" empty="发货地址未填写">
+					<view slot="content">{{ productDetail.address_name }}</view>
+				</rf-item-popup> -->
+				<!--购买类型-->
+				<!-- <rf-item-popup title="购买类型" @hide="hideService" :specClass="specClass" @show="toggleSpec" :isEmpty="specSelected.length === 0"
+				 :empty="`基础款 * ${cartCount}`">
+					<view slot="content">
+						<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
+							{{sItem.title}}
+						</text>
+						<text> * {{ cartCount }}</text>
+					</view>
+					<view slot="right"><text class="iconfont iconyou"></text></view>
+					<view slot="popup" class="attr-content">
+						<view class="a-t">
+							<image :src="showTypeImage || productDetail.picture"></image>
+							<view class="right">
+								<text class="title">{{ productDetail.name }}</text>
+								<text class="price">¥{{ currentSkuPrice || productDetail.minSkuPrice }}</text>
+								<text class="stock">库存：{{ currentStock || productDetail.stock }}件</text>
+								<view class="selected" v-if="specSelected.length > 0">
+									已选：
+									<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
+										{{sItem.title}}
+									</text>
+									<text v-if="specSelected.length > 0">
+										* {{ cartCount }}
+									</text>
+								</view>
+							</view>
+						</view>
+						<view v-for="(item,index) in specList" :key="index" class="attr-list">
+							<text>{{item.title}}</text>
+							<view class="item-list">
+								<view class="tit" v-for="(childItem, childIndex) in specChildList" v-if="childItem.base_spec_id === item.base_spec_id"
+								 :key="childIndex" :class="{selected: childItem.selected}" :style="childItem.selected && parseInt(item.show_type) === 2 ? styleObject: ''"
+								 @tap="selectSpec(childIndex, childItem.base_spec_id, item.show_type)">
+									<text v-if="parseInt(item.show_type) === 1">
+										{{childItem.title }}
+									</text>
+									<text v-if="parseInt(item.show_type) === 2">
+										{{childItem.title }}
+									</text>
+									<view v-if="parseInt(item.show_type) === 3">
+										<image class="img" :src="childItem.data || productDetail.picture" mode="aspectFill"></image>
+										{{childItem.title }}
+									</view>
+								</view>
+							</view>
+						</view>
+						<view class="select-count">
+							<text>购买数量</text>
+							<rf-number-box class="step" :min="1" :max="parseInt(currentStock || productDetail.stock, 10)" :value="cartCount"
+							 @eventChange="numberChange"></rf-number-box>
+						</view>
+						<button class="btn" @tap="toggleSpec">完成</button>
+					</view>
+				</rf-item-popup> -->
+				<!--优惠券-->
+				<!-- <rf-item-popup title="优惠券" @hide="hideService" :specClass="couponClass" @show="showPopupService('couponClass', 1)">
+					<view slot="content">
+						<text class="con t-r red">领取优惠券</text>
+					</view>
+					<view slot="right"><text class="iconfont iconyou"></text></view>
+					<view slot="popup" class="service"> -->
+						<!-- 优惠券列表 -->
+						<!-- <view class="sub-list valid">
+							<view class="row" v-for="(item,index) in productDetail.canReceiveCoupon" :key="index" @tap.stop="getCoupon(item)">
+								<view class="carrier">
+									<view class="title">
+										<view>
+											<text class="cell-icon">{{ parseInt(item.range_type, 10) === 2 ? '限' : '全' }}</text>
+											<text class="cell-title">{{item.title}}</text>
+										</view>
+										<view>
+											<text class="price" v-if="item.money">{{item.money }}</text>
+											<text class="price-discount" v-else>{{ `${item.discount}折` }}</text>
+										</view>
+									</view>
+									<view class="term">
+										<text>{{ item.start_time | time }} ~ {{ item.end_time | time }}</text>
+										<text class="at_least">满{{ item.at_least }}可用</text>
+									</view>
+									<view class="usage">
+										<text>
+											{{ parseInt(item.range_type, 10) === 2 ? '部分产品使用' : '全场产品使用' }}
+										</text>
+										<view>
+											{{parseInt(item.max_fetch, 10) === 0 ? '不限' : `每人限领${item.max_fetch}` }}
+											已领{{ item.get_count }}
+											<text class="last" v-if="item.percentage">剩余{{ item.percentage }}%</text>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</rf-item-popup> -->
+				<!--限购说明-->
+				<!-- <rf-item-popup title="限购说明">
+					<view slot="content">
+						<text>{{ parseInt(productDetail.max_buy, 10) === 0 ? '不限购' : `${productDetail.max_buy} 件` }}</text>
+					</view>
+				</rf-item-popup> -->
+				<!--积分活动-->
+				<!-- <rf-item-popup title="积分活动">
+					<view slot="content" class="con-list">
+						<text v-if="productDetail.point_exchange_type">兑换类型: {{ productDetail.point_exchange_type | pointExchangeTypeFilter }}
+						</text>
+						<text v-if="parseInt(productDetail.give_point, 10) > 0">赠送类型: {{ productDetail.integral_give_type | integralGiveTypeFilter }}
+						</text>
+						<text v-if="parseInt(productDetail.give_point, 10) > 0">下单可获得: {{ productDetail | givePointFilter }}</text>
+						<text v-if="productDetail.point_exchange != 0">兑换所需积分: {{ productDetail.point_exchange }} </text>
+						<text v-if="productDetail.max_use_point != 0">可使用抵扣积分: {{ productDetail.max_use_point }}</text>
+						<text class="buy-now" @tap="addCart('buy', true)" v-if="productDetail.point_exchange_type == 3">积分兑换 >> </text>
+					</view>
+				</rf-item-popup> -->
+				<!--服务-->
+				<!-- <rf-item-popup title="服务" @hide="hideService" @show="showPopupService('serviceClass', productDetail.tags)"
+				 :specClass="serviceClass" :isEmpty="productDetail.tags.length === 0" empty="暂无相关服务">
+					<view slot="content">
+						<text>{{ productDetail.tags[0] }}</text>
+					</view>
+					<view slot="right" v-if="productDetail.tags.length > 0"><text class="iconfont iconyou"></text></view>
+					<view slot="popup" class="service">
+						<view class="content">
+							<view class="row" v-for="(item,index) in productDetail.tags" :key="index">
+								<view class="title">{{item}}</view>
+								<view class="description">此商品承诺{{item}}</view>
+							</view>
+						</view>
+						<button class="btn" @tap="hideService">完成</button>
+					</view>
+				</rf-item-popup> -->
+				<!--阶梯优惠-->
+				<!-- <rf-item-popup title="阶梯优惠" @hide="hideService" @show="showPopupService('ladderPreferentialClass', productDetail.ladderPreferential)"
+				 :specClass="ladderPreferentialClass" :isEmpty="productDetail.ladderPreferential.length === 0" empty="暂无阶梯优惠">
+					<view slot="content" class="con-list">
+						<text>
+							满{{ productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].quantity }}件
+							<text v-if="parseInt(productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].type, 10) === 1">
+								每件减{{ productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].price }}元</text>
+							<text v-if="parseInt(productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].type, 10) === 2">
+								每件{{ parseInt(productDetail.ladderPreferential && productDetail.ladderPreferential[0] && productDetail.ladderPreferential[0].price, 10) }}折</text>
+						</text>
+					</view>
+					<view slot="right" v-if="productDetail.ladderPreferential.length > 0"><text class="iconfont iconyou"></text></view>
+					<view slot="popup" class="service">
+						<view class="content">
+							<view class="row" v-for="(item,index) in productDetail.ladderPreferential" :key="index">
+								<view class="title">满{{ item.quantity }}件 <text v-if="parseInt(item.type, 10) === 1">每件减{{ item.price }}元</text>
+									<text v-if="parseInt(item.type, 10) === 2">每件{{ parseInt(item.price, 10) }}折</text>
+								</view>
+							</view>
+						</view>
+						<button class="btn" @tap="hideService">完成</button>
+					</view>
+				</rf-item-popup> -->
+				<!--商品参数-->
+				<!-- <rf-item-popup title="商品参数" @hide="hideService" @show="showPopupService('attributeValueClass', productDetail.attributeValue)"
+				 :specClass="attributeValueClass" :isEmpty="productDetail.attributeValue.length === 0" empty="暂无商品参数">
+					<view slot="content">
+						<text>
+							{{ `${productDetail.attributeValue && productDetail.attributeValue[0] && productDetail.attributeValue[0].title}: ${productDetail.attributeValue && productDetail.attributeValue[0] && productDetail.attributeValue[0].value}` }}</text>
+					</view>
+					<view slot="right" v-if="productDetail.attributeValue.length > 0"><text class="iconfont iconyou"></text></view>
+					<view slot="popup" class="service">
+						<view class="content">
+							<view class="row" v-for="(item,index) in productDetail.attributeValue" :key="index">
+								<view class="title">
+									{{ `${item.title}: ${item.value}` }}
+								</view>
+							</view>
+						</view>
+						<button class="btn" @tap="hideService">完成</button>
+					</view>
+				</rf-item-popup>
+			</view> -->
+			<!-- 评价 -->
+			<!-- <view class="eva-section" @tap="toEvaluateList">
+				<view class="e-header">
+					<text class="tit">评价</text>
+					<text>({{ productDetail.comment_num || 0 }})</text>
+					<text class="tip" v-if="productDetail.match_ratio">好评率 {{ productDetail.match_ratio }}%</text>
+					<text class="tip" v-else>暂无评价信息</text>
+					<i class="iconfont iconyou"></i>
+				</view>
+				<view class="eva-box" v-if="productDetail.evaluate && productDetail.evaluate.length > 0">
+					<image class="portrait" :src="productDetail.evaluate && productDetail.evaluate[0] && productDetail.evaluate[0].member_head_portrait || headImg"
+					 mode="aspectFill"></image>
+					<view class="right">
+						<view class="name">
+							<text>
+								{{ productDetail.evaluate && productDetail.evaluate[0] && productDetail.evaluate[0].member_nickname || '匿名用户' }}
+							</text>
+							<rf-rate v-if="evaluateList.length > 0" size="16" disabled="true" :value="evaluateList[0].scores" active-color="#fa436a" />
+						</view>
+						<text class="con in2line">{{ productDetail.evaluate && productDetail.evaluate[0] && productDetail.evaluate[0].content || '这个人很懒，什么都没留下~' }}</text>
+						<view class="bot">
+							<text class="attr">购买类型：{{ productDetail.evaluate && productDetail.evaluate[0] && productDetail.evaluate[0].sku_name || '基础版' }}</text>
+							<text class="time">{{ productDetail.evaluate && productDetail.evaluate[0] && productDetail.evaluate[0].created_at | time }}</text>
+						</view>
+					</view>
+				</view>
+			</view> -->
 			<!--底部商品详情-->
 			<view class="detail-info">
 				<view class="info-header">
-					<text>个人介绍</text>
+					<text>个人信息</text>
 				</view>
-				<view class="description">
-					<view class="first-col">
-						<view>
-							<text class="name">{{productDetail.username}}</text>
-							<text class="exp">{{productDetail.age}}岁 | {{productDetail.workyears}}年从业经验</text>
-						</view>
-						<view class="tags">{{productDetail.languages}}</view>
-					</view>
-					<rich-text :nodes="productDetail.detail | formatRichText" class="desc"></rich-text>
-				</view>
+				<rich-text :nodes="productDetail.detail | formatRichText"></rich-text>
 			</view>
-			<image :src="$mAssetsPath.productBottom" class="bottom-example"></image>
+			<!-- <view class="detail-info">
+				<view class="info-header">
+					<text>工作履历</text>
+				</view>
+				<rich-text :nodes="productDetail.detail | formatRichText"></rich-text>
+			</view>
+			<view class="detail-desc">
+				<view class="d-header">
+					<text>培训记录</text>
+				</view>
+				<rich-text :nodes="productDetail.detail | formatRichText"></rich-text>
+			</view> -->
 			<!-- 底部操作菜单 -->
 			<view class="new_page-bottom">
+				<!-- <navigator url="/pages/index/index" open-type="switchTab" class="p-b-btn">
+					<i class="iconfont iconxiatubiao--copy"></i>
+					<text>首页</text>
+				</navigator>
+				<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn cart">
+					<i class="iconfont icongouwuche"></i>
+					<text>购物车</text>
+					<rf-badge v-if="hasLogin && cartNum && cartNum > 0" type="error" size="small" class="badge" :text="cartNum"></rf-badge>
+				</navigator> -->
 				<view class="bottom_btn" :class="{active: favorite}" @tap="toFavorite(0)">
 					<view><i class="iconfont iconshoucang"></i></view>
 					<view class="love ">收藏</view>
@@ -61,6 +326,21 @@
 						></echone-sku>
 					</uni-popup>
 				</view>
+				<!-- <view class="action-btn">
+					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">面试TA</button>
+				</view> -->
+				<!-- <view @tap="navTo(`/pages/product/service/index`)" class="p-b-btn">
+				<i class="iconfont icondanseshixintubiao-"></i>
+				<text>客服</text>
+				</view> -->
+				<!-- <view class="action-btn-group" v-if="parseInt((this.currentStock || this.productDetail.stock), 10) > 0">
+					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">立即购买</button>
+					<button type="primary" :disabled="addCartBtnDisabled" class=" action-btn no-border add-cart-btn" @tap="addCart('cart')">加入购物车</button>
+				</view>
+				<view class="action-btn-group" v-else>
+					<button type="primary" class="action-btn no-border buy-now-btn" :disabled="buyBtnDisabled" @tap="addCart('buy')">立即购买</button>
+					<button type="primary" class="action-btn " :disabled="buyBtnDisabled" @tap="addCart('buy')">库存不足</button>
+				</view> -->
 			</view>
 		</view>
 		<!-- 404页面 -->
@@ -559,22 +839,6 @@
 </script>
 
 <style scoped lang='scss'>
-	.header {
-		.bg {
-			width: 100%;
-			min-height: 300px;
-			position: relative;
-		}
-		.logo {
-			width: 150px;
-			position: absolute;
-			left: 0;
-			right: 0;
-			margin: 0 auto;
-			top: 10px;
-			z-index: 2;
-		}
-	}
 	page {
 		background: #FFFFFF;
 	}
@@ -584,28 +848,18 @@
 	.detail {
 		padding-bottom: 160rpx;
 	}
-	.bottom-example {
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 450px;
-		margin: 0 auto 80px auto;
-	}
+
 	.carousel {
 		/* height: 722rpx; */
-		position: absolute;
-		top: 60px;
-		left: 0;
-		right: 0;
-		margin: 0 auto;
-		z-index: 2;
+		position: relative;
+		top: 100%;
 
 		swiper {
 			height: 100%;
 		}
 
 		.image-wrapper {
-			background: transparent;
+			background: #FFFFFF;
 			width: 100%;
 			padding: 24rpx 20rpx 0 18rpx;
 			text-align: center;
@@ -948,38 +1202,7 @@
 
 	/*  详情 */
 	.detail-info{
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 230px;
-		width: 90%;
-		box-shadow: 1px 1px 5px rgba(0,0,0,.2);
-		margin: 0 auto;
 		
-		.description {
-			padding: 10px;
-			.first-col {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				margin-bottom: 15px;
-				
-				.name {
-					font-size: 20px;
-					font-weight: 600;
-				}
-				.exp {
-					margin-left: 10px;
-				}
-				.tags {
-					color: #ff8400;
-					font-weight: 600;
-				}
-			}
-			.desc {
-					font-size: 10px;
-			}
-		}
 	}
 	.detail-work{
 		
@@ -987,6 +1210,7 @@
 	.detail-desc ,.detail-info,.detail-work{
 		background: #fff;
 		margin-top: 16upx;
+		padding: 0 10upx;
 
 		.d-header,.info-header,work-header {
 			display: flex;
@@ -996,13 +1220,23 @@
 			font-size: $font-base + 2upx;
 			color: $font-color-dark;
 			position: relative;
-			background: linear-gradient(to left top, #ec7131, #ee8044);
 
 			text {
 				padding: 0 20upx;
-				color: #fff;
+				background: #fff;
 				position: relative;
 				z-index: 1;
+			}
+
+			&:after {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translateX(-50%);
+				width: 300upx;
+				height: 0;
+				content: '';
+				border-bottom: 1px solid #ccc;
 			}
 		}
 	}

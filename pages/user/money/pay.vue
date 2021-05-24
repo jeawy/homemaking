@@ -52,9 +52,7 @@
 </template>
 //<script src="https://js.stripe.com/v3/"></script>
 <script>
-    import {loadStripe} from '@stripe/stripe-js/pure';
 	import store from '@/store'
-	const stripeInit =  loadStripe('pk_test_42xi7lAoc2wOsFfmZOq7etPS005IDp2SJJ')
     import {orderPay} from "@/api/product";
     import {orderDetail, paystripe} from "@/api/userInfo";
     import {configList} from "@/api/basic";
