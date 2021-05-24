@@ -10,19 +10,6 @@
 					<view class="image-wrapper">
 						<image :src="baseurl+productDetail.thumbnail_portait" class="loaded" mode="aspectFill"></image>
 					</view>
-					<!-- <view class="card_text">
-						<view class="name">{{productDetail.username}}</view>
-						<view class="text_middle">
-							<text class="middle-text">{{productDetail.age}}岁</text>
-							<image class="sex_img" src="/static/women.svg"></image>
-							<text class="middle-text">{{productDetail.nation}}</text>
-							<span class="line">|</span>
-							<text class="middle-text">从业{{productDetail.workyears}}年</text>
-						</view>
-						<view class="language">
-							<text class="language-text">{{productDetail.languages}}</text>
-						</view>
-					</view> -->
 			</view>
 			<!--底部商品详情-->
 			<view class="detail-info">
@@ -590,7 +577,7 @@
 		display: block;
 		left: 0;
 		right: 0;
-		top: 400px;
+		top: 450px;
 		margin: 0 auto;
 	}
 	.carousel {
