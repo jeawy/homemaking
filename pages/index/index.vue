@@ -1,25 +1,26 @@
 <template>
 	<view class="rf-index">
-		<!-- 顶部信息 -->
-		<view class="header">
-			<view class="header-top">
-				<citySearch v-model="city" @doGetLocation="doGetLocation"/>
-				<view class="notice" @tap="navTo('/pages/user/notice/notice')">
-					<image class="notice_img" src="../../static/home/Notification.svg"></image>
-				</view>
-			</view>
-			<view class="header-bottom">
-				<view class="logo">
-					<image class="logo_img" src="../../static/home/logo.png"></image>
-				</view>
-			</view>
-		</view>	
+		 <!-- 顶部信息 -->
+		 <view class="header">
+		 	<view class="header-top">
+		 		<citySearch v-model="city" @doGetLocation="doGetLocation"/>
+		 		<view class="notice" @tap="navTo('/pages/user/notice/notice')">
+		 			<image class="notice_img" src="../../static/home/Notification.svg"></image>
+		 		</view>
+		 	</view>
+		 	<view class="header-bottom">
+		 		<view class="logo">
+		 			<image class="logo_img" src="../../static/home/logo.png"></image>
+		 		</view>
+		 	</view>
+		 </view>	
 		 <scroll-view
 		 	class="main_content"
 		 	scroll-y
 		 >
 			<view class="swipe">
-				
+				<view class="swipe_text">好帮手到家</view>
+				<view class="swipe_text">得品质生活</view>
 			</view>
 			<!-- 轮播图 -->
 			<!--
@@ -45,28 +46,49 @@
 			-->
 
 			<!-- 分类列表 -->
+			<view class="fct-center">
+			  <view
+			    v-for="(item, index) of commenUseList"
+			    :key="index"
+			    class="common-function__item"
+			    @tap="toCategory(item.id)"
+			  >
+			    <image
+			      class="common-function__img"
+			      :src="`../../static/home/${item.src}.png`"
+			    />
+			    <view class="fct-content">{{ item.name }}</view>
+			  </view>
+			</view>
+			<!--
 			<categoryLists @target="target" />
-			<view class="middle">
-				<!--广告-->
-				<view class="ads">
-					<image class="ads_left_img" src="../../static/home/LeftAdsDiscount.png"></image>
-					<image class="ads_img" src="../../static/home/RightAdsLocal.png"></image>
+			-->
+			<!--广告-->
+			<view class="ads">
+				<view class="ads_left">
+					
 				</view>
-				<!--VIP-->
-				<view class="vip">
-					<image class="vip_img" src="../../static/home/MidAdsVip.png"></image>
-					<image class="vip_img_top" src="../../static/home/Group.png"></image>
+				<view class="ads_right">
+					
 				</view>
-			
 			</view>
 			<!--分享礼品-->
 			<view class="gift_ads">
 				<view class="gift">
-					<image class="gift_left_img" src=""></image>
-					<image class="gift_img" src=" "></image>
+					<view class="gift_left">
+						<view class="gift_text">保洁烹饪</view>
+						<view class="gift_text">洁净温馨</view>
+						<view class="gift_search">点击查看</view>
+					</view>
+					<view class="gift_right">
+						<view class="gift_text">保洁烹饪</view>
+						<view class="gift_text">洁净温馨</view>
+						<view class="gift_search">点击查看</view>
+					</view>
 				</view>			
 			</view>
 			<!-- 阿姨推荐 -->
+			<!--
 			<view class="aunt_bottom" >
 				<view class="aunt_top"><text class="bottom_text">阿姨推荐</text></view>
 				<view class="bottom" >
@@ -76,8 +98,10 @@
 			<view class="search" @tap="target('/pages/category/category')">
 				<view class="search_more">查看更多</view>
 			</view>
+			-->
 			
 			<!-- 新人推荐 -->
+			<!--
 			<view class="new_bottom" >
 				<view class="new_top"><text class="bottom_text">新人推荐</text></view>
 				<view class="bottom" >
@@ -104,6 +128,7 @@
 						height: 28rpx;" class="bottom_img" src="../../static/home/correct.svg"></image>
 				</view>
 			</view>
+			-->
 		</scroll-view>
 	</view>
 </template>
@@ -125,7 +150,39 @@
 				baseurl:"",
 				swiperCurrent: 0, // 轮播图index 
 				infolst:[],
-				newbee_infolst:[]
+				newbee_infolst:[],
+				commenUseList: [
+				  {
+				    name: "母婴育儿",
+				    id:38,
+				    src: "category1",
+				  },
+				  {
+				    name: "月嫂服务",
+				    id: 27,
+				    src: "category2",
+				  },
+				  {
+				    name: "老年呵护",
+				    id:40 ,
+				    src: "category3",
+				  },
+				  {
+				    name: "家政服务",
+				    id:41,
+				    src: "category4",
+				  },
+				  {
+				    name: "钟点工服务",
+				    id: 42,
+				    src: "category5",
+				  },
+				  {
+				    name: "搬家清洁",
+				    id: 45,
+				    src: "category6",
+				  },
+				]
 
                 // config: {}, // 商户配置
                 // announceList: [], // 公告列表
@@ -164,6 +221,12 @@
 				uni.switchTab({
 					url
 				})		
+			},
+			toCategory(id=0){
+				if (id > 0){
+				     uni.setStorageSync('categoryid',id);
+				}
+				this.target('/pages/category/category')
 			},
 			//获取当前的位置
 			doGetLocation(){
@@ -274,6 +337,7 @@
 </script>
 
 <style lang="scss" scoped>
+	
 	.rf-index {
 		background-color: #FFFFFF;
 		// width: 100%;	
@@ -316,6 +380,7 @@
 		.notice{
 			display: flex;
 			.notice_img{
+				color: #FFFFFF;
 				margin-right: 38rpx;
 				width: 27rpx;
 				height: 26.54rpx;
@@ -336,11 +401,61 @@
 		}
 		.swipe{
 			display: flex;
+			flex-direction: column;
+			padding-top: 200rpx;
+			padding-left: 50rpx;
 			width: 100%;
 			height: 606rpx;
+			color: #FF9700;
+			font-weight: bold;
+			color: red;
+			border: 1rpx solid red;
 			background-image: url(../../static/home/swipe.png);
 			background-repeat: no-repeat;
 			background-size: 100% 100%;
+			.swipe_text{
+				color: #FF9700;
+				font-weight: bold;
+				font-size: 40rpx;
+			}
+		}
+		.fct-center {
+		  display: flex;
+		  justify-content: space-between;
+		  flex-flow: wrap row;
+		  padding: 20rpx 0rpx 50rpx;
+		  margin:0rpx 35rpx;
+		  background-color: #FFFFFF;
+		  border-top: 15rpx solid #FF8000;
+		  border-left:1rpx solid #909399;
+		  border-right:1rpx solid #909399;
+		  border-bottom:1rpx solid #909399;
+		  border-bottom-left-radius: 26rpx;
+		  border-bottom-right-radius: 26rpx;
+		  margin-top: -50rpx;
+		  margin-bottom: 40rpx;
+		  .common-function__item {
+		    flex: 0 0 15%;
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    flex-flow: wrap column;
+		    .common-function__img {
+		      width: 60rpx;
+		      height: 60rpx;
+		    }
+		    .fct-content {
+			  font-weight: bold;
+		      font-size: 20rpx;
+		      line-height: 28rpx;
+		      display: flex;
+		      align-items: flex-end;
+		      color: #FF9700;
+		      margin-top: 10rpx;
+			  margin-left: 1rpx;
+			  padding-top: 10rpx;
+		    }
+		  }
 		}
 		/*轮播图*/		
 		.swiper {
@@ -381,67 +496,105 @@
 
 			  }
 		  }
-		.middle{
-			height: 357.68rpx;
-			margin-top: 20rpx;
-			.ads{
-				display: flex;				
-				height: 180rpx;
-				justify-content: space-between;
-				.ads_left_img{
-					margin-left: 40rpx;
-					margin-right: 19rpx;
-					height: 180rpx;
-					width: 163px;
-					border-radius: 16rpx;
-					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
-				}
-				.ads_img{
-					height: 180rpx;
-					width: 163px;
-					border-radius: 16rpx;
-					margin-right: 40rpx;
-					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
-				}
+		.ads{
+			display: flex;				
+			height: 242rpx;
+			margin-bottom: 30rpx;
+			flex-direction: row;
+			justify-content: space-between;
+			.ads_left{
+				display: flex;
+				margin-left: 40rpx;
+				height: 224rpx;
+				width: 332px;
+				border-radius: 16rpx;
+				background-image: url(../../static/home/middle_left.png);
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
 			}
-			.vip{
-				height: 140rpx;
-				margin: 20rpx 40rpx;
-				.vip_img{
-					height: 140rpx;
-					width: 100%;
-					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
-					border-radius: 54rpx;
-				}
-				.vip_img_top{
-					z-index: 100;
-					position: relative;
-					top: -190rpx;
-					left: -6.6rpx;
-					width: 202rpx;
-					height: 200rpx;
-				}
+			.ads_right{
+				display: flex;
+				margin-right: 40rpx;
+				height: 224rpx;
+				width: 448px;
+				border-top: 15rpx solid #FF8000;
+				margin-left: -20rpx;
+				border-bottom-left-radius: 50rpx;
+				background-image: url(../../static/home/middle_right.png);
+				background-repeat: no-repeat;
+				background-size: 100% 90%;
+				background-position: left bottom;
 			}
-			
 		}
 		.gift_ads{
-			height: 158rpx;
+			height: 300rpx;
+			width: 100%;
 			.gift{
 				display: flex;
-				height: 140rpx;
+				height: 280rpx;
+				width: 100%;
 				justify-content: space-between;
-				.gift_left_img{
-					margin-left:40rpx;
-					margin-right: 19rpx;
-					height: 140rpx;
-					border-radius: 16rpx;
-					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
+				.gift_left{
+					display: flex;
+					flex-direction: column;
+					margin-left: 40rpx;
+					margin-right:20rpx;
+					width: 48%;
+					height: 100%;
+					border-top: 15rpx solid #FF8000;
+					background-image: url(../../static/home/gift_left.png);
+					background-repeat: no-repeat;
+					background-size: 203rpx 245rpx ;
+					background-position: right bottom;
+					padding-top: 15rpx;
+					.gift_text{
+						font-size: 24rpx;
+						padding-left: 15rpx;
+						color: #FF9700;
+						font-weight: bold;
+					}
+					.gift_search{
+						width: 80rpx;
+						height: 30rpx;
+						text-align: center;
+						margin-left: 15rpx;
+						background-color:#FF8000;
+						padding-top: 5rpx;
+						border-radius: 20rpx;
+						font-size: 15rpx;
+						color: #FFFFFF;
+					}
 				}
-				.gift_img{
+				.gift_right{
+					display: flex;
+					flex-direction: column;
 					margin-right: 40rpx;
-					height: 140rpx;
-					border-radius: 16rpx;
-					filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
+					margin-left:20rpx;
+					width: 48%;
+					height: 100%;
+					border-top: 15rpx solid #FF8800;
+					background-image: url(../../static/home/gift_right.png);
+					background-repeat: no-repeat;
+					background-size: 252rpx 245rpx ;
+					background-position: right bottom;
+					padding-top: 15rpx;
+					.gift_text{
+						font-size: 24rpx;
+						padding-left: 15rpx;
+						color: #FF9700;
+						font-weight: bold;
+					}
+					.gift_search{
+						width: 80rpx;
+						height: 30rpx;
+						text-align: center;
+						margin-left: 15rpx;
+						background-color:  #FF8800;
+						padding-top: 5rpx;
+						border-radius: 20rpx;
+						font-size: 15rpx;
+						color: #FFFFFF;
+					}
 				}
 			}
 		}	
