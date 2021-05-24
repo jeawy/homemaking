@@ -1,7 +1,7 @@
 <template>
 	<view class="login-type">
 		<view class="logo">
-			<rf-image :isPreviewImage="false" :src="logo"></rf-image>
+			<image :src="logo" mode="widthFix"></image>
 		</view>
 		<view>
 			<button class="confirm-btn" open-type="getUserInfo" v-if="isAuthLoginShow" formType="submit" @tap="toAuthLogin">
@@ -246,7 +246,7 @@
 			margin-bottom: 80upx;
 
 			image {
-				width: 180upx;
+				width: 280upx;
 				height: 180upx;
 				border-radius: 28upx;
 			}

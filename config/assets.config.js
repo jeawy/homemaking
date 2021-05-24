@@ -19,7 +19,10 @@ export default {
 	errorImage: PATH + '/errorImage.jpg',
 
 	// 品牌logo
-	logo: PATH + '/logo.png',
+	logo: PATH + '/logo-colored.png',
+
+	// white logi
+	logoWhite: PATH + '/logo.png',
 
 	// 家政新闻
 	newsBg: PATH + '/news.png',

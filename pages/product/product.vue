@@ -1,7 +1,7 @@
 <template>
 	<view class="product">
 		<view class="header">
-			<image :src="$mAssetsPath.logo" class="logo" mode="widthFix"></image>
+			<image :src="$mAssetsPath.logoWhite" class="logo" mode="widthFix"></image>
 			<image :src="$mAssetsPath.productBg" class="bg" mode="aspectFill"></image>
 		</view>
 		<view class="detail" v-if="productDetail.username">
