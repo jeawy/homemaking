@@ -14,7 +14,7 @@
           <text class="tit">手机号码</text>
           <input
               type="number"
-              v-model="resetPasswordParams.mobile"
+              v-model="resetPasswordParams.phone"
               placeholder="请输入手机号码"
               maxlength="11"
           />
@@ -28,7 +28,7 @@
                   v-model="resetPasswordParams.code"
                   placeholder="请输入验证码"
                   maxlength="4"
-                  data-key="mobile"
+                  data-key="phone"
               />
             </view>
             <button class="sms-code-btn" :disabled="smsCodeBtnDisabled" @tap.stop="getSmsCode">
@@ -78,7 +78,7 @@
 		data() {
 			return {
         resetPasswordParams: {
-          mobile: '',
+          phone: '',
           password: '',
           password_repetition: '',
           code: ''
@@ -105,20 +105,26 @@
 		methods: {
 			// 获取手机验证码
 			async getSmsCode() {
-				this.reqBody['mobile'] = this.resetPasswordParams['mobile'];
+				this.reqBody['phone'] = this.resetPasswordParams['phone'];
         let checkSendCode = this.$mGraceChecker.check(this.reqBody, this.$mFormRule.sendCodeRule);
 				if (!checkSendCode) {
 					this.$mHelper.toast(this.$mGraceChecker.error);
 					return;
 				}
 				await this.$http.post(smsCode, {
-					mobile: this.resetPasswordParams.mobile,
-					usage: 'up-pwd'
+					phone: this.resetPasswordParams.phone,
+					codetype: '1'
 				}).then(r => {
-					this.$mHelper.toast(`验证码发送成功, 验证码是${r.data}`);
-					this.smsCodeBtnDisabled = true;
-					uni.setStorageSync('pwdSmsCodeTime', moment().valueOf() / 1000);
-					this.handleSmsCodeTime(59);
+					console.log(r )
+					if (r.status){
+						this.$mHelper.toast( r.msg);
+						this.smsCodeBtnDisabled = true;
+						uni.setStorageSync('pwdSmsCodeTime', moment().valueOf() / 1000);
+						this.handleSmsCodeTime(59);
+					}else{
+						this.$mHelper.toast( r.msg);
+					}
+					 
 				})
 			},
 			handleSmsCodeTime (time) {
@@ -144,7 +150,7 @@
 			},
       // 更新密码
 			async toUpdatePassword() {
-				this.reqBody['mobile'] = this.resetPasswordParams['mobile'];
+				this.reqBody['phone'] = this.resetPasswordParams['phone'];
         this.reqBody['password'] = this.resetPasswordParams['password'];
         this.reqBody['code'] = this.resetPasswordParams['code'];
         const cheRes = this.$mGraceChecker.check(this.reqBody, this.$mFormRule.resetPasswordRule);

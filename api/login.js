@@ -20,7 +20,7 @@ const wechatH5Login = '/tiny-shop/v1/third-party/wechat';
 const mpWechatLogin = '/tiny-shop/v1/third-party/wechat-mp';
 
 // 密码重置
-const updatePassword = '/tiny-shop/v1/site/up-pwd';
+const updatePassword = '/users/update_password/';
 
 // 第三方绑定
 const authLogin = '/tiny-shop/v1/member/auth/create';
@@ -32,7 +32,7 @@ const isBindingCheck = '/tiny-shop/v1/member/auth/is-binding';
 const loginBySmsCode = '/tiny-shop/v1/site/mobile-login';
 
 // 获取手机验证码
-const smsCode = '/tiny-shop/v1/site/sms-code';
+const smsCode = '/users/send_phonecode/';
 
 // 退出登录
 const logout = '/tiny-shop/v1/site/logout';

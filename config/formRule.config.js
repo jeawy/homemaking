@@ -12,11 +12,6 @@ export default {
 		checkType: 'notnull',
 		checkRule: '',
 		errorMsg: '手机号不能为空'
-	},{
-		name: 'phone',
-		checkType: 'phoneno',
-		checkRule: '',
-		errorMsg: '手机号格式不正确'
 	},  {
 		name: 'password',
 		checkType: 'string',
@@ -30,12 +25,7 @@ export default {
 		checkType: 'notnull',
 		checkRule: '',
 		errorMsg: '手机号不能为空'
-	}, {
-		name: 'phone',
-		checkType: 'phoneno',
-		checkRule: '',
-		errorMsg: '手机号格式不正确'
-	}, {
+	},  {
 		name: 'code',
 		checkType: 'string',
 		checkRule: '4',
@@ -48,12 +38,7 @@ export default {
 		checkType: 'notnull',
 		checkRule: '',
 		errorMsg: '手机号不能为空'
-	}, {
-		name: 'phone',
-		checkType: 'phoneno',
-		checkRule: '',
-		errorMsg: '手机号格式不正确'
-	}],
+	}  ],
 
 	/* 编辑新增个人发票 */
 	pInvoiceRule: [{
@@ -84,11 +69,6 @@ export default {
 		checkRule: '',
 		errorMsg: '手机号不能为空'
 	}, {
-			name: 'phone',
-			checkType: 'phoneno',
-			checkRule: '',
-			errorMsg: '手机号格式不正确'
-		}, {
 			name: 'code',
 			checkType: 'string',
 			checkRule: '4',
@@ -113,12 +93,7 @@ export default {
 		checkType: 'notnull',
 		checkRule: '',
 		errorMsg: '手机号不能为空'
-	}, {
-			name: 'phone',
-			checkType: 'phoneno',
-			checkRule: '',
-			errorMsg: '手机号格式不正确'
-		}, {
+	},   {
 			name: 'code',
 			checkType: 'string',
 			checkRule: '4',

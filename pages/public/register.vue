@@ -113,12 +113,18 @@
 				}
 				this.$http.post(smsCode, {
 					phone: this.registerParams.phone,
-					usage: 'register'
+					codetype: '0'
 				}).then(r => {
-					this.$mHelper.toast(`验证码发送成功, 验证码是${r.data}`);
-					this.smsCodeBtnDisabled = true;
-					uni.setStorageSync('registerSmsCodeTime', moment().valueOf() / 1000);
-					this.handleSmsCodeTime(59);
+					console.log(r )
+					if (r.status){
+						this.$mHelper.toast( r.msg);
+						this.smsCodeBtnDisabled = true;
+						uni.setStorageSync('registerSmsCodeTime', moment().valueOf() / 1000);
+						this.handleSmsCodeTime(59);
+					}else{
+						this.$mHelper.toast( r.msg);
+					}
+					
 				});
 			},
 			handleSmsCodeTime(time) {
@@ -151,8 +157,9 @@
 				// this.reqBody['password_repetition'] = this.registerParams['password_repetition'];
 				
 				this.btnLoading = true;
-				await this.$http.post(registerByPass, this.reqBody).then(() => {
+				await this.$http.post(registerByPass, this.reqBody).then(r => {
 					// console.log("注册界面")
+					console.log(r)
 					this.btnLoading = false;
 					this.$mHelper.toast('恭喜您注册成功');
 					this.$mRouter.push({
