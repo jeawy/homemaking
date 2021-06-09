@@ -400,6 +400,7 @@
 			top: 100rpx;
 			background-color: #ffffff;
 		}
+		
 		.swipe{
 			display: flex;
 			flex-direction: column;
@@ -410,7 +411,6 @@
 			color: #FF9700;
 			font-weight: bold;
 			color: red;
-			border: 1rpx solid red;
 			background-image: url(../../static/home/swipe.png);
 			background-repeat: no-repeat;
 			background-size: 100% 100%;
