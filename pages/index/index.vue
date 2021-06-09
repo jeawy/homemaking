@@ -364,6 +364,7 @@
 			display: flex;
 			width: 100%;
 			justify-content: space-between;
+			padding-top: 85rpx;
 		}
 		.header-bottom{
 			display: flex;
