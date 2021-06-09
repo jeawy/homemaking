@@ -88,7 +88,6 @@
 				</view>			
 			</view>
 			<!-- 阿姨推荐 -->
-			<!--
 			<view class="aunt_bottom" >
 				<view class="aunt_top"><text class="bottom_text">阿姨推荐</text></view>
 				<view class="bottom" >
@@ -98,10 +97,10 @@
 			<view class="search" @tap="target('/pages/category/category')">
 				<view class="search_more">查看更多</view>
 			</view>
-			-->
+			
 			
 			<!-- 新人推荐 -->
-			<!--
+			
 			<view class="new_bottom" >
 				<view class="new_top"><text class="bottom_text">新人推荐</text></view>
 				<view class="bottom" >
@@ -111,6 +110,7 @@
 			<view class="search" @tap="target('/pages/category/category')">
 				<view class="search_more">查看更多</view>
 			</view>
+			<!--
 			<view class="bottom_assure">
 				<view class="assure_one">
 					<view class="assure_text">保证服务质量</view>
