@@ -6,9 +6,6 @@
 			 <view class="city_search">
 				 <citySearch v-model="city" @doGetLocation="doGetLocation"/>
 			 </view>
-				 <view class="logo">
-		 			<image class="logo_img" src="../../static/home/logo.png"></image>
-		 		</view>
 		 		<view class="notice" @tap="navTo('/pages/user/notice/notice')">
 		 			<image class="notice_img" src="../../static/home/Notification.svg"></image>
 		 		</view>
@@ -368,14 +365,20 @@
 		.header-top{
 			display: flex;
 			width: 100%;
+			height: 75rpx;
 			justify-content: space-between;
 			flex-direction: row;
+			background-image: url(../../static/home/logo.png);
+			background-repeat: no-repeat;
+			background-size: 300rpx 75rpx;
+			background-position: center center;
 		}
+		/*
 		.header-bottom{
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-		}
+		}*/
 		.fonttext,.location_text,.search_more,.assure_text
 		,.position_title,.titlename,.value_name,.box_name,
 		.city_text{
@@ -397,6 +400,7 @@
 				height: 26.54rpx;
 			}
 		}
+		/*
 		.logo{
 			display: flex;
 			align-items: center;	
@@ -405,7 +409,7 @@
 				height: 74rpx;
 				margin-right: 55rpx;
 			}
-		}
+		}*/
 		.main_content{
 			position: relative;
 			top: 100rpx;
