@@ -3,16 +3,23 @@
 		 <!-- 顶部信息 -->
 		 <view class="header">
 		 	<view class="header-top">
-		 		<citySearch v-model="city" @doGetLocation="doGetLocation"/>
+			 <view class="city_search">
+				 <citySearch v-model="city" @doGetLocation="doGetLocation"/>
+			 </view>
+				 <view class="logo">
+		 			<image class="logo_img" src="../../static/home/logo.png"></image>
+		 		</view>
 		 		<view class="notice" @tap="navTo('/pages/user/notice/notice')">
 		 			<image class="notice_img" src="../../static/home/Notification.svg"></image>
 		 		</view>
 		 	</view>
+			 <!--
 		 	<view class="header-bottom">
 		 		<view class="logo">
 		 			<image class="logo_img" src="../../static/home/logo.png"></image>
 		 		</view>
 		 	</view>
+			 -->
 		 </view>	
 		 <scroll-view
 		 	class="main_content"
@@ -98,9 +105,7 @@
 				<view class="search_more">查看更多</view>
 			</view>
 			
-			
 			<!-- 新人推荐 -->
-			
 			<view class="new_bottom" >
 				<view class="new_top"><text class="bottom_text">新人推荐</text></view>
 				<view class="bottom" >
@@ -358,13 +363,13 @@
 			background-repeat: no-repeat;
 			background-size: 100% 100%;
 			justify-content: space-between;
-			padding-bottom: 65rpx;
+			padding-top: 65rpx;
 		}
 		.header-top{
 			display: flex;
 			width: 100%;
 			justify-content: space-between;
-			padding-top: 85rpx;
+			flex-direction: row;
 		}
 		.header-bottom{
 			display: flex;
@@ -378,8 +383,13 @@
 			font-weight: 400;
 			letter-spacing: 0em;
 		}
+		.city_search{
+			display: flex;
+			padding-top:25rpx;
+		}
 		.notice{
 			display: flex;
+			padding-top:25rpx;
 			.notice_img{
 				color: #FFFFFF;
 				margin-right: 38rpx;
@@ -389,10 +399,11 @@
 		}
 		.logo{
 			display: flex;
-			align-items: center;
+			align-items: center;	
 			.logo_img{
 				width: 288rpx;
 				height: 74rpx;
+				margin-right: 55rpx;
 			}
 		}
 		.main_content{
@@ -400,7 +411,6 @@
 			top: 100rpx;
 			background-color: #ffffff;
 		}
-		
 		.swipe{
 			display: flex;
 			flex-direction: column;
