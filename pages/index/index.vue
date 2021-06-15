@@ -79,12 +79,12 @@
 			<!--分享礼品-->
 			<view class="gift_ads">
 				<view class="gift">
-					<view class="gift_left">
+					<view class="gift_left" @tap="target('/pages/category/category')">
 						<view class="gift_text">保洁烹饪</view>
 						<view class="gift_text">洁净温馨</view>
 						<view class="gift_search">点击查看</view>
 					</view>
-					<view class="gift_right">
+					<view class="gift_right" @tap="target('/pages/category/category')">
 						<view class="gift_text">保洁烹饪</view>
 						<view class="gift_text">洁净温馨</view>
 						<view class="gift_search">点击查看</view>
