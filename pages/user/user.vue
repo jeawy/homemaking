@@ -300,7 +300,12 @@ export default {
   async onShow() {
     // 初始化数据
     this.initData();
+     plus.navigator.setFullscreen(true);
   },
+//如果不加这句，会导致跳转到别的页面后也是全屏
+onHide() {
+    plus.navigator.setFullscreen(false);
+},
   methods: {
     async initData() {
       this.hasLogin = this.$mStore.getters.hasLogin;

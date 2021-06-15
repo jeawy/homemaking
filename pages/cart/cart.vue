@@ -152,7 +152,11 @@
 			this.orderList.length = 0;
 			this.initData();
 			// #endif
+			plus.navigator.setFullscreen(true);
 		},
+		onHide() {
+    plus.navigator.setFullscreen(false);
+},
 		onLoad(options) {},
 		methods: {
 			// 监听swiper切换

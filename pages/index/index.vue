@@ -202,7 +202,12 @@
         },
 		onShow() {
             // this.initData();
+			 plus.navigator.setFullscreen(true);
         },
+//如果不加这句，会导致跳转到别的页面后也是全屏
+onHide() {
+    plus.navigator.setFullscreen(false);
+},
 		onLoad() {
 			this.baseurl = this.$mStore.state.BaseUrl 
 			this.doGetLocation()

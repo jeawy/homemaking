@@ -300,6 +300,10 @@
 		onShow(options) {
 			this.initData();
 			this.doGetLocation();
+			plus.navigator.setFullscreen(true);
+		},
+		onHide() {
+		    plus.navigator.setFullscreen(false);
 		},
 		methods: {
 			//获取当前的位置

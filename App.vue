@@ -3,7 +3,7 @@
     export default {
         async onLaunch() {
             this.initData();
-			plus.navigator.setFullscreen(true);
+			//plus.navigator.setFullscreen(true);
         },
         onHide() {
         },
