@@ -678,33 +678,33 @@
 		"backgroundColor": "#f8f8f8"
 	},
 	"tabBar": {
-		"color": "#C0C4CC",
-		"selectedColor": "#FF8D0E",
+		"color": "#c7c7c7",
+		"selectedColor": "#ed7631",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/tabbar/Home2.png",
-				"selectedIconPath": "static/tabbar/homeselected2.png"
-				// "text": "首页"
+				"iconPath": "static/tabbar/sy.png",
+				"selectedIconPath": "static/tabbar/sya.png",
+				"text":"首页"
 			},
 			{
 				"pagePath": "pages/category/category",
-				"iconPath": "static/tabbar/Find2.png",
-				"selectedIconPath": "static/tabbar/searchselected2.png"
-				// "text": "找阿姨"
+				"iconPath": "static/tabbar/yy.png",
+				"selectedIconPath": "static/tabbar/yya.png",
+				"text": "预约"
 			},
 			{
 				"pagePath": "pages/cart/cart",
-				"iconPath": "static/tabbar/shoplisted2.png",
-				"selectedIconPath": "static/tabbar/listselected2.png"
-				// "text": "订单"
+				"iconPath": "static/tabbar/dd.png",
+				"selectedIconPath": "static/tabbar/dda.png",
+				"text": "订单"
 			},
 			{
 				"pagePath": "pages/user/user",
-				"iconPath": "static/tabbar/user2.png",
-				"selectedIconPath": "static/tabbar/meselected2.png"
-				// "text": "我的"
+				"iconPath": "static/tabbar/wd.png",
+				"selectedIconPath": "static/tabbar/wda.png",
+				"text": "我的"
 			}
 		]
 	}
