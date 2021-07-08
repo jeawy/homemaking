@@ -5,6 +5,7 @@
 			<text class="price">{{ money }}</text>
 		</view>
 		<view class="pay-type-list">
+			<!--
 			<view class="type-item b-b" @tap="changePayType(1)"  >
 				<i class="iconfont icon iconweixinzhifu"></i>
 				<view class="con">
@@ -14,7 +15,7 @@
 				<label class="radio">
 					<radio value="" color="#fe8e2e" :checked='payType == 1'/>
 				</label>
-			</view>
+			</view> -->
 			<view class="type-item b-b" @tap="changePayType(2)" >
 				<i class="iconfont icon iconalipay"></i>
 				<view class="con">

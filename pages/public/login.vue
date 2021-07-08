@@ -65,9 +65,7 @@
           登录
         </button>
       </view>
-      <view @tap="showLoginBySmsCode" class="forget-section">
-        {{ loginByPass ? "验证码登录" : "密码登录" }}
-      </view>
+       
       <view class="forget-section" @tap="navTo('/pages/public/password')">
         忘记密码?
       </view>
@@ -103,7 +101,8 @@ export default {
     };
   },
   onLoad() {
-    console.log("login")
+    console.log("login111")
+	/*
     const time =
       moment().valueOf() / 1000 - uni.getStorageSync("loginSmsCodeTime");
     if (time < 60) {
@@ -115,7 +114,7 @@ export default {
       this.smsCodeBtnDisabled = false;
       uni.removeStorageSync("loginSmsCodeTime");
     }
-    this.userInfo = uni.getStorageSync("wechatUserInfo");
+    this.userInfo = uni.getStorageSync("wechatUserInfo");*/
   },
   methods: {
     loginTest(mobile, password) {
@@ -226,6 +225,9 @@ export default {
               oauthClientParams.oauth_client = "wechat";
               /*  #endif  */
               const userInfo = JSON.parse(this.userInfo);
+			  /* r.msg中存储了用户信息
+			  */
+			 /*
               this.$http.post(authLogin, {
                 ...userInfo,
                 ...oauthClientParams,
@@ -233,7 +235,9 @@ export default {
                 oauth_client_user_id: userInfo.openid || userInfo.openId,
                 head_portrait: userInfo.headimgurl || userInfo.avatarUrl,
               });
+			  */
             }
+			
             // #ifdef H5
             this.$mPayment.wxConfigH5();
             // #endif

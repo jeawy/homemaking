@@ -3,8 +3,8 @@
     "appid" : "__UNI__6050951",
     // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
     "description" : "帮得家",
-    "versionName" : "2.0.3",
-    "versionCode" : 101,
+    "versionName" : "2.0.6",
+    "versionCode" : 100,
     "transformPx" : false,
     "app-plus" : {
         "compatible" : {
@@ -117,7 +117,22 @@
                 "androidStyle" : "common"
             }
         },
-        "nativePlugins" : {}
+        "nativePlugins" : {
+            "zjw-VideoCallTwilio" : {
+                "__plugin_info__" : {
+                    "name" : "zjw-VideoCallTwilio",
+                    "description" : "Twilio视频通话插件",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            }
+        }
     },
     "uni-app" : {
         "scripts" : {

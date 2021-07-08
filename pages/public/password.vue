@@ -176,11 +176,18 @@
 				this.reqBody.group = 'tinyShopQqMq'
 				/*  #endif  */
 				this.btnLoading = true;
-				await this.$http.post(updatePassword, this.reqBody).then(() => {
-					this.btnLoading = false;
-          this.$mStore.commit('logout');
-					this.$mHelper.toast('密码重置成功');
-          this.$mRouter.push({route: '/pages/public/login'});
+				await this.$http.post(updatePassword, this.reqBody).then((res) => {
+					console.log(res)
+          this.btnLoading = false;
+          if (res.status == 0 ){
+            this.$mStore.commit('logout');
+            this.$mHelper.toast('密码重置成功');
+            this.$mRouter.push({route: '/pages/public/login'});
+          }
+          else{
+            this.$mHelper.toast(res.msg);
+          }
+          
 				}).catch(() => {
 					this.btnLoading = false;
 				});

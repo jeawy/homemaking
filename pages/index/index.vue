@@ -255,8 +255,7 @@ onHide() {
 			},
 			async initData() { 
 				// 获取新人推荐 
-				await this.$http.get(`${categoryList}`, {newbee_recommend:1}).then(r => { 
-					console.log(r.msg)
+				await this.$http.get(`${categoryList}`, {newbee_recommend:1}).then(r => {  
 						if (r.status == 0){
 							
                              if (r.msg.length > 0){
@@ -289,7 +288,7 @@ onHide() {
 				// 获取推荐阿姨
 				await this.$http.get(`${categoryList}`, {recommend:1}).then(r => { 
 						if (r.status == 0){
-							console.log(r.msg)
+							 
                              if (r.msg.length > 0){
 								 this.infolst = []
 								 let thumbnail_portait = null;
