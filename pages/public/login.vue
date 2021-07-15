@@ -182,7 +182,7 @@ export default {
     },
     // 提交表单
     async toLogin() {
-      this.reqBody["phone"] = this.loginParams["mobile"];
+      this.reqBody["phone"] = "61"+this.loginParams["mobile"];
       let cheRes, loginApi;
       if (this.loginByPass) {
         loginApi = loginByPass;
