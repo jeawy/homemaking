@@ -11,12 +11,7 @@
 			<input class="input" type="number" v-model="addressData.phone" placeholder="收货人手机号码"
 			 placeholder-class="placeholder" />
 		</view>
-		<view class="row b-b">
-			<text class="tit">选择地址</text>
-			<!--地址三级联动-->
-			<rf-pick-regions class="rf-pick-regions" :area-code.sync="addressData.areaid">
-			</rf-pick-regions>
-		</view>
+ 
 		<view class="row b-b">
 			<text class="tit">详细地址</text>
 			<input class="input" type="text" v-model="addressData.detail" @blur="bindAddressDetailsChange" placeholder="请输入详细地址"
@@ -33,9 +28,7 @@
 </template>
 
 <script>
-	import {
-		addressCreate,
-		addressUpdate,
+	import { 
 		addressDetail,
 		addAddress,
 	} from '@/api/userInfo';
@@ -109,11 +102,7 @@
 				if (!this.addressData.receiver) {
 					this.$mHelper.toast('请填写收货人姓名');
 					return;
-				}
-				if (!/(^1[3|4|5|7|8][0-9]{9}$)/.test(this.addressData.phone)) {
-					this.$mHelper.toast('请输入正确的手机号码');
-					return;
-				}
+				} 
 				this.btnLoading = true;
 				
 				if (this.manageType === 'edit') {
