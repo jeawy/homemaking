@@ -235,10 +235,10 @@
 				await this.$http.get(`${orderTakeDelivery}`, {
 					id
 				}).then(() => {
-          this.page = 1;
-          this.orderList.length = 0;
-					this.getOrderList();
-				})
+					  this.page = 1;
+					  this.orderList.length = 0;
+								this.getOrderList();
+							})
 			},
 			// 数据初始化
 			initData () {
@@ -270,11 +270,11 @@
 					}
 				});
 			},
-	    async getGuessYouLikeList() {
-	      await this.$http.get(`${guessYouLikeList}`).then(r => {
-	        this.guessYouLikeList = r.data
-	      });
-	    },
+			async getGuessYouLikeList() {
+			  await this.$http.get(`${guessYouLikeList}`).then(r => {
+				this.guessYouLikeList = r.data
+			  });
+			},
 			// 监听swiper切换
 			changeTab(e){
 				this.page = 1;
@@ -291,8 +291,8 @@
 			},
 			//顶部tab点击
 			getMoreOrderList(){
-        this.page ++;
-        this.getOrderList();
+				this.page ++;
+				this.getOrderList();
 			}
 		}
 	}

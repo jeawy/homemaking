@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       baseurl: "",
-      imgsrc: "/static/people.svg",
+      imgsrc: "/static/aunty.png",
     };
   },
   computed: {

@@ -1,4 +1,5 @@
 <template>
+<!--
 	<view class="rf-floor-index">
 		<view class="f-header">
       <view class="line"></view>
@@ -24,7 +25,7 @@
 				</view>
 			</view>
 		</view>
-	</view>
+	</view> -->
 </template>
 
 <script>/**

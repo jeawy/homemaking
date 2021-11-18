@@ -1,0 +1,636 @@
+<template>
+	<view class="nav">
+		<view class="search"> 
+			<view class="search_box">
+				<image class="search_img" src="/static/houseKeeping/search.png" @tap="toSearch"></image>
+				<input type="text" class="search_input fontsize" placeholder="搜索" v-model="title" confirm-type="search" @confirm="toSearch" />
+			 
+			</view>
+			 
+		</view>
+	
+	
+		<!-- 上侧分类导航 -->
+		<view class="top_search">
+				<view class="top_right filter fontsize" @tap="open('filter')">
+					<view class="right_one fontsize"  :class="{ tab_active: tabIndex === 'screen' }"><text class="greyfont fontsize">筛选</text></view>
+					<image class="right_img" src="/static/houseKeeping/rightbottom.png"></image>
+				</view>
+				<view class=" category fontsize" @tap="open('category')"> 
+					<view class="right_two fontsize"  :class="{ tab_active: tabIndex === 'classify' }"><text class="greyfont fontsize">分类</text></view>
+					<image class="right_img" src="/static/houseKeeping/rightbottom.png"></image>
+				</view>
+		 
+		</view>
+		<zjw-GoogleMap ref="googlemap" :style="{height:windowHeight+'px'}" 
+		:markers="markers" 
+		:allbase64img="allbase64img"    
+		:location="position"
+		scale="15"
+		class="googlemap"  >
+		
+		</zjw-GoogleMap>
+		  
+		<uni-popup ref="popup" type="top">
+				  <view class="category-list">
+				  	<view class="cate"> 
+				  		<image @tap="categorySearch( 27)"  class="cate_image_one categoryimage" src="/static/home/maternity.png" mode="aspectFill"></image>
+				  		<image @tap="categorySearch( 39)" class="cate_image_two categoryimage" src="/static/home/babymeal.png" mode="aspectFill"></image>
+				  		<image @tap="categorySearch( 38)" class="cate_image_three categoryimage" src="/static/home/kids.png" mode="aspectFill"></image>
+				  		<image @tap="categorySearch( 40)" class="cate_image_four categoryimage" src="/static/home/elderly.png" mode="aspectFill"></image>
+				  		<image @tap="categorySearch( 41)" class="cate_image_five categoryimage" src="/static/home/housekeeping.png" mode="aspectFill"></image>
+				  		<image @tap="categorySearch( 42)" class="cate_image_six categoryimage" src="/static/home/hoursworker.png" mode="aspectFill"></image>
+				  		<image @tap="categorySearch( 43)" class="cate_image_seven categoryimage" src="/static/home/repairworker.png" mode="aspectFill"></image>
+				  		<image @tap="categorySearch( 44)" class="cate_image_eight categoryimage" src="/static/home/painworker.png" mode="aspectFill"></image>
+				  		<image @tap="categorySearch( 45)" class="cate_image_nine categoryimage" src="/static/home/moveworker.png" mode="aspectFill"></image>
+				  		<image @tap="categorySearch( 46)" class="cate_image_ten categoryimage" src="/static/home/lawnmaintainance.png" mode="aspectFill"></image>
+				  	</view>		
+				  </view>
+		</uni-popup>
+		
+		<uni-popup ref="popupfilter" type="top">
+				  <!-- 筛选弹框 -->
+				  <view class="django_search"> 
+				  	<form @submit="confirm" @reset="clear">
+				  		<view class="experience">
+				  			<view class="django_title"><text class='fontsize-title'>经验要求</text></view>
+				  			<view class="django_button">
+				  				<text class="django_text" @tap="selectOne(index, item)" :class="{ django_active: selectone == index }" v-for="(item, index) in experienceLst"
+				  				 :key="index">{{ item.label }}
+				  				</text>
+				  			</view>
+				  		</view>
+				  		<view class="language">
+				  			<view class="django_title"><text class='fontsize-title'>语言要求</text></view>
+				  			<view class="django_button">
+				  				<text class="django_text" @tap="selectTwo(index, item,'search')" :class="{ django_active: item.checked == true }"
+				  				 v-for="(item, index) in languageLst" :key="index">{{ item.value }}
+				  				</text>
+				  			</view>
+				  		</view>
+				  		<view class="price">
+				  			<view class="django_title">
+				  				<text class='fontsize-title'>价格筛选</text>
+				  				<text class='fontsize single'>(单选)</text>
+				  			</view>
+				  			<view class="django_button">
+				  				<text class="django_text" @tap="selectThree(index, item)" :class="{ django_active: selectthree === index }"
+				  				 v-for="(item, index) in priceLst" :key="index">{{ item.label }}
+				  				</text>
+				  			</view>
+				  		</view>
+				  		<view class="tool">
+				  			<view class="django_title">
+				  				<text class='fontsize-title'>工具</text>
+				  				<text class='fontsize single'>(单选)</text>
+				  			</view>
+				  			<view class="django_button">
+				  				<text class="django_text" @tap="selectFour(index, item)" :class="{ django_active: selectfour === index }" v-for="(item, index) in toolLst"
+				  				 :key="index">{{ item.label }}
+				  				</text>
+				  			</view>
+				  		</view>
+				  		<view class="menu">
+				  			<view class="clear_button" :class="{ click_button: clearButton == 'clear' }" @tap="clear">
+				  				<text class="menu_text">清除</text>
+				  			</view>
+				  			<view class="confirm_button" :class="{ click_button: confirmButton == 'confirm' }" @tap="confirm">
+				  				<text class="menu_text">确认</text>
+				  			</view>
+				  		</view>
+				  	</form>
+				  </view>
+		</uni-popup>
+	</view> 
+	 
+		
+</template>
+
+<script>
+	import categoryLists from '@/components/category-lists.vue';
+	import store from '@/store';
+	 
+	import { 
+		categoryListMapApi
+	} from "@/api/product";
+	var globalEvent = uni.requireNativePlugin('globalEvent');
+	export default {
+		
+		data() {
+			return {
+				position: "", 
+				longitude:"",
+				latitude:"",
+				experienceLst: [{
+						value: "不限",
+						label: "不限",
+						checked: true,
+					},
+					{
+						label: "1-3年",
+						value: "1-3",
+						checked: false,
+					},
+					{
+						label: "3-5年",
+						value: "3-5",
+						checked: false,
+					},
+					{
+						label: "5-10年",
+						value: "5-10",
+						checked: false,
+					},
+					{
+						label: "10年以上",
+						value: "10",
+						checked: false,
+					},
+				],
+				languageLst: [{
+						value: "不限",
+						checked: true,
+					},
+					{
+						value: "英文",
+						checked: false,
+					},
+					{
+						value: "普通话",
+						checked: false,
+					},
+					{
+						value: "广东话",
+						checked: false,
+					},
+					{
+						value: "闽南话",
+						checked: false,
+					},
+				],
+				priceLst: [{
+						label: "不限",
+						value: "不限"
+					},
+					{
+						label: "20/h",
+						value: "20"
+					},
+					{
+						label: "40/h",
+						value: "40"
+					},
+					{
+						label: "60/h",
+						value: "60"
+					},
+					{
+						label: "80/h",
+						value: "80"
+					},
+				],
+				toolLst: [{
+						label: "不限",
+						value: "不限"
+					},
+					{
+						label: "自带",
+						value: "0"
+					},
+					{
+						label: "雇主提供",
+						value: "1"
+					},
+				], 
+				selectone: 0,
+				selecttwo: 0,
+				selectthree: 0,
+				selectfour: 0,
+				clearButton: "",
+				confirmButton: "",
+				searchParams: {
+					language: ''
+				},
+				title:"",
+				event:null,
+				baseurl:"",
+				windowHeight:700,
+				markers:[] ,
+				allbase64img:"data:image/png;base64,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"
+				
+			}
+		},
+		onReady() {
+			let system_info = uni.getSystemInfoSync(); 
+			this.windowHeight = system_info.windowHeight 
+			let _this = this
+			 uni.getLocation({
+			 	type: 'gcj02',
+			 	geocode: true,
+			 	success: ((res) => { 
+					_this.position = res.latitude+","+res.longitude
+			 		_this.longitude = res.longitude
+			 		_this.latitude = res.latitude
+			 	})
+			 }); 
+			 if (this.baseurl == "") {
+			   this.baseurl = store.state.BaseUrl;
+			 }
+			 
+			 //注意这个函数不要重复调用，只调用一次，否则会启动多个监听器，同时监听到定时器的返回数据
+			 if (this.event == null){
+				 this.event = globalEvent.addEventListener('ClickedMarker', function(e) {
+				     // marker clicked, and marker msg returned
+					
+					 uni.navigateTo({
+					 	url:"/pages/product/product?id="+e.msg
+					 }) 
+				 });
+			 } 
+		},
+		methods: {
+			address(e){
+				console.log("address="+e.detail.address);
+			},
+			selectOne(index, item) {
+				this.selectone = index;
+				this.searchParams.workyears = item.value;
+				 
+			},
+			// 选择语言要求
+			selectTwo(index, item, type) {
+				if (index == 0) {
+					if (type == 'search') {
+						item.checked = !item.checked
+					} else {
+						item.checked = true
+					}
+					// item.checked = !item.checked
+					for (var i = 1; i < this.languageLst.length; i++) {
+						this.languageLst[i].checked = false
+					}
+				} else {
+					this.languageLst[0].checked = false
+					item.checked = !item.checked
+				}
+			},
+			// 选择价格要求
+			selectThree(index, item) {
+				this.selectthree = index;
+				this.searchParams.price = item.value;
+			},
+			// 选择工具要求
+			selectFour(index, item) {
+				this.selectfour = index;
+				this.searchParams.tools = item.value;
+			},
+			clear() {
+					this.clearButton = "clear";
+					this.confirmButton = "";
+					this.searchParams = {} 
+					this.languageLst.forEach((item, index) => {
+						if (index == 0) {
+							this.selectTwo(index, item, "clear")
+						}
+					})
+					this.selectone = 0
+					this.selectthree = 0
+					this.selectfour = 0
+			},
+			categorySearch(categoryid){
+			    // search by category 
+				this.searchParams.categoryid = categoryid 
+				this.searchCate(this.searchParams);
+				this.$refs.popup.close() 
+			},
+			// 点击筛选框中的确定按钮进行搜索
+			confirm() {
+				this.confirmButton = "confirm";
+				this.clearButton = ""; 
+				this.searchParams.language = ''
+				for (var i in this.searchParams) {
+					if (this.searchParams[i] == '不限') {
+						this.$delete(this.searchParams, i)
+					}
+				} 
+				this.languageLst.forEach(element => {
+					if (element.checked == true) {
+						console.log(this.searchParams.language);
+						this.searchParams.language += element.value + ','
+					}
+				});
+				this.searchParams.language = this.searchParams.language.substring(0, this.searchParams.language.lastIndexOf(','))
+				this.searchCate(this.searchParams);
+				this.$refs.popupfilter.close()
+			},
+			target(url) {
+				this.getProductCate();
+				this.classVisiable = !this.classVisiable;
+			},
+			 open(searchtype){
+				// 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
+				if(searchtype == "filter"){
+					this.$refs.popupfilter.open('top')
+				}
+				else{
+					this.$refs.popup.open('top')
+				}
+				
+			},
+			toSearch(){
+				uni.hideKeyboard();
+				this.searchCate(this.searchParams);  
+			},
+			// 搜索阿姨列表
+			searchCate(data) { 
+				
+				var address = this.$refs.googlemap.getLocation();
+				console.log(address);
+				let params = {}
+				params = {
+					...data
+				}
+				if (params.language === '不限' || !params.language) {
+					this.$delete(params, 'language');
+				}
+				if (this.title) {
+					params.title = this.title;
+				}
+				if (this.longitude) {
+					params.longitude = this.longitude;
+				}
+				if (this.latitude) {
+					params.latitude = this.latitude;
+				} 
+				let _this = this;
+				categoryListMapApi(params).then((res)=>{  
+					if (res.status == 0){
+						//
+						let products = []
+						console.log(res.msg)
+						let html=""
+						for(var i = 0; i < res.msg.length; i ++)
+						{
+							console.log(_this.baseurl+res.msg[i].thumbnail_portait)
+							html = '<html><body><div style="display:flex" >   <div><strong>'+res.msg[i].productname + '</strong> | '+
+							res.msg[i].age + ' | '+res.msg[i].category 
+							+'<br/>国籍:'+res.msg[i].nation+' | 工作:'+res.msg[i].workyears+' | 距离:'
+							 + res.msg[i].distance.toFixed(2) + 'km</div></div></body></html>' 
+							 console.log(html)
+							products.push({
+								"longitude": res.msg[i].longitude,
+								"latitude": res.msg[i].latitude,
+								"content":html,
+								"msg" : res.msg[i].product_id
+							})
+						}
+						_this.markers = products
+					}	 
+					else{
+						
+					}
+				});
+			},
+			// 选择经验要求
+			// 获取商品分类列表
+			async getProductCate() {
+				let categoryid_param = 0;
+				let categoryid = uni.getStorageSync("categoryid")
+				if (categoryid) {
+					if (categoryid > 0) {
+						categoryid_param = categoryid
+					}
+				}
+				await this.$http
+					.get(`${categoryList}`, {
+						categoryid: categoryid_param
+					})
+					.then((r) => {
+						console.log( r.msg);
+						 
+					})
+					.catch(() => {});
+			},
+		}
+	}
+</script>
+
+<style>
+	/* filter  */
+	.menu{
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content:space-between;
+		margin: 20rpx;
+		margin-right: 10rpx;
+		
+	}
+	.clear_button, .confirm_button{
+		width: 120rpx;
+		height: 40rpx;
+		background-color: #767680;
+		text-align: center;
+		border-radius: 5rpx;
+	}
+
+	.django_button{
+	}
+	 
+	.single{
+		margin-top:8rpx;
+	}
+	.fontsize-title{
+		font-size: 16px;
+	}
+	.django_title{
+		margin-left:20rpx;
+		flex-direction: row;
+	}
+	.django_search{
+		flex-direction: row;
+		flex-wrap: wrap;
+		height: 600rpx;
+		margin: 50rpx 40rpx; 
+		padding-top: 20rpx;
+		justify-content: space-around;
+		background-color: #FFFFFF;
+		border-radius: 16rpx;
+		filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
+	}
+	.django_button {
+		padding-top: 15rpx;
+		padding-bottom: 40rpx;
+	}
+	.django_button,
+	.menu,
+	.clear_button,
+	.confirm_button {
+		flex-direction: row;
+		align-items: center;
+	}
+	
+	.django_button {
+		margin-left: 10rpx;
+	}
+	.django_text {
+		font-size: 9px;
+		line-height: 32rpx;
+		margin: 0 10rpx;
+		width: 100rpx;
+		height: 32rpx;
+		text-align: center;
+		color: #ffffff;
+		background: #767680;
+		border-radius: 4rpx;
+		box-sizing: border-box; 
+		justify-content: center;
+	}
+	.django_title,
+	.django_text,
+	.django_active {
+		font-family: Tensentype MingSongJ-W4;
+		font-style: normal;
+		font-weight: 400;
+		letter-spacing: 0em;
+	}
+	.django_active {
+		color: #fdb667;
+		border: 2rpx solid #fdb667;
+		background-color: #FFFFFF;
+	}
+	.menu_text {
+		font-family: Tensentype MingSongJ-W4;
+		font-size: 28rpx;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 34rpx;
+		letter-spacing: 0em;
+		text-align: center;
+		border-radius: 5rpx;
+	}
+	/* filter end */
+	/* category */
+	.categoryimage{
+		width: 130rpx;
+		height: 140rpx;
+	}
+	.cate{
+		flex-direction: row;
+		flex-wrap: wrap;
+		height: 300rpx;
+		margin: 50rpx 40rpx; 
+		justify-content: space-around;
+		background-color: #FFE8CD;
+		border-radius: 16rpx;
+		filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
+	}
+	.menu_text{
+		color: #FFFFFF;
+		text-align: center;
+		align-items:center;
+		padding-left: 35rpx;
+		padding-right:30rpx;
+	}
+	/* category end */
+	.right_img{
+		position: absolute;
+		bottom:0rpx;
+		right: 0rpx;
+	}
+	.top_right{
+		display: flex;
+		flex-direction:row;
+	}
+	.top_right{
+		height: 50rpx;;
+	}
+	.filter{
+		position: fixed;
+		top: 0rpx;
+		height: 50rpx;
+		right: 80rpx; 
+		 color: #bfbfbf;
+		 background-color: #FFFFFF;
+		 width: 83rpx;
+		 flex-direction:row;
+	}
+	.category{
+		position: fixed;
+		top: 0rpx;
+		height: 50rpx;
+		right: 0rpx; 
+		color: #bfbfbf;
+		background-color: #FFFFFF;
+		width: 80rpx;
+		flex-direction:row;
+	}
+	.fontsize{
+		font-size: 12px;
+	}
+	.greyfont{
+		color:#bfbfbf;
+	}
+.googlemap{ 
+	width:750rpx
+}
+ .nav, .top_search, .top_right, .top_left{
+	 
+ }
+ .right_img{
+	 width: 36rpx;
+	 height: 36rpx; 
+ }
+ .search_img{
+	 width: 46rpx;
+	 height: 46rpx;
+	 color:#bfbfbf;  
+	 position: fixed;
+	 left: 1px;
+	 top:4rpx;
+ }
+.search_input {
+	position: fixed;
+	left: 1px;
+	top:1px;
+	width: 586rpx;
+	height: 50rpx;
+	border-width:1px;
+	border-top-left-radius:10px;
+	border-bottom-left-radius:10px;
+	padding-left: 52rpx;
+	border-color: #bfbfbf;
+}
+
+/* popup */
+
+.mask {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	/* #ifndef APP-NVUE */
+	display: flex;
+	/* #endif */
+	justify-content: center;
+	align-items: center;
+	background: transparent;
+	background-color: rgba(0, 0, 0, 0.6);
+	z-index: 9;
+}
+
+.wraper {
+	position: fixed;
+	bottom: 0rpx;
+	left: 0;
+	width: 100%;
+	height: 1000rpx;
+	z-index: 10;
+	background-color: #FFFFFF;
+	border-radius: 20rpx 20rpx 0 0;
+	padding-top: 40rpx;
+	text-align: center;
+}
+
+/* end popup */
+</style>

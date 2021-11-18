@@ -6,9 +6,7 @@
 			 <view class="city_search">
 				 <citySearch v-model="city" @doGetLocation="doGetLocation"/>
 			 </view>
-		 		<view class="notice" @tap="navTo('/pages/user/notice/notice')">
-		 			<image class="notice_img" src="../../static/home/Notification.svg"></image>
-		 		</view>
+		 		 
 		 	</view>
 			 <!--
 		 	<view class="header-bottom">
@@ -137,6 +135,7 @@
 <script>
 	import { speadList } from '@/api/spread';
 	import {categoryList} from '@/api/product';
+	import {getAddress} from "@/api/map"
 	import mainCard from '@/components/main-card.vue';
 	import sPopup from '@/components/s-popup/index.vue';
 	import citySearch from '@/components/city-search.vue';
@@ -147,7 +146,7 @@
 				city:'',//当前所在的城市名称
 				//cityVisiable:false,
 				swiperImg: [// 轮播图图片
-					'../../static/home/Swiper.svg',
+					 
 				],
 				baseurl:"",
 				swiperCurrent: 0, // 轮播图index 
@@ -237,11 +236,28 @@ onHide() {
 			},
 			//获取当前的位置
 			doGetLocation(){
+				let _this = this
 				uni.getLocation({
 				    type: 'gcj02',
 					geocode: true,
 				    success: ((res) => {
-				    	this.city = res.address.city;
+						var longitude = res.longitude
+						var latitude = res.latitude
+						
+						getAddress({
+							longitude:longitude,
+							latitude:latitude,
+							singleaddress:0
+						}).then((addressres)=>{
+						 
+							if (addressres.status === 0) { 
+								 _this.city = addressres.msg.city; 
+							} 
+							else{
+								console.log(addressres.msg)
+							}	 
+						});
+						 
 				    })
 				});
 			},

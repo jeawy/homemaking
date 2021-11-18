@@ -171,9 +171,12 @@
 			.address {
 				font-size: 30upx;
 				color: $font-color-dark;
+				display: block;
+				width: 600rpx; 
+				overflow: hidden;
+				text-overflow:ellipsis;
 			}
-		}
-
+		} 
 		.u-box {
 			font-size: 28upx;
 			color: $font-color-light;
@@ -181,6 +184,10 @@
 
 			.name {
 				margin-right: 30upx;
+				display: block;
+				width: 600rpx; 
+				overflow: hidden;
+				text-overflow:ellipsis;
 			}
 		}
 	}

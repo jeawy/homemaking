@@ -200,6 +200,9 @@ export default {
 
 <style lang="scss" scoped>
 // fade效果
+/* #ifndef APP-NVUE */
+		 
+		
 @keyframes s-popup-fade-enter {
   0% {
     opacity: 0;
@@ -460,4 +463,5 @@ export default {
     }
   }
 }
+/* #endif */
 </style>

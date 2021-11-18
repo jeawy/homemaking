@@ -160,6 +160,7 @@ export default {
 			// #endif
 			 
 		}).then(r => {
+			console.log(r.msg)
 			// #ifdef H5
 			window.location.href = r.orderInfo;
 			// #endif

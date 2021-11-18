@@ -11,7 +11,7 @@ const USER = uni.getStorageSync('user') || {};
 const store = new Vuex.Store({
     state: {
 		// baseurl
-		BaseUrl:'http://47.95.239.228:8091/',
+		BaseUrl:'http://app1.ahomely.com.au:8091/',
         //用户token
         accessToken: ACCESSTOKEN,
         //用户信息

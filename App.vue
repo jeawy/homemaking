@@ -65,6 +65,7 @@
 
 <style lang='scss'>
 	// 导入colorUI
+	//#ifndef APP-PLUS-NVUE
 	@import '/static/css/colorui/main.css';
 	@import '/static/css/colorui/icon.css';
 	@import '/static/css/colorui/animation.css';
@@ -72,4 +73,5 @@
 	@import './static/css/iconfont/iconfont.css';
 	@import './static/css/reset.scss';
 	@import './static/css/uni.scss';
+	//#endif 
 </style>

@@ -1,12 +1,13 @@
 {
-    "name" : "帮得家",
+    "name" : "帮帮家",
     "appid" : "__UNI__6050951",
     // 自行更换uniapp appid 可登录查看uniapp提供的用户统计 https://tongji.dcloud.net.cn/
-    "description" : "帮得家",
-    "versionName" : "2.0.6",
-    "versionCode" : 100,
+    "description" : "帮帮家",
+    "versionName" : "2.0.11",
+    "versionCode" : 103,
     "transformPx" : false,
     "app-plus" : {
+        "nvueStyleCompiler" : "uni-app",
         "compatible" : {
             "ignoreVersion" : true
         },
@@ -17,6 +18,13 @@
             "waiting" : false,
             "autoclose" : true,
             "delay" : 0
+        },
+        "safearea" : {
+            //安全区域配置，仅iOS平台生效  
+            "bottom" : {
+                // 底部安全区域配置  
+                "offset" : "none" // 底部安全区域偏移，"none"表示不空出安全区域，"auto"自动计算空出安全区域，默认值为"none"  
+            }
         },
         "modules" : {
             "Payment" : {},
@@ -53,15 +61,16 @@
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
-                "targetSdkVersion" : 29,
-                "abiFilters" : [ "armeabi-v7a", "arm64-v8a" ]
+                "targetSdkVersion" : 21,
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a" ],
+                "minSdkVersion" : 21
             },
             "ios" : {
                 "privacyDescription" : {
                     "NSCameraUsageDescription" : "上传头像",
                     "NSPhotoLibraryAddUsageDescription" : "",
                     "NSPhotoLibraryUsageDescription" : "上传头像",
-                    "NSLocationWhenInUseUsageDescription" : "用于推荐附件的阿姨",
+                    "NSLocationWhenInUseUsageDescription" : "用于推荐附近的阿姨",
                     "NSLocationAlwaysAndWhenInUseUsageDescription" : "用于推荐附件的阿姨",
                     "NSMicrophoneUsageDescription" : "视频通话"
                 }
@@ -120,16 +129,37 @@
         "nativePlugins" : {
             "zjw-VideoCallTwilio" : {
                 "__plugin_info__" : {
-                    "name" : "zjw-VideoCallTwilio",
-                    "description" : "Twilio视频通话插件",
+                    "name" : "Twilio视频通话插件",
+                    "description" : "Twilio视频通话的插件，国内国外通话效果都比较好、清晰、稳定",
                     "platforms" : "Android,iOS",
-                    "url" : "",
-                    "android_package_name" : "",
-                    "ios_bundle_id" : "",
-                    "isCloud" : false,
-                    "bought" : -1,
-                    "pid" : "",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=4409",
+                    "android_package_name" : "com.map2family.homemaking",
+                    "ios_bundle_id" : "com.map2family.homemaking",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "4409",
                     "parameters" : {}
+                }
+            },
+            "zjw-GoogleMap" : {
+                "googlekey" : "AIzaSyBA8DcDAIA0eWwkSb_NHTJEEaUweghxIP0",
+                "__plugin_info__" : {
+                    "name" : "谷歌地图插件Google Map",
+                    "description" : "谷歌地图插件，支持添加marker，以及点击marker之后返回事件",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=6476",
+                    "android_package_name" : "com.map2family.homemaking",
+                    "ios_bundle_id" : "com.map2family.homemaking",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "6476",
+                    "parameters" : {
+                        "googlekey" : {
+                            "des" : "GOOGLE MAP API KEY, reference:https://developers.google.com/maps/documentation/ios-sdk/get-api-key",
+                            "key" : "key",
+                            "value" : ""
+                        }
+                    }
                 }
             }
         }

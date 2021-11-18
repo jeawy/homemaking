@@ -2,12 +2,11 @@
 	<view class="rf-category">
 		<!--顶部搜索导航栏-->
 		<view class="nav">
-			<view class="search">
-				<citySearch v-model="city" @doGetLocation="doGetLocation" />
+			<view class="search"> 
 				<view class="search_box">
 					<image class="search_img" src="/static/houseKeeping/search.svg" @tap="toSearch"></image>
 					<input type="text" class="search_input" placeholder="搜索关键字" v-model="title" confirm-type="search" @confirm="toSearch" />
-					<image class="search_talk" src="/static/houseKeeping/microphone.svg"></image>
+					<!--<image class="search_talk" src="/static/houseKeeping/microphone.svg"></image>-->
 				</view>
 				<view class="notice" @tap="navTo('/pages/user/notice/notice')">
 					<image class="notice_img" src="/static/home/Notification.svg"></image>
@@ -31,10 +30,8 @@
 					</view>
 				</view>
 			</view>
-		</view>
-
-
-		<view class="main_content">
+		</view> 
+		<view class="main_content"> 
 			<!-- 推荐页面 -->
 			<view v-if="currentIndex == 'recommend'">
 				<rf-empty :info="'暂无阿姨数据~'" v-if="infolst_recommend.length === 0"></rf-empty>
@@ -45,7 +42,7 @@
 				</scroll-view>
 			</view>
 			<!-- 最新页面-->
-			<view v-if="currentIndex == 'new'">
+			<view v-if="currentIndex == 'new'"> 
 				<rf-empty :info="'暂无阿姨数据~'" v-if="infolst_new.length === 0"></rf-empty>
 				<scroll-view scroll-y="true" v-else>
 					<view class="content">
@@ -55,15 +52,8 @@
 			</view>
 			<!-- 附近页面-->
 			<view v-if="currentIndex == 'nearby'">
-				<rf-empty :info="'暂无阿姨数据~'" v-if="infolst_nearby.length === 0"></rf-empty>
-				<scroll-view scroll-y="true" v-else>
-					<view class="nearby_map">
-						<map />
-					</view>
-					<view class="content">
-						<mainCard class="main_card" :info="item" v-for="(item, index) in infolst_nearby" :key="index" />
-					</view>
-				</scroll-view>
+				
+				 
 			</view>
 		</view>
 		<s-popup custom-class="demo-popup" position="center" v-model="visible">
@@ -143,6 +133,7 @@
 		productCate,
 		categoryList
 	} from "@/api/product";
+	import {getAddress} from "@/api/map"
 	import rfSearchBar from "@/components/rf-search-bar";
 	import {
 		advList
@@ -163,6 +154,7 @@
 				// cateTop: {}, // 分类通用广告图
 				// animation: 'animation-slide-right',
 				// errorImage: this.$mAssetsPath.errorImage,
+				
 				city: '',
 				currentIndex: "recommend",
 				tabIndex: "",
@@ -172,30 +164,19 @@
 				infolst_recommend: [{
 						id: 1,
 						name: "张三",
-						imgsrc: "/static/people.svg",
+						imgsrc: "/static/aunty.png",
 						age: 27,
 						sex: "women",
 						position: "澳大利亚",
 						time: "2",
 						language: ["普通话", "英语"],
 						type: "包月小时工",
-					},
-					{
-						id: 2,
-						name: "爱丽丝",
-						imgsrc: "/static/people.svg",
-						age: 27,
-						sex: "women",
-						position: "澳大利亚",
-						time: "2",
-						language: ["普通话", "英语"],
-						type: "包月小时工",
-					}
+					} 
 				],
 				infolst_new: [{
 					id: 1,
 					name: "marry",
-					imgsrc: "/static/people.svg",
+					imgsrc: "/static/aunty.png",
 					age: 27,
 					sex: "women",
 					position: "澳大利亚",
@@ -307,12 +288,31 @@
 		},
 		methods: {
 			//获取当前的位置
+			
 			doGetLocation() {
+				var _this = this
 				uni.getLocation({
 					type: 'gcj02',
 					geocode: true,
-					success: ((res) => {
-						this.city = res.address.city;
+					success: ((res) => { 
+						var longitude = res.longitude
+						var latitude = res.latitude
+						
+						getAddress({ 
+							longitude:longitude,
+							latitude:latitude,
+							singleaddress:0
+						}).then((addressres)=>{
+						 
+							if (addressres.status === 0) { 
+								 _this.city = addressres.msg.city; 
+							} 
+							else{
+								console.log(addressres.msg)
+							}	 
+						});
+						 
+						 
 					})
 				});
 			},
@@ -328,7 +328,12 @@
 			},
 			// 顶部tab点击
 			tabClick(index) {
-				this.currentIndex = index;
+				if(index == "nearby"){ 
+					this.navTo('/pages/category/nearby')
+				}
+				else{
+					this.currentIndex = index;
+				} 
 			},
 			tabRightClick(index) {
 				this.tabIndex = index;
@@ -343,13 +348,7 @@
 			clear() {
 				this.clearButton = "clear";
 				this.confirmButton = "";
-				this.searchParams = {}
-				/*
-      this.experienceLst.forEach((item,index) =>{
-        if(index == 0){
-          this.selectOne(index,item,"clear")
-        }        
-      })*/
+				this.searchParams = {} 
 				this.languageLst.forEach((item, index) => {
 					if (index == 0) {
 						this.selectTwo(index, item, "clear")
@@ -369,15 +368,7 @@
 					if (this.searchParams[i] == '不限') {
 						this.$delete(this.searchParams, i)
 					}
-				}
-				/*
-      this.experienceLst.forEach(element => {
-        if(element.checked == true){
-          this.searchParams.workyears += element.value+','
-        }
-      });
-      this.searchParams.workyears = this.searchParams.workyears.substring(0,this.searchParams.workyears.lastIndexOf(','))
-      */
+				} 
 				this.languageLst.forEach(element => {
 					if (element.checked == true) {
 						console.log(this.searchParams.language);
@@ -575,7 +566,7 @@
 				
 				.search_box {
 					margin-left: 20rpx;
-					width: 500rpx;
+					width: 720rpx;
 					background: rgba(118, 118, 128, 0.12);
 					border-radius: 30rpx;
           padding: 8rpx 0;
@@ -587,8 +578,8 @@
 					}
 
 					.search_input {
-						width: 446rpx;
-            height: 44rpx;
+						width: 726rpx;
+                         height: 44rpx;
 					}
 
 					.search_talk {

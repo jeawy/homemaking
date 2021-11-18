@@ -70,7 +70,7 @@
 					slide_x: 0 //列表左滑距离
 				}, {
 					id: 4,
-					src: '/static/people.svg',
+					src: '/static/aunty.png',
 					time: '2020-12-19',
 					title: '张阿姨',
 					content: '已接收转账',
@@ -78,7 +78,7 @@
 					slide_x: 0 //列表左滑距离
 				}, {
 					id: 5,
-					src: '/static/people.svg',
+					src: '/static/aunty.png',
 					time: '2020-10-19',
 					title: '小气',
 					content: '好的,我等您通知',
@@ -86,7 +86,7 @@
 					slide_x: 0 //列表左滑距离
 				}, {
 					id: 4,
-					src: '/static/people.svg',
+					src: '/static/aunty.png',
 					time: '2020-12-19',
 					title: '张阿姨',
 					content: '已接收转账',
@@ -94,7 +94,7 @@
 					slide_x: 0 //列表左滑距离
 				}, {
 					id: 5,
-					src: '/static/people.svg',
+					src: '/static/aunty.png',
 					time: '2020-10-19',
 					title: '艾伦',
 					content: '好的,我等您通知',

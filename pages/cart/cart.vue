@@ -7,8 +7,8 @@
 				<view class="navbar-top-text">我的订单</view>
 				<view class="navbar-top-img">
 					<image class="search-img" src="/static/order/search.svg" @tap="() => showSearchBar=true"></image>
-					<image class="erji-img" src="/static/order/erji.svg"></image>
-					<image class="message-img" src="/static/order/orange_messages.svg" @tap="navTo('/pages/user/notice/notice')"></image>
+					<!--<image class="erji-img" src="/static/order/erji.svg"></image>-->
+					 
 				</view>
 
 			</view>
@@ -16,7 +16,7 @@
 				<view class="search_box">
 					<image class="search_img" src="/static/houseKeeping/search.svg"></image>
 					<input type="text" class="search_input" placeholder="搜索关键字" confirm-type="search" v-model="search" @confirm="searchInput" />
-					<text class="close" @tap="() => showSearchBar=false">X</text>
+					<text class="close" @tap="() => showSearchBar=false">x</text>
 				</view>
 			</view>
 			<view class="navbar-bottom">
@@ -117,16 +117,7 @@
 				// 进行中订单
 				processList: [{
 					name: '张三',
-					imgsrc: "/static/people.svg",
-					age: 27,
-					sex: "women",
-					position: '澳大利亚',
-					time: "2",
-					language: ['普通话', '英语'],
-					type: "包月小时工"
-				}, {
-					name: '爱丽丝',
-					imgsrc: "/static/people.svg",
+					imgsrc: "/static/aunty.png",
 					age: 27,
 					sex: "women",
 					position: '澳大利亚',
@@ -334,15 +325,9 @@
 		width: 100%;
 	}
 
-	.search {
-
-
-
-
+	.search { 
 		width: 500rpx;
-		margin: 0 auto 50rpx auto;
-
-
+		margin: 0 auto 50rpx auto; 
 	}
 
 	.search,
@@ -350,24 +335,21 @@
 	.search_box {
 		display: flex;
 		align-items: center;
-		text-align: center;
-
-	}
-
-
-	.search {
-
+		text-align: center; 
+	} 
+	.search { 
 		.search_box {
 			width: 500rpx;
 			background: rgba(118, 118, 128, 0.12);
 			border-radius: 30rpx;
 			padding: 8rpx 0;
-			margin: auto;
-
-			.close {
-				font-size: 35rpx;
-				padding: 10rpx;
-				margin-right: 30rpx;
+			margin: auto; 
+			.close { 
+				font-size:20px;
+				padding: 0rpx;
+				margin-right: 30rpx; 
+				line-height: 30rpx;
+				widows: 30rpx;;
 			}
 			.search_img {
 				display: inline-block;
@@ -378,8 +360,7 @@
 
 			.search_input {
 				width: 446rpx;
-				height: 44rpx;
-
+				height: 30rpx; 
 			}
 
 			.search_talk {
@@ -397,16 +378,14 @@
 		position: fixed;
 		z-index: 10;
 		padding-top: 70rpx; //设置距离顶部的距离
-
-
+ 
 		.navbar-top {
 			display: flex;
 			width: 100%;
 			padding: 15rpx 40rpx;
 			margin-bottom: 24rpx;
 			justify-content: space-between;
-			align-items: center;
-
+			align-items: center; 
 			.empty {
 				flex: 1;
 			}
@@ -478,8 +457,7 @@
 			margin-top: 28rpx;
 			font-size: 20rpx;
 			line-height: 24rpx;
-			color: #888888;
-
+			color: #888888; 
 		}
 
 		.process-tip {

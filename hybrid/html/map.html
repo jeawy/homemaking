@@ -109,7 +109,7 @@
 			console.log({Authorization}, {billno})
 			
 			const stripe = Stripe('pk_test_42xi7lAoc2wOsFfmZOq7etPS005IDp2SJJ')
-			fetch(`http://47.95.239.228:8091/api/pay/stripe/`, {
+			fetch(`http://app1.ahomely.com.au:8091/api/pay/stripe/`, {
 				method: 'POST',
 				headers: {
 					"Authorization": Authorization,

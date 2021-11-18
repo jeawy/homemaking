@@ -5,18 +5,13 @@
       <view class="setting" @tap="navTo('/pages/set/set')">
         <image class="setting_img" src="/static/my/set.svg"></image>
       </view>
-      <view
-        class="notice"
-        @tap="navTo(userInfo ? '/pages/user/notice/notice' : 'login')"
-      >
-        <image class="notice_img" src="/static/my/white_message.svg"></image>
-      </view>
+       
     </view>
     <!--头部-->
     <view class="user-section">
       <view
         class="middle"
-        @tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login')"
+        @tap="navTo(userInfo ? '/pages/user/userinfo/userinfo' : 'login', true)"
       >
         <!--用户头像-->
         <view class="portrait_bg" v-if="hasLogin">
@@ -45,6 +40,7 @@
         </view>
       </view>
       <!--关注的人-->
+	  <!--
       <view class="bottom">
         <view v-for="(item, index) in attentList" :key="index">
           <view class="tj-item" @tap="navTo(item.path)">
@@ -55,6 +51,7 @@
           </view>
         </view>
       </view>
+	  -->
     </view>
     <!-- 个人中心 内容区-->
     <view class="user-content">
@@ -88,7 +85,7 @@
 					</view>
 					<view class="order-center-two">
 						<image class="nopay-img" src="../../static/my/unreviews.svg"></image>
-						<view class="order-content">待评论</view>
+						<view class="order-content">待评价</view>
 					</view> -->
         </view>
       </view>
@@ -102,7 +99,7 @@
             v-for="(item, index) of commenUseList"
             :key="index"
             class="common-function__item"
-            @tap="navTo(item.path)"
+            @tap="navTo(item.path, item.redirect_path)"
           >
             <image
               class="common-function__img"
@@ -198,41 +195,49 @@ export default {
           name: "常用地址",
           path: "/pages/user/address/address",
           src: "address",
+		  redirect_path: true
         },
         {
-          name: "付款方式",
-          path: "",
+          name: "我的订单",
+          path: "/pages/cart/cart",
           src: "payment",
+		  redirect_path: false
         },
         {
           name: "基本设置",
           path: "/pages/set/set",
           src: "settings",
+		  redirect_path: true
         },
         {
           name: "分享有礼",
           path: "/pages/user/share-page/share-page",
           src: "share",
+		  redirect_path: true
         },
         {
-          name: "在线客服",
-          path: "/pages/user/chat/chat",
+          name: "我的收藏",
+          path: "/pages/user/collection/collection",
           src: "service",
+		  redirect_path: true
         },
         {
           name: "视频面试",
-          path: "",
+          path: "/pages/user/my-appointment/index",
           src: "interview",
+		  redirect_path: true
         },
         {
           name: "用户协议",
           path: "/pages/user/user-agreement/user-agreement",
           src: "userdocument",
+		  redirect_path: true
         },
         {
           name: "我的预约",
           path: "/pages/user/my-appointment/index",
           src: "userdocument",
+		  redirect_path: true
         },
       ],
       attentList: [
@@ -272,7 +277,7 @@ export default {
         },
         {
           image: "../../static/my/unreviews.svg",
-          value: "待评论",
+          value: "待评价",
         },
       ],
       userInfo: {
@@ -294,7 +299,7 @@ export default {
     this.portrait = this.baseurl + this.userInfo.portrait;
     console.log(this.$mAssetsPath.headImg);
     console.log(this.baseurl);
-    console.log(this.userInfo.portrait);
+    console.log(this.portrait);
     console.log(this.baseurl + this.userInfo.portrait);
   },
   async onShow() {
@@ -350,9 +355,12 @@ onHide() {
           this.userInfo = r.msg;
           console.log(r.msg);
           uni.setStorageSync("userInfo", r.msg);
-          this.userInfo.portrait = r.msg.head_portrait;
-          this.portrait = this.baseurl + r.msg.head_portrait;
-          console.log(this.portrait);
+		  if (r.msg.head_portrait){
+			  this.userInfo.portrait = r.msg.head_portrait;
+			  this.portrait = this.baseurl + r.msg.head_portrait;
+			  console.log(this.portrait);
+		  }
+          
 
           //await uni.setStorageSync('cartNum', r.data.cart_num);
           // 获取足迹列表
@@ -400,8 +408,7 @@ onHide() {
           likestype: 1, // 足迹传1，收藏传0
           entity: 1, // 阿姨固定传1
         })
-        .then((r) => {
-          console.log(r);
+        .then((r) => { 
           this.footPrintList = r.msg;
           this.attentList[2].num = r.msg.length;
         });
@@ -419,7 +426,7 @@ onHide() {
       });
     },
     // 统一跳转接口,拦截未登录路由
-    navTo(route) {
+    navTo(route, push=false) {
       //console.log(route)
       if (!route) {
         return;
@@ -434,8 +441,20 @@ onHide() {
           },
         });
       } else {
-        console.log(route);
-        this.$mRouter.push({ route });
+        
+		if (( 
+			route.indexOf('/pages/cart/cart') !== -1 ||
+			route.indexOf('/pages/index/index') !== -1 ||
+			route.indexOf('/pages/category/category') !== -1) && push ==  false) {
+				console.log(route);
+			this.$mRouter.reLaunch(
+			                {
+								route: route
+							});
+		} else {
+			console.log(route);
+             this.$mRouter.push({ route });
+		}
       }
     },
   },

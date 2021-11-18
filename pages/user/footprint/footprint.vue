@@ -75,11 +75,11 @@ page {
 .footprint {
   .list-wrap {
     display: flex;
-    width: 100%;
-    margin-left: 20rpx;
+    width: 750rpx; 
+    padding-left: 20rpx;
     flex-wrap: wrap;
     .main_card {
-      margin-right: 22rpx;
+      margin-right: 20rpx;
       margin-bottom: 20rpx;
     }
   }

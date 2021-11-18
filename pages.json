@@ -136,7 +136,17 @@
 		{
 			"path": "pages/user/userinfo/userinfo",
 			"style": {
-				"navigationBarTitleText": "修改资料"
+				"navigationBarTitleText": "修改资料",
+				"enablePullDownRefresh": true,
+								 
+								"app-plus": {
+									"pullToRefresh": {
+										"support": true,
+										"color": "#fa436a",
+										"style": "default"
+									}
+								}
+				
 			}
 		},
 		// 信用卡支付
@@ -342,6 +352,15 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "订单评价",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/category/nearby",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
             

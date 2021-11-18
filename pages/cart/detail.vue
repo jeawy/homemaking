@@ -20,7 +20,7 @@
 				>
 					<rf-image
 						:src="
-							'http://47.95.239.228:8091' + item.thumbnail_portait
+							'http://app1.ahomely.com.au:8091' + item.thumbnail_portait
 						"
 					/>
 					<view class="right">

@@ -10,7 +10,7 @@
   		<image @tap="target('/pages/category/category', 43)" class="cate_image_seven" src="../static/home/repairworker.svg" mode="aspectFill"></image>
   		<image @tap="target('/pages/category/category', 44)" class="cate_image_eight" src="../static/home/painworker.svg" mode="aspectFill"></image>
   		<image @tap="target('/pages/category/category', 45)" class="cate_image_nine" src="../static/home/moveworker.svg" mode="aspectFill"></image>
-  		<image @tap="target('/pages/category/category', 46)" class="cate_image_ten" src="../static/home/lawnmaintainance.svg" mode="aspectFill"></image>
+  		<image @tap="target('/pages/category/category', 46)" class="cate_image_ten" src="../static/home/category2.png" mode="aspectFill"></image>
   	</view>		
   </view>
 </template>
@@ -32,6 +32,7 @@
 	}
 </script>
 <style lang="less">
+	//#ifndef APP-PLUS-NVUE
 .category-list {
 			height: 300rpx;
 			margin: 0 40rpx;
@@ -41,39 +42,43 @@
 			background-color: #FFE8CD;
 			border-radius: 16rpx;
 			filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.25));
-			.cate{
-				padding: 28rpx 36rpx 30rpx 38rpx;
-				width: 100%;
-				height: 300rpx;
-				display: flex;
-				flex-wrap: wrap;
-					.cate_image_one{
-						width: 100rpx;
-						height: 102rpx;
-					}
-					.cate_image_two,
-					.cate_image_three,.cate_image_four,
-					.cate_image_five{
-						width: 100rpx;
-						height: 102rpx;
-						margin-left: 24rpx;
-					}
-					.cate_image_seven,
-					.cate_image_eight,.cate_image_nine,
-					.cate_image_ten{
-						width: 100rpx;
-						height: 108rpx;
-						margin-top: 32rpx;
-						margin-left: 24rpx;
-					}
-					.cate_image_six{
-						width: 100rpx;
-						height: 108rpx;
-						margin-top: 32rpx;
-					}
-					.cate_image_nine{
-						height: 110rpx;
-					}
-			}
+			
 		}
+		.cate{
+			padding: 28rpx 36rpx 30rpx 38rpx;
+			width: 100%;
+			height: 300rpx;
+			display: flex;
+			flex-wrap: wrap;
+				
+		}
+		.cate_image_one{
+			width: 100rpx;
+			height: 102rpx;
+		}
+		.cate_image_two,
+		.cate_image_three,.cate_image_four,
+		.cate_image_five{
+			width: 100rpx;
+			height: 102rpx;
+			margin-left: 24rpx;
+		}
+		.cate_image_seven,
+		.cate_image_eight,.cate_image_nine,
+		.cate_image_ten{
+			width: 100rpx;
+			height: 108rpx;
+			margin-top: 32rpx;
+			margin-left: 24rpx;
+		}
+		.cate_image_six{
+			width: 100rpx;
+			height: 108rpx;
+			margin-top: 32rpx;
+		}
+		.cate_image_nine{
+			height: 110rpx;
+		}
+		
+		//#endif
 </style>

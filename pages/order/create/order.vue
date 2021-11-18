@@ -153,7 +153,6 @@
 			}
 		},
 		onShow() {
-			console.log(this.addressData)
 			 
 		},
 		onLoad(options){
@@ -285,6 +284,22 @@
 	}
 	.order {
 		padding-bottom: 100upx;
+		 
+	}
+	.top{
+		.name{
+			display: block;
+			width: 600rpx; 
+			overflow: hidden;
+			text-overflow:ellipsis;
+		}
+	}
+	.address
+	{
+		display: block;
+		width: 600rpx; 
+		overflow: hidden;
+		text-overflow:ellipsis;
 	}
 	.yt-list {
 		margin-top: 16upx;

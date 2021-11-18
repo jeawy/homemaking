@@ -97,7 +97,7 @@ export default {
 	props: ["orderList"],
 	data() {
 		return {
-			imgsrc: "http://47.95.239.228:8091/",
+			imgsrc: "http://app1.ahomely.com.au:8091/",
 			hasLogin: true,
 		};
 	},
